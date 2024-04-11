@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "D:/AstroProyects/salaV",
+    "baseUrl": ".",
     "paths": {
       "@/*": [
         "src/*"
