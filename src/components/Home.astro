@@ -1,0 +1,134 @@
+---
+import CardOption from "./CardOption.astro";
+// interface Props {
+//     title: string;
+//     picture: string;
+//     description: string;
+// }
+
+let dataCard = [
+    {
+        title: "Emite tu pantalla con el grupo",
+        picture: `
+            <svg data-astro-cid-5g2deuhk
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="icon icon-tabler icons-tabler-outline icon-tabler-device-desktop-share"
+            >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M12.5 16h-8.5a1 1 0 0 1 -1 -1v-10a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v8" />
+                <path d="M7 20h5.5" />
+                <path d="M9 16v4" />
+                <path d="M16 22l5 -5" />
+                <path d="M21 21.5v-4.5h-4.5" />
+            </svg>
+           `,
+        description:
+            "Emites tu pantalla y selecionas el video que los demas controlaran",
+        url: "/appone",
+        background: "#15c19f",
+        dataNumber: "1",
+    },
+    {
+        title: "Sincroniza tu video con el grupo",
+        picture: `
+            <svg data-astro-cid-5g2deuhk
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="icon icon-tabler icons-tabler-outline icon-tabler-refresh"
+            >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" />
+                <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" />
+            </svg>
+            `,
+        description:
+            "Cada usuario usa una extension y elijen el video a sincronizar , cualquier cambio se reflejara para los demas",
+        url: "/appone",
+        background: "#dbbb5a",
+        dataNumber: "2",
+    },
+    {
+        title: "Ve un recurso de video",
+        picture: `
+            <svg data-astro-cid-5g2deuhk
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="icon icon-tabler icons-tabler-outline icon-tabler-movie"
+            >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
+                <path d="M8 4l0 16" />
+                <path d="M16 4l0 16" />
+                <path d="M4 8l4 0" />
+                <path d="M4 16l4 0" />
+                <path d="M4 12l16 0" />
+                <path d="M16 8l4 0" />
+                <path d="M16 16l4 0" />
+            </svg>
+            `,
+        description:
+            "Puedes ver un recurso de video en esta web , tiene que ser un recurso de video no un link de una pagina",
+        url: "/appone",
+        background: "#af4254",
+        dataNumber: "3",
+    },
+];
+---
+
+<style>
+    .home {
+        height: 100vh;
+    }
+    .home__group-option {
+        display: flex;
+        gap: 15px;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+        padding: 50px 25px;
+    }
+    @media (max-width: 900px) {
+        .home {
+            height: 100%;
+        }
+        .home__group-option {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<script is:inline>
+    setTimeout(() => {
+        document.querySelectorAll(".card-option").forEach((el) => {
+            el.style.filter = "grayscale(0)";
+        });
+    }, 500);
+</script>
+
+<section class="home">
+    <div class="home__group-option">
+        {dataCard.map((card) => <CardOption {...card} />)}
+    </div>
+</section>

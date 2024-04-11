@@ -1,0 +1,43 @@
+.options-stream {
+    position: fixed;
+    bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    background: #fdfeff0d;
+    padding: 5px 12px;
+    width: min-content;
+    border-radius: 12px;
+    border: solid 1px #ffffff0f;
+}
+
+.options-stream button {
+    border-radius: 9px;
+    border: 0 transparent;
+    cursor: pointer;
+    /* padding: 4px 8px; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shared-screen {
+    width: 45px;
+    height: 45px;
+    padding: 11px;
+    /* border-radius: 15px; */
+    /* box-shadow: 2px 3px 0 #eb5858; */
+    background: #d7333000;
+    color: white;
+}
+
+.call-close {
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+    border-radius: 15px;
+    box-shadow: 2px 3px 3px 0px #00000017;
+    background: #d73230;
+    color: #f0f2ff;
+}

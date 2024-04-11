@@ -1,0 +1,29 @@
+.modal-video-player {
+    background: #1c1c21;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 0;
+    transition: .3s cubic-bezier(1, -0.06, 0, 1.02);
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+}
+
+.modal-video-player.open-modal-vp {
+    height: 100%;
+}
+
+.modal-video-player__button {
+    background: #28282f;
+    padding: 8px;
+    height: 34px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-video-player__container-vp {
+    flex: 1;
+}

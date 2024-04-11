@@ -1,0 +1,102 @@
+.box-main {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 32px;
+    padding: 25px;
+}
+
+/* Box is streaming */
+.box-is-streaming {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    background: #ffffff0a;
+    padding: 30px 33px;
+    border-radius: 15px;
+    border: solid 1px #ffffff0d;
+    box-shadow: -2px 2px 4px 0px #0000001f;
+}
+
+.box-is-streaming__button-view-streaming {
+    background: #ffffff14;
+    padding: 10px 14px;
+    border-radius: 5px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: max-content;
+    text-transform: uppercase;
+    font-size: var(--font-size-small);
+    border: solid 1px #ffffff0f;
+    cursor: pointer;
+}
+
+.box-is-streaming__button-view-streaming>span {
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    background: greenyellow;
+    border-radius: 50%;
+}
+
+/* Fin Box is streaming */
+
+
+/* Box users connected */
+.box-users-connected {
+    display: flex;
+    /* grid-template-columns: repeat(auto-fit, minmax(auto, 100px)); */
+    width: 100%;
+    gap: 5px;
+    /* height: 125px; */
+    overflow: auto;
+    /* padding: 0 10px; */
+    transition: 1s;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.box-users-connected__user {
+    width: 90px;
+    height: 80px;
+    border-radius: 8px;
+    border: solid #ffffff17 1px;
+    /* border: dashed #ffffff6e 2px; */
+    /* display: flex; */
+    /* margin-right: -8px; */
+    background: #ffffff14;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.box-users-connected__user img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: dashed #ffffff6e 2px;
+}
+
+.box-users-connected::-webkit-scrollbar {
+    width: 5px;
+}
+
+.box-users-connected::-webkit-scrollbar-track {
+    background: #242424;
+    border-radius: 10px;
+}
+
+.box-users-connected::-webkit-scrollbar-thumb {
+    background: #838383;
+    border-radius: 10px;
+}
+
+/* Fin Box users connected */

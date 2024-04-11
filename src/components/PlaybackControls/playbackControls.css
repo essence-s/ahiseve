@@ -1,0 +1,22 @@
+.playback-controls {
+    display: flex;
+    background: #ffffff27;
+    width: min-content;
+    border-radius: 5px;
+    padding: 5px 15px;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    /* right: 50%; */
+    transform: translate(-50%, 0);
+    box-shadow: 2px 2px 3px 0px #0000002b;
+}
+
+.playback-controls button {
+    background: transparent;
+    border: 0;
+    display: flex;
+    color: white;
+    width: 30px;
+    cursor: pointer;
+}

@@ -1,3 +1,13 @@
 {
+  "compilerOptions": {
+    "baseUrl": "D:/AstroProyects/salaV",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
+    "jsx": "react-jsx",
+    "jsxImportSource": "react"
+  },
   "extends": "astro/tsconfigs/base"
 }

@@ -1,0 +1,145 @@
+/* Box peer */
+.box-peer {
+    top: 10px;
+    left: 10px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    position: fixed;
+    background: #ffffff30;
+    opacity: 0.8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 6px;
+    border: solid 1px #ffffff0a;
+}
+
+.box-peer:hover {
+    opacity: 1;
+}
+
+/*Fin Box peer */
+
+
+/* Box peer modal */
+.box-peer-modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 5;
+    width: 100%;
+    height: 100dvh;
+    top: 0;
+    /* font-size: 14px; */
+    /* padding: 5px; */
+    background: #ffffff09;
+}
+
+.box-peer-modal__background {
+    position: absolute;
+    width: 100%;
+    height: 100dvh;
+    backdrop-filter: blur(2px);
+}
+
+.box-peer-modal__container {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    max-width: 400px;
+    width: 100%;
+    height: 80dvh;
+    background: #1b1e23;
+    /* background: linear-gradient(233deg, #0d1414, #100c12); */
+    border-radius: 15px;
+    padding: 40px 35px 75px 35px;
+    align-items: center;
+    /* transition: 0.3s ease; */
+    gap: 20px;
+    border: solid 1px #ffffff0f;
+    position: relative;
+}
+
+
+.box-peer-modal__icon-back {
+    position: absolute;
+    top: 10px;
+    left: 12px;
+    cursor: pointer;
+}
+
+.box-peer-modal__icon-back svg {
+    width: 100%;
+}
+
+.box-peer-modal__connect-server,
+.box-peer-modal__create-server {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: relative;
+}
+
+.box-peer-modal__connect-server p {
+    text-align: center;
+}
+
+.box-peer-modal__connect-server button,
+.box-peer-modal__create-server button {
+    border: 0;
+    border-radius: 50%;
+    height: 38px;
+    width: 38px;
+    background: #00000070;
+    color: white;
+    position: absolute;
+    bottom: 5px;
+    right: 4px;
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: solid 1px #ffffff38;
+}
+
+.box-peer-modal textarea {
+    border-radius: 22px;
+    border: none;
+    padding: 18px;
+    /* width: 100px; */
+    background: #eef5ff21;
+    color: white;
+    /* field-sizing: content; */
+}
+
+.box-peer-modal__options {
+    position: absolute;
+    bottom: 15px;
+    background: #eef5ff21;
+    padding: 8px 15px;
+    border-radius: 25px;
+    display: flex;
+    gap: 10px;
+}
+
+.box-peer-modal__options span {
+    display: flex;
+}
+
+/* Fin Box peer modal */
+
+@media (max-width:900px) {
+
+    .box-peer {
+        width: 34px;
+        height: 34px;
+    }
+
+    .box-peer-modal__container {
+        height: 100dvh;
+        border-radius: 0;
+    }
+}
