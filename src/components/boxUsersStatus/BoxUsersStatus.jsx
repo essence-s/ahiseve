@@ -4,36 +4,43 @@ import OptionsStream from "@/components/OptionStream/OptionStream";
 import { useStreamStore } from '@/store/streamStore';
 
 export default function BoxUsersStatus() {
-    let { viewStream } = usePeer()
+    let { viewStream, connections } = usePeer()
 
-    let { infoStream } = useStreamStore(state => ({
+    let { streamingUsers, infoStream } = useStreamStore(state => ({
+        streamingUsers: state.streamingUsers,
         infoStream: state.infoStream
     }))
 
-    const handleViewStream = () => {
-        viewStream()
+    const handleViewStream = (idPeer) => {
+        viewStream(idPeer)
     }
 
     return (
         <div className="box-main">
-            {infoStream.isStream ?
-                <div className="box-is-streaming">
-                    {infoStream.userStreaming} is transmitting
-                    <div className="box-is-streaming__button-view-streaming" onClick={handleViewStream}>
-                        watch stream <span></span>
-                    </div>
-                </div> : ''
-            }
+
+            <div className="box-users-transmitting">
+                {
+                    Object.entries(streamingUsers).map(([key, value]) => {
+
+                        return value.isStream && <div className="box-is-streaming" key={key}>
+                            {value.userStreaming} is transmitting
+                            <div className="box-is-streaming__button-view-streaming" onClick={() => handleViewStream(key)}>
+                                watch stream <span></span>
+                            </div>
+                        </div>
+                    })
+                }
+            </div>
 
             <div className="box-users-connected">
                 {
-                    infoStream.onlineStreamUsers.map((conn, i) => <div key={i + '77'} style={{ background: conn.background }} className="box-users-connected__user">
+                    connections.map((conn, i) => <div key={i + '77'} style={{ background: conn.background }} className="box-users-connected__user">
                         <img src={`https://picsum.photos/200/300?random=${i + 1}`} alt="" />
                     </div>)
                 }
             </div>
 
-            <OptionsStream client:load infoStream={infoStream} />
+            <OptionsStream infoStream={infoStream} />
         </div>
     )
 }

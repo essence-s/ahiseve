@@ -17,12 +17,59 @@ export const useStreamStore = create((set, get) => ({
         isStream: false,
         userStreaming: '',
         masterId: '',
-        onlineStreamUsers: []
     },
     setInfoStream: (valueOrFunction) => {
         set((state) => ({
             infoStream: typeof valueOrFunction === 'function' ? valueOrFunction(state.infoStream) : valueOrFunction
         }));
     },
+
     getInfoStream: () => get().infoStream,
+
+    streamingUsers: {},
+    addStreamingUsers: (id, data) => {
+        set(state => ({
+            streamingUsers: {
+                ...state.streamingUsers,
+                [id]: data
+            }
+        }))
+
+        // console.log(get().streamingUsers)
+    },
+    deleteStreamingUser: (id) => {
+
+        set(state => {
+            let sstu = { ...state.streamingUsers }
+            delete sstu[id]
+            return {
+                streamingUsers: sstu
+            }
+        })
+    },
+
+    activeStreaming: {
+        captScreen: null
+    },
+    getActiveStreamig: () => get().activeStreaming,
+    addActiveStreamingUserCaptScreen: (stream, idPeer, idCall) => {
+        set(state => ({
+            activeStreaming: {
+                ...state.activeStreaming,
+                captScreen: {
+                    idPeer,
+                    idCall,
+                    stream
+                }
+            }
+        }))
+    },
+    setNullActiveStreamingUserCaptScreen: () => set(state => ({
+        activeStreaming: {
+            ...state.activeStreaming,
+            captScreen: null
+        }
+    }))
+
+
 }))

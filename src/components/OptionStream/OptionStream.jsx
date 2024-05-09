@@ -3,14 +3,18 @@ import './optionStream.css'
 
 export default function OptionStream({ infoStream }) {
 
-    let { callAll, stopStreaming } = usePeer()
+    let { startStream, stopStreaming, exitPeerNetwork } = usePeer()
 
     const handleSharedScreen = () => {
-        callAll()
+        startStream()
     }
 
     const handleCloseStream = () => {
         stopStreaming()
+    }
+
+    const handleCloseConnections = () => {
+        exitPeerNetwork()
     }
 
     return (
@@ -53,8 +57,7 @@ export default function OptionStream({ infoStream }) {
             }
 
 
-
-            <button className="call-close">
+            <button className="call-close" onClick={handleCloseConnections}>
                 <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-plug-connected-x">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                     <path d="M20 16l-4 4" />

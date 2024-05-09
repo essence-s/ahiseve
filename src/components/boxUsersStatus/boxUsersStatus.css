@@ -9,32 +9,38 @@
     padding: 25px;
 }
 
+.box-users-transmitting {
+    display: flex;
+    gap: 10px;
+}
+
 /* Box is streaming */
 .box-is-streaming {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;
+    gap: 12px;
     background: #ffffff0a;
-    padding: 30px 33px;
-    border-radius: 15px;
+    padding: 22px 22px;
+    border-radius: 10px;
     border: solid 1px #ffffff0d;
     box-shadow: -2px 2px 4px 0px #0000001f;
+    font-size: var(--font-size-small);
 }
 
 .box-is-streaming__button-view-streaming {
-    background: #ffffff14;
-    padding: 10px 14px;
+    background: #00000014;
+    padding: 10px 12px;
     border-radius: 5px;
     text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     width: max-content;
     text-transform: uppercase;
-    font-size: var(--font-size-small);
-    border: solid 1px #ffffff0f;
+    font-size: val(var(--font-size-small)-13px);
+    border: solid 1px #ffffff0a;
     cursor: pointer;
 }
 

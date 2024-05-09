@@ -7,7 +7,9 @@ import { useRef } from 'react'
 
 export default function VideoPlayer() {
 
-    let { setRefVideoStream } = useStreamStore(state => ({ setRefVideoStream: state.setRefVideoStream }))
+    let { activeStreaming } = useStreamStore(state => ({
+        activeStreaming: state.activeStreaming
+    }))
     let videoContainer = useRef()
     let refVideoStreamu = useRef()
 
@@ -22,12 +24,17 @@ export default function VideoPlayer() {
     }
 
     useEffect(() => {
-        setRefVideoStream(refVideoStreamu.current)
-    }, [])
+        refVideoStreamu.current.srcObject = activeStreaming.captScreen?.stream
+        let playPromise = refVideoStreamu.current.play();
+        if (playPromise !== undefined) {
+            playPromise.then(_ => {
+            }).catch(error => { });
+        }
+    }, [activeStreaming])
 
     return (
         <div className="video-player" ref={videoContainer}>
-            <video ref={refVideoStreamu}></video>
+            <video ref={refVideoStreamu} ></video>
             <PlaybackControls fullScreen={fullScreen}></PlaybackControls>
         </div>
     )

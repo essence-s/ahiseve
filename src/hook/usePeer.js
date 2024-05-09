@@ -6,14 +6,18 @@ import { modalStore } from "../store/modalStore"
 
 export function usePeer() {
     let { idPeer, setIdPeer, connections, pushConnections,
-        peer, setPeer, getPeer, getConnections,
-        setCalls, getCalls, setArrayCallsServer, getArrayCallsServer
+        peer, setPeer, getPeer, getConnections, deleteConnection,
+        addCall, closeAndDeleteCall, closeCallsOutput,
+        getTasks, addTask, updateTask, verifyTask, deleteTask
     } = usePeerStore(state => state)
 
-    let { setStreamL, getStreamL, getRefVideoStream, infoStream, setInfoStream, getInfoStream } = useStreamStore(state => ({
-        setStreamL: state.setStreamL, getStreamL: state.getStreamL, getRefVideoStream: state.getRefVideoStream,
-        infoStream: state.infoStream, setInfoStream: state.setInfoStream, getInfoStream: state.getInfoStream
-    }))
+    let { setStreamL, getStreamL, infoStream, setInfoStream, getInfoStream,
+        addStreamingUsers, deleteStreamingUser, addActiveStreamingUserCaptScreen, getActiveStreamig, setNullActiveStreamingUserCaptScreen } = useStreamStore(state => ({
+            setStreamL: state.setStreamL, getStreamL: state.getStreamL,
+            infoStream: state.infoStream, setInfoStream: state.setInfoStream, getInfoStream: state.getInfoStream,
+            addStreamingUsers: state.addStreamingUsers, deleteStreamingUser: state.deleteStreamingUser, addActiveStreamingUserCaptScreen: state.addActiveStreamingUserCaptScreen,
+            getActiveStreamig: state.getActiveStreamig, setNullActiveStreamingUserCaptScreen: state.setNullActiveStreamingUserCaptScreen
+        }))
 
     let { setIsOpenModalVideoPlayer } = modalStore(state => ({
         setIsOpenModalVideoPlayer: state.setIsOpenModalVideoPlayer
@@ -61,73 +65,70 @@ export function usePeer() {
         return name;
     }
 
-    const connectPeer = (idEntered) => {
+    const connectPeer = (idEntered, pendingPeer) => {
 
-        if (getConnections().find(con => con.peer === idEntered)) {
+        if (getConnections().find(con => con.idPeer == idEntered)) {
             window.toast({
                 title: 'Are you connected!',
                 message: '',
                 location: 'top-right',
                 dismissable: false,
+                theme: 'butterupcustom'
             })
             return
         }
 
-        let conn = peer.connect(idEntered);
-
+        let conn = peer.connect(idEntered, { metadata: { eventNetwork: pendingPeer ? false : true } });
+        // console.log(pendingPeer ? false : true)
         conn.on("data", function ({ cmd, data }) {
-            // console.log("Received", data);
-            if (cmd == "infoStream") {
-                console.log('info de server obtenida')
-                setInfoStream({ ...data })
-            } else if (cmd == "infoStream:info") {
-                setInfoStream({
-                    ...getInfoStream(),
-                    ...data,
-                    ...getInfoStream().onlineStreamUsers
-                })
-            } else if (cmd == "infoStream:onlineStreamUsers") {
-                setInfoStream({
-                    ...getInfoStream(),
-                    onlineStreamUsers: data
-                })
-            }
+            processIncomingData(cmd, data, conn)
         });
 
         conn.on("open", function () {
             console.log('se conecto a ' + idEntered)
+            updateTask('peerListToConnect', pendingPeer, conn.peer)
+            let dataVerifyTask = verifyTask('peerListToConnect', pendingPeer)
+            // console.log(dataVerifyTask)
+            if (dataVerifyTask) {
+                deleteTask('peerListToConnect', pendingPeer)
+                sendMessague(
+                    [getConnections().find(connection => connection.idPeer == dataVerifyTask.sender)],
+                    'confirmPeerListToConnect',
+                    { pendingPeer }
+                )
+                console.log('se conecto ala network')
+                window.toast({
+                    title: 'Connected Susscesfully!',
+                    message: '',
+                    location: 'top-right',
+                    dismissable: false,
+                    theme: 'butterupcustom'
+                })
+            }
+
             pushConnections(conn);
-            window.toast({
-                title: 'Connected Susscesfully!',
-                message: '',
-                location: 'top-right',
-                dismissable: false,
-            })
-            conn.send("hi!");
+
         });
 
         conn.on("close", function () {
             console.log('se cerro la conexion completa')
+            deleteConnection(conn.peer)
+            deleteStreamingUser(conn.peer)
         })
     }
 
     const createServer = async () => {
-        // try {
-        // console.log('revisando')
+
         if (getPeer()) return
 
         let Peer = (await import('peerjs')).default
-        let npeer = new Peer({
-            // host: "localhost",
-            // port: 443,
-            // path: "/",
-        })
-        // console.log(npeer)
+        // let npeer = new Peer({
+        //     host: "localhost",
+        //     port: 8080,
+        // })
+        let npeer = new Peer({})
+
         setPeer(npeer)
-        // console.log('Creando Peer')
-        // } catch (e) {
-        //     console.log('aqui' + e)
-        // }
 
         npeer.on("open", function (id) {
             console.log("Peer creado: " + id);
@@ -136,69 +137,44 @@ export function usePeer() {
 
         npeer.on("connection", function (conn) {
             conn.on("data", function ({ cmd, data }) {
-                if (cmd == "playvideo") {
-                    window.postMessage(
-                        {
-                            type: "playvideo",
-                            text: "Hello from the webpage!",
-                        },
-                        "*",
-                    );
-                } else if (cmd == "pausevideo") {
-                    window.postMessage(
-                        {
-                            type: "pausevideo",
-                            text: "Hello from the webpage!",
-                        },
-                        "*",
-                    );
-                } else if (cmd == "seekvideo") {
-                    window.postMessage(
-                        {
-                            type: "seekvideo",
-                            data: { numberSeek: data.dataSeek },
-                        },
-                        "*",
-                    );
-
-                } else if (cmd == 'viewStream') {
-                    console.log('el  id ' + conn.peer + ' pidio el stream')
-                    const call = getPeer().call(conn.peer, getStreamL());
-                    console.log('se le envia el stream a ' + conn.peer)
-                    setArrayCallsServer(call)
-
-                    call.on("stream", (stream) => {
-                        console.log('se establecio en stream')
-                    });
-
-                    call.on("close", () => {
-                        // console.log(call)
-                        console.log('se cerro la llamada , server , llamada posterior')
-                    });
-
-                }
+                processIncomingData(cmd, data, conn)
             });
+
             conn.on("open", function () {
-                conn.send("hello!");
-                pushConnections(conn);
-                let backgroundUser = availableBackground(getInfoStream().onlineStreamUsers)
 
-                // console.log(getInfoStream());
-                let dataInfoStream = {
-                    ...getInfoStream(),
-                    masterId: npeer.id,
-                    onlineStreamUsers: [
-                        ...getInfoStream().onlineStreamUsers,
+                // console.log(conn.metadata.eventNetwork)
+                if (conn.metadata.eventNetwork) {
+
+                    addTask({
+
+                        sender: npeer.id,
+                        name: 'confirmPeerListToConnect',
+                        pendingPeer: conn.peer
+                    })
+                    sendMessague(
+                        [{ conn: conn }],
+                        'addTask:peerListToConnect',
                         {
-                            background: backgroundUser
+                            name: 'peerListToConnect',
+                            peerListToConnect: getConnections().map(connection => connection.idPeer),
+                            pendingPeer: conn.peer
                         }
-                    ]
+                    )
                 }
-                setInfoStream(dataInfoStream)
+
+                pushConnections(conn);
+                // let backgroundUser = availableBackground(getInfoStream().onlineStreamUsers)
+
                 // sendMessague([conn], 'infoStream', dataInfoStream)
-                sendMessague(getConnections(), 'infoStream:onlineStreamUsers', dataInfoStream.onlineStreamUsers)
-                sendMessague([conn], 'infoStream', dataInfoStream)
+                sendMessague([{ conn: conn }], 'addStreamingUsers', getInfoStream())
+
             });
+
+            conn.on("close", function () {
+                console.log('se cerro la conexion completa cs')
+                deleteConnection(conn.peer)
+                deleteStreamingUser(conn.peer)
+            })
 
         });
 
@@ -206,25 +182,19 @@ export function usePeer() {
         npeer.on("call", (call) => {
 
             call.answer();
-
+            addCall(call, true, 'in')
+            // console.log(call)
             call.on("stream", async (stream) => {
                 // console.log(getPeer)
                 console.log('recibiendo el stream')
-                setCalls(call)
-                let refVideoStreamCurrent = getRefVideoStream()
-                refVideoStreamCurrent.srcObject = stream
-                let playPromise = refVideoStreamCurrent.play();
-
-                if (playPromise !== undefined) {
-                    playPromise.then(_ => {
-                    }).catch(error => { });
-                }
-
+                // call.connectionId
+                addActiveStreamingUserCaptScreen(stream, call.peer, call.connectionId)
                 setIsOpenModalVideoPlayer(true)
             });
 
             call.on("close", () => {
                 console.log('se cerro la conexion de la llamada , user')
+                closeAndDeleteCall(call.peer, call.connectionId)
                 setIsOpenModalVideoPlayer(false)
                 // console.log(call)
             });
@@ -234,7 +204,7 @@ export function usePeer() {
 
 
     //to improve
-    const callAll = async () => {
+    const startStream = async () => {
 
         try {
             const stream = await navigator.mediaDevices.getDisplayMedia({
@@ -260,7 +230,7 @@ export function usePeer() {
                         userStreaming: nameUser
                     }
 
-                    sendMessague(getConnections(), 'infoStream:info', dataInfoStream)
+                    sendMessague(getConnections(), 'addStreamingUsers', dataInfoStream)
 
                     return {
                         ...state,
@@ -273,23 +243,9 @@ export function usePeer() {
 
             stream.getTracks().forEach(track => {
                 track.onended = () => {
-                    closeAllCallConnections()
+                    closeAllCallConnectionsOutput()
                     console.log('La pista ha terminado (el usuario dejó de transmitir)');
                 };
-            });
-            let refVideoStreamCurrent = getRefVideoStream()
-            refVideoStreamCurrent.srcObject = stream
-            refVideoStreamCurrent.play();
-            refVideoStreamCurrent.muted = true;
-
-            connections.forEach((conn) => {
-                const call = peer.call(conn.peer, stream);
-                setArrayCallsServer(call)
-                call.on("stream", (stream) => { });
-
-                call.on("close", () => {
-                    console.log('se cerro la conexion de la llamada , server')
-                });
             });
 
         } catch (error) {
@@ -298,15 +254,10 @@ export function usePeer() {
     }
 
     const sendMessagueAll = (cmd, messague, option) => {
-        let conectionsG;
-        if (option == 'outgoing') {
-            conectionsG = getOutgoingConnections()
-        } else {
-            conectionsG = getConnections()
-        }
+        let conectionsG = getConnections()
 
-        conectionsG.forEach((conn) => {
-            conn.send({
+        conectionsG.forEach((connection) => {
+            connection.conn.send({
                 cmd: cmd,
                 data: { ...getInfoStream(), ...messague }
             })
@@ -314,25 +265,24 @@ export function usePeer() {
     }
 
     const sendMessague = (arrayConnections, cmd, messague) => {
-        arrayConnections.forEach((conn) => {
-            conn.send({
+        // console.log(arrayConnections)
+        arrayConnections.forEach((connection) => {
+            connection.conn.send({
                 cmd: cmd,
                 data: messague
             });
         });
     }
 
-    // const findConnection = () => {
-    //     return getConnections().find(con => con.peer == getInfoStream().masterId)
-    // }
-
-    const viewStream = () => {
+    const viewStream = (idPeer) => {
         // let peerUserMaster = findConnection()
         // console.log(idPeer)
-        getConnections()[0].send({ cmd: 'viewStream', data: { peer: idPeer } })
+        let dataFind = getConnections().find(connection => connection.idPeer == idPeer)
+        dataFind && dataFind.conn.send({ cmd: 'viewStream', data: { peer: idPeer } })
+
     }
 
-    const closeAllCallConnections = () => {
+    const closeAllCallConnectionsOutput = () => {
 
         setInfoStream((state) => {
             let dataInfoStream = {
@@ -340,7 +290,7 @@ export function usePeer() {
                 userStreaming: nameUser
             }
 
-            sendMessague(getConnections(), 'infoStream:info', dataInfoStream)
+            sendMessague(getConnections(), 'addStreamingUsers', dataInfoStream)
 
             return {
                 ...state,
@@ -348,15 +298,104 @@ export function usePeer() {
             }
         })
 
-        getArrayCallsServer().forEach((acs) => {
-            acs.close()
-        })
+        closeCallsOutput()
     }
 
     const stopStreaming = () => {
         getStreamL().getTracks().forEach(track => {
             track.stop()
-            closeAllCallConnections()
+            closeAllCallConnectionsOutput()
+        })
+    }
+
+    const processIncomingData = (cmd, data, conn) => {
+        if (cmd == "playvideo") {
+            window.postMessage(
+                {
+                    type: "playvideo",
+                    text: "Hello from the webpage!",
+                },
+                "*",
+            );
+        } else if (cmd == "pausevideo") {
+            window.postMessage(
+                {
+                    type: "pausevideo",
+                    text: "Hello from the webpage!",
+                },
+                "*",
+            );
+        } else if (cmd == "seekvideo") {
+            window.postMessage(
+                {
+                    type: "seekvideo",
+                    data: { numberSeek: data.dataSeek },
+                },
+                "*",
+            );
+
+        } else if (cmd == 'viewStream') {
+            console.log('el  id ' + conn.peer + ' pidio el stream')
+            callF(conn)
+        }
+
+        else if (cmd == "addStreamingUsers") {
+            console.log('info de user Obtenida')
+            addStreamingUsers(conn.peer, { ...data })
+        }
+
+
+        else if (cmd == "addTask:peerListToConnect") {
+            addTask({
+                sender: conn.peer,
+                ...data
+            })
+
+            data.peerListToConnect.forEach(peerId => {
+                connectPeer(peerId, data.pendingPeer)
+            })
+
+        } else if (cmd == "confirmPeerListToConnect") {
+            deleteTask('confirmPeerListToConnect', data.pendingPeer)
+        }
+    }
+
+    const callF = (conn) => {
+        const call = getPeer().call(conn.peer, getStreamL());
+        console.log('se le envia el stream a ' + conn.peer)
+        addCall(call, false, 'out')
+
+        call.on("stream", (stream) => {
+            console.log('se establecio en stream')
+        });
+
+        call.on("close", () => {
+            closeAndDeleteCall(conn.peer, call.connectionId)
+            // console.log(getConnections())
+            console.log('se cerro la llamada , server , llamada posterior')
+        });
+    }
+
+    const closeActiveStreamig = () => {
+        // console.log(getActiveStreamig())
+        let dataCaptScreen = getActiveStreamig().captScreen
+        if (dataCaptScreen) {
+            let { idPeer, idCall } = dataCaptScreen
+            closeAndDeleteCall(idPeer, idCall)
+            setNullActiveStreamingUserCaptScreen()
+        }
+
+    }
+
+    const exitPeerNetwork = () => {
+        console.log('cerrando toda la network')
+        getConnections().forEach(connection => {
+            connection.conn.close()
+            if (connection.calls) {
+                connection.calls.forEach(callObject => {
+                    callObject.call.close()
+                });
+            }
         })
     }
 
@@ -365,13 +404,15 @@ export function usePeer() {
         connectPeer,
         createServer,
         connections,
-        callAll,
+        startStream,
         infoStream,
         peer,
         getPeer,
         getConnections,
         viewStream,
-        getCalls, stopStreaming,
-        sendMessagueAll
+        stopStreaming,
+        sendMessagueAll,
+        closeActiveStreamig,
+        exitPeerNetwork
     }
 }

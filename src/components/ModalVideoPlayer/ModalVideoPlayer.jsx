@@ -6,12 +6,12 @@ import { usePeer } from '@/hook/usePeer';
 export default function ModalVideoPlayer() {
 
     let { isOpenModalVideoPlayer, setIsOpenModalVideoPlayer } = modalStore(state => state)
-    let { getCalls } = usePeer()
+    let { closeActiveStreamig } = usePeer()
     const handleModalVP = () => {
         setIsOpenModalVideoPlayer(state => {
             if (state) {
                 //to improve
-                getCalls() && getCalls().close()
+                closeActiveStreamig()
             }
             // console.log(state)
             return !state
