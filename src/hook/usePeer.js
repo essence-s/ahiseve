@@ -346,14 +346,25 @@ export function usePeer() {
 
 
         else if (cmd == "addTask:peerListToConnect") {
-            addTask({
-                sender: conn.peer,
-                ...data
-            })
+            if (data.peerListToConnect.length == 0) {
+                window.toast({
+                    title: 'Connected Susscesfully!',
+                    message: '',
+                    location: 'top-right',
+                    dismissable: false,
+                    theme: 'butterupcustom'
+                })
+            } else {
+                addTask({
+                    sender: conn.peer,
+                    ...data
+                })
 
-            data.peerListToConnect.forEach(peerId => {
-                connectPeer(peerId, data.pendingPeer)
-            })
+                data.peerListToConnect.forEach(peerId => {
+                    connectPeer(peerId, data.pendingPeer)
+                })
+            }
+
 
         } else if (cmd == "confirmPeerListToConnect") {
             deleteTask('confirmPeerListToConnect', data.pendingPeer)
