@@ -2,9 +2,10 @@ import { usePeer } from '@/hook/usePeer'
 import './boxUsersStatus.css'
 import OptionsStream from "@/components/OptionStream/OptionStream";
 import { useStreamStore } from '@/store/streamStore';
+import IDCopyBox from '../IDCopyBox/IDCopyBox';
 
 export default function BoxUsersStatus() {
-    let { viewStream, connections } = usePeer()
+    let { idPeer, viewStream, connections } = usePeer()
 
     let { streamingUsers, infoStream } = useStreamStore(state => ({
         streamingUsers: state.streamingUsers,
@@ -17,6 +18,7 @@ export default function BoxUsersStatus() {
 
     return (
         <div className="box-main">
+            <IDCopyBox idPeer={idPeer} className='fixedIDCopyBox'></IDCopyBox>
 
             <div className="box-users-transmitting">
                 {

@@ -9,6 +9,18 @@
     padding: 25px;
 }
 
+.fixedIDCopyBox {
+    position: fixed;
+    top: 10px;
+    opacity: 0.5;
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+.fixedIDCopyBox:hover {
+    opacity: 1;
+}
+
 .box-users-transmitting {
     display: flex;
     gap: 10px;
