@@ -6,7 +6,7 @@ interface Props {
 const { title } = Astro.props;
 import "@fontsource/poppins";
 import Toast from "@/components/Toast.astro";
-import { ViewTransitions } from "astro:transitions";
+// import { ViewTransitions } from "astro:transitions";
 ---
 
 <html lang="en">
@@ -17,7 +17,7 @@ import { ViewTransitions } from "astro:transitions";
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
-		<ViewTransitions />
+		<!-- <ViewTransitions /> -->
 	</head>
 	<body>
 		<slot />
