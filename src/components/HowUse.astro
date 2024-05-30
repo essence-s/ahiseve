@@ -1,0 +1,146 @@
+<style>
+    .how-use {
+        position: fixed;
+        right: 10px;
+        top: 100px;
+        background: #ffffff13;
+        border-radius: 10px;
+        border: 1px solid #ffffff05;
+        /* padding: 10px; */
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #bac1d3;
+    }
+    .how-use-modal {
+        display: none;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        /* z-index: 5; */
+        width: 100%;
+        height: 100dvh;
+        top: 0;
+        transition: 1s;
+        z-index: 1;
+    }
+    .how-use-modal.open {
+        display: flex;
+    }
+    .how-use-modal__background {
+        position: absolute;
+        width: 100%;
+        height: 100dvh;
+        backdrop-filter: blur(2px);
+    }
+    .how-use-modal__container {
+        display: flex;
+        position: relative;
+        flex-direction: column;
+        max-width: 800px;
+        width: 100%;
+        height: 80dvh;
+        background: #1b1e23;
+        /* background: linear-gradient(233deg, #0d1414, #100c12); */
+        border-radius: 15px;
+        padding: 40px 35px 75px 35px;
+        /* align-items: center; */
+        /* transition: 0.3s ease; */
+        gap: 20px;
+        border: solid 1px #ffffff0f;
+    }
+    .how-use-modal__title {
+        font-size: var(--font-size-large);
+        text-align: center;
+    }
+    .how-use-modal__cards {
+        display: flex;
+    }
+    .how-use-modal__card-option {
+        flex: 1;
+    }
+    @media (max-width: 750px) {
+        .how-use-modal__cards {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+</style>
+
+<div class="how-use">
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        ><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path
+            d="M15 21H6C5.46957 21 4.96086 20.7893 4.58579 20.4142C4.21071 20.0391 4 19.5304 4 19V5C4 4.46957 4.21071 3.96086 4.58579 3.58579C4.96086 3.21071 5.46957 3 6 3H18C18.5304 3 19.5 3 20 3C20 3.58579 20 4.46957 20 5V11"
+        ></path><path
+            d="M14 17C14 17 6.5 17 6 17C5.5 17 5 17.18 4.59 17.59C4.18 18 4 18.5 4 19"
+        ></path><path d="M19 22v.01"></path><path
+            d="M19 19a2.003 2.003 0 0 0 .914 -3.782a1.98 1.98 0 0 0 -2.414 .483"
+        ></path></svg
+    >
+</div>
+<div class="how-use-modal">
+    <div class="how-use-modal__background"></div>
+    <div class="how-use-modal__container">
+        <div class="how-use-modal__title">HOW TO USE</div>
+        <p>Cree una sala y invite a sus amigos , Hay 3 formas de uso :</p>
+        <div class="how-use-modal__cards">
+            <div class="how-use-modal__card-option">
+                <p>
+                    Solo uno debe tener la extension y seleccionar el
+                    VideoElement
+                </p>
+                <p>
+                    Tienes la opcion de transmitir pantalla , los demas podran
+                    ver tu transmicion y controlar el video
+                </p>
+
+                <picture></picture>
+            </div>
+            <div class="how-use-modal__card-option">
+                <p>
+                    Cada uno debe tener la extension y seleccionar el
+                    videoElement a sincronizar y controlar
+                </p>
+                <picture></picture>
+            </div>
+            <div class="how-use-modal__card-option">
+                <p>
+                    No es nesesario la extension pero nesesita el url de un
+                    recurso de video con extension .mp4
+                </p>
+                <picture></picture>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        console.log("ryyyy");
+        let btnHowUse = window.document.querySelector(".how-use");
+        let modal = window.document.querySelector(".how-use-modal");
+        let backgroundModal = window.document.querySelector(
+            ".how-use-modal__background",
+        );
+
+        btnHowUse.addEventListener("click", () => {
+            modal.classList.toggle("open");
+        });
+
+        backgroundModal.addEventListener("click", () => {
+            modal.classList.toggle("open");
+        });
+    });
+</script>
