@@ -8,7 +8,7 @@ export function usePeer() {
     let { idPeer, setIdPeer, connections, pushConnections,
         peer, setPeer, getPeer, getConnections, deleteConnection,
         addCall, closeAndDeleteCall, closeCallsOutput,
-        getTasks, addTask, updateTask, verifyTask, deleteTask
+        addTask, updateTask, verifyTask, deleteTask
     } = usePeerStore(state => state)
 
     let { setStreamL, getStreamL, infoStream, setInfoStream, getInfoStream,
@@ -200,6 +200,18 @@ export function usePeer() {
             });
         });
 
+
+        window.addEventListener("message", function (event) {
+            // console.log('datarenida de evento', event)
+            let { cmd, data } = event.data
+            if (cmd == "element-action") {
+                if (data.status == 'sending') {
+                    console.log('emviando', event)
+                    sendMessagueAll(cmd, data)
+                }
+            }
+        }, false);
+
     }
 
 
@@ -253,13 +265,16 @@ export function usePeer() {
         }
     }
 
-    const sendMessagueAll = (cmd, messague, option) => {
+    const sendMessagueAll = (cmd, messague) => {
         let conectionsG = getConnections()
 
         conectionsG.forEach((connection) => {
             connection.conn.send({
                 cmd: cmd,
-                data: { ...getInfoStream(), ...messague }
+                data: {
+                    // ...getInfoStream(),
+                    ...messague
+                }
             })
         })
     }
@@ -309,30 +324,16 @@ export function usePeer() {
     }
 
     const processIncomingData = (cmd, data, conn) => {
-        if (cmd == "playvideo") {
-            window.postMessage(
-                {
-                    type: "playvideo",
-                    text: "Hello from the webpage!",
+        if (cmd == 'element-action') {
+            window.postMessage({
+                cmd: cmd,
+                data: {
+                    ...data,
+                    status: 'received'
                 },
-                "*",
-            );
-        } else if (cmd == "pausevideo") {
-            window.postMessage(
-                {
-                    type: "pausevideo",
-                    text: "Hello from the webpage!",
-                },
-                "*",
-            );
-        } else if (cmd == "seekvideo") {
-            window.postMessage(
-                {
-                    type: "seekvideo",
-                    data: { numberSeek: data.dataSeek },
-                },
-                "*",
-            );
+            }, "*",);
+
+            console.log(data)
 
         } else if (cmd == 'viewStream') {
             console.log('el  id ' + conn.peer + ' pidio el stream')
