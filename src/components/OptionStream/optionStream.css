@@ -25,7 +25,6 @@
 .shared-screen {
     width: 45px;
     height: 45px;
-    padding: 11px;
     /* border-radius: 15px; */
     /* box-shadow: 2px 3px 0 #eb5858; */
     background: #d7333000;
@@ -36,8 +35,16 @@
     width: 40px;
     height: 40px;
     padding: 8px;
-    border-radius: 15px;
-    box-shadow: 2px 3px 3px 0px #00000017;
-    background: #d73230;
+    border: 1px solid #ff6049f7 !important;
+    box-shadow: 2px 2px 0px 0px #00000017;
+    background: #ff3e3eeb;
     color: #f0f2ff;
+}
+
+.options-stream__connect {
+    width: 45px;
+    height: 45px;
+    border: 1px #00ff550f solid !important;
+    background: #0000000f;
+    color: #90ffa4;
 }
