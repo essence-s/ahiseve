@@ -1,0 +1,116 @@
+<style is:global>
+    .info-video-element-extension {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        border-radius: 10px;
+        border: 1px solid #ffffff07;
+        /* padding: 15px 15px; */
+        background: #ffffff1a;
+        display: flex;
+        width: 40px;
+        height: 40px;
+        transition: 0.3s ease-in-out;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .info-video-element-extension:hover {
+        width: 190px;
+        height: 70px;
+        /* height: 85px; */
+        /* height: 100%; */
+        /* margin-top: 10px; */
+    }
+
+    .info-video-element-extension__text {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .info-video-element-extension__text span:nth-child(1) {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #00d574;
+    }
+
+    .info-video-element-extension__text span:nth-child(2) {
+        display: block;
+        width: 148px;
+        padding-right: 5px;
+    }
+</style>
+
+<div class="info-video-element-extension">
+    <div class="info-video-element-extension__text">
+        <span>❌</span>
+        <span>La extension no tiene un video seleccionado</span>
+    </div>
+</div>
+
+<script>
+    let isVideoElementSelected = false;
+    let elementRe = document.querySelector(
+        ".info-video-element-extension .info-video-element-extension__text",
+    );
+
+    function setIsVideoElementSelected(datar) {
+        isVideoElementSelected = datar;
+
+        let rend = isVideoElementSelected
+            ? `
+                <span>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        view-box="0 0 24 24"
+                        fill="none"
+                        stroke="currentcolor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="icon icon-tabler icons-tabler-outline icon-tabler-check"
+                    >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M5 12l5 5l10 -10"></path>
+                    </svg>
+                </span>
+                <span>La extension tiene un video seleccionado</span>
+            `
+            : `
+                <span>❌</span>
+                <span>La extension no tiene un video seleccionado</span> 
+            `;
+
+        elementRe.innerHTML = rend;
+    }
+
+    window.onload = () => {
+        window.addEventListener(
+            "message",
+            function (event) {
+                // console.log(event)
+                let { cmd, data } = event.data;
+                if (cmd == "resultCheckElementVideoSelected") {
+                    setIsVideoElementSelected(data.selected);
+                    // console.log("data result", event);
+                }
+            },
+            false,
+        );
+
+        window.postMessage(
+            {
+                cmd: "checkElementVideoSelected",
+                data: "",
+            },
+            "*",
+        );
+    };
+</script>
