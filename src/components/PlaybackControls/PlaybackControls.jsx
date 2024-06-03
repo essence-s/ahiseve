@@ -13,20 +13,27 @@ export default function PlaybackControls({ fullScreen }) {
 
     const handlePause = () => {
         setIsPlaying(false)
-        sendMessagueAll("pausevideo", {})
+        sendMessagueAll("element-action", {
+            action: 'pause',
+            status: 'sending',
+        })
     }
     const handlePlay = () => {
         setIsPlaying(true)
-        sendMessagueAll("playvideo", {})
+        sendMessagueAll("element-action", {
+            action: 'play',
+            status: 'sending',
+        })
     }
 
     const handleSeek = (modeSeek) => {
         // console.log(modeSeek)
-        sendMessagueAll("seekvideo", {
-            dataSeek:
-                modeSeek == "back"
-                    ? parseInt(seekValue) * -1
-                    : parseInt(seekValue),
+        sendMessagueAll("element-action", {
+            action: 'seeked',
+            status: 'sending',
+            dataSeek: modeSeek == "back"
+                ? parseInt(seekValue) * -1
+                : parseInt(seekValue),
         })
     }
 
