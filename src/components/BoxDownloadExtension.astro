@@ -1,3 +1,7 @@
+---
+import ModalS from "./ModalS.astro";
+---
+
 <style>
     .box-download-extension {
         position: fixed;
@@ -14,12 +18,36 @@
         align-items: center;
         color: #bac1d3;
     }
+    .box-download-extension-modal {
+        display: flex;
+        position: relative;
+        flex-direction: column;
+        max-width: 800px;
+        width: 100%;
+        height: 80dvh;
+        background: #1b1e23;
+        border-radius: 15px;
+        padding: 35px;
+        border: solid 1px #ffffff0f;
+        overflow: auto;
+    }
+    .box-download-extension-modal img {
+        margin: auto;
+        margin-top: 8px;
+        width: 98%;
+        border-radius: 10px;
+        border: 4px #ffffff1c solid;
+    }
+    .box-download-extension-modal p {
+        padding: 0;
+        margin: 11px 0;
+    }
+    .box-download-extension-modal a {
+        color: #4444ff;
+    }
 </style>
 
-<a
-    class="box-download-extension"
-    href="https://github.com/essence-s/media-element-selection-extension/archive/refs/heads/main.zip"
->
+<a class="box-download-extension">
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -38,3 +66,24 @@
         ></path>
     </svg>
 </a>
+<ModalS point="box-download-extension" class="box-download-extension-modal">
+    <h3>Descarga e instala la extension(Beta)</h3>
+    <p>
+        1. <a
+            href="https://github.com/essence-s/media-element-selection-extension/archive/refs/heads/main.zip"
+            >Descarga aqui</a
+        >
+    </p>
+    <p>2. Ve a chrome://extensions/</p>
+    <p>3. En la parte superior derecha, activa el modo desarrollador.</p>
+    <p>
+        4. Aparece en la parte superior una zona con tres botones en el que
+        tienes que utilizar el denominado Cargar descomprimida.
+    </p>
+    <p>
+        5. Ahora descomprime el zip descargado anteriormente ,la carpeta
+        resultante es la que tiene que cargar en "Carga descomprimida" o
+        arrastre la carpeta.
+    </p>
+    <img src="/img-install-extension.png" alt="img-install-extension" />
+</ModalS>
