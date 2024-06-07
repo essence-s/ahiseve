@@ -1,0 +1,93 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"div"> {
+    point: String;
+}
+
+const { point, ...attrdiv } = Astro.props;
+---
+
+<style>
+    .modal-s {
+        display: none;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        /* z-index: 5; */
+        width: 100%;
+        height: 100dvh;
+        top: 0;
+        transition: 1s;
+        z-index: 1;
+    }
+    .modal-s.open {
+        display: flex;
+    }
+    .modal-s__background {
+        position: absolute;
+        width: 100%;
+        height: 100dvh;
+        backdrop-filter: blur(2px);
+    }
+    .modal-s__container {
+        position: relative;
+    }
+    .modal-s__icon-close {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        cursor: pointer;
+    }
+</style>
+<div class="modal-s" data-atrid={point}>
+    <div class="modal-s__background"></div>
+    <div
+        class={attrdiv.class
+            ? `modal-s__container ${attrdiv.class}`
+            : "modal-s__container"}
+        {...attrdiv}
+    >
+        <span class="modal-s__icon-close"
+            ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="icon icon-tabler icons-tabler-outline icon-tabler-x"
+                ><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path
+                    d="M18 6l-12 12"></path><path d="M6 6l12 12"></path></svg
+            ></span
+        >
+        <slot />
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll(`.modal-s`).forEach((element) => {
+        let atrid = element.getAttribute("data-atrid");
+
+        // console.log(atrid);
+        let btnPoint = window.document.querySelector(`.${atrid}`);
+        let modal = element;
+        let backgroundModal = element.querySelector(".modal-s__background");
+        let iconClose = element.querySelector(".modal-s__icon-close");
+
+        btnPoint.addEventListener("click", () => {
+            modal.classList.toggle("open");
+        });
+
+        backgroundModal.addEventListener("click", () => {
+            modal.classList.toggle("open");
+        });
+
+        iconClose.addEventListener("click", () => {
+            modal.classList.toggle("open");
+        });
+    });
+</script>
