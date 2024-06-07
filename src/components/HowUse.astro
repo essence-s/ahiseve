@@ -1,3 +1,7 @@
+---
+import ModalS from "./ModalS.astro";
+---
+
 <style>
     .how-use {
         position: fixed;
@@ -16,27 +20,6 @@
         color: #bac1d3;
     }
     .how-use-modal {
-        display: none;
-        justify-content: center;
-        align-items: center;
-        position: fixed;
-        /* z-index: 5; */
-        width: 100%;
-        height: 100dvh;
-        top: 0;
-        transition: 1s;
-        z-index: 1;
-    }
-    .how-use-modal.open {
-        display: flex;
-    }
-    .how-use-modal__background {
-        position: absolute;
-        width: 100%;
-        height: 100dvh;
-        backdrop-filter: blur(2px);
-    }
-    .how-use-modal__container {
         display: flex;
         position: relative;
         flex-direction: column;
@@ -44,23 +27,31 @@
         width: 100%;
         height: 80dvh;
         background: #1b1e23;
-        /* background: linear-gradient(233deg, #0d1414, #100c12); */
         border-radius: 15px;
-        padding: 40px 35px 75px 35px;
-        /* align-items: center; */
-        /* transition: 0.3s ease; */
-        gap: 20px;
+        padding: 40px 35px;
         border: solid 1px #ffffff0f;
+        gap: 20px;
+        overflow: auto;
     }
     .how-use-modal__title {
         font-size: var(--font-size-large);
         text-align: center;
+        margin: 0;
     }
     .how-use-modal__cards {
         display: flex;
+        gap: 15px;
     }
     .how-use-modal__card-option {
         flex: 1;
+    }
+    .how-use-modal__card-option picture {
+        width: 90%;
+        height: 150px;
+        background: rgba(228, 228, 228, 0.082);
+        display: block;
+        border-radius: 10px;
+        margin: auto;
     }
     @media (max-width: 750px) {
         .how-use-modal__cards {
@@ -90,57 +81,35 @@
         ></path></svg
     >
 </div>
-<div class="how-use-modal">
-    <div class="how-use-modal__background"></div>
-    <div class="how-use-modal__container">
-        <div class="how-use-modal__title">HOW TO USE</div>
-        <p>Cree una sala y invite a sus amigos , Hay 3 formas de uso :</p>
-        <div class="how-use-modal__cards">
-            <div class="how-use-modal__card-option">
-                <p>
-                    Solo uno debe tener la extension y seleccionar el
-                    VideoElement
-                </p>
-                <p>
-                    Tienes la opcion de transmitir pantalla , los demas podran
-                    ver tu transmicion y controlar el video
-                </p>
+<ModalS point="how-use" class="how-use-modal">
+    <h2 class="how-use-modal__title">HOW TO USE</h2>
+    <p>Cree una sala y invite a sus amigos , Hay 3 formas de uso :</p>
+    <div class="how-use-modal__cards">
+        <div class="how-use-modal__card-option">
+            <p>
+                1. Solo uno debe tener la extension y seleccionar el
+                VideoElement
+            </p>
+            <p>
+                Tienes la opcion de transmitir pantalla , los demas podran ver
+                tu transmicion y controlar el video
+            </p>
 
-                <picture></picture>
-            </div>
-            <div class="how-use-modal__card-option">
-                <p>
-                    Cada uno debe tener la extension y seleccionar el
-                    videoElement a sincronizar y controlar
-                </p>
-                <picture></picture>
-            </div>
-            <div class="how-use-modal__card-option">
-                <p>
-                    No es nesesario la extension pero nesesita el url de un
-                    recurso de video con extension .mp4
-                </p>
-                <picture></picture>
-            </div>
+            <picture></picture>
+        </div>
+        <div class="how-use-modal__card-option">
+            <p>
+                2. Cada uno debe tener la extension y seleccionar el
+                videoElement a sincronizar y controlar
+            </p>
+            <picture></picture>
+        </div>
+        <div class="how-use-modal__card-option">
+            <p>
+                3. No es nesesario la extension pero nesesita el url de un
+                recurso de video con extension .mp4
+            </p>
+            <picture></picture>
         </div>
     </div>
-</div>
-
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        console.log("ryyyy");
-        let btnHowUse = window.document.querySelector(".how-use");
-        let modal = window.document.querySelector(".how-use-modal");
-        let backgroundModal = window.document.querySelector(
-            ".how-use-modal__background",
-        );
-
-        btnHowUse.addEventListener("click", () => {
-            modal.classList.toggle("open");
-        });
-
-        backgroundModal.addEventListener("click", () => {
-            modal.classList.toggle("open");
-        });
-    });
-</script>
+</ModalS>
