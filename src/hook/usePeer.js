@@ -219,50 +219,64 @@ export function usePeer() {
     const startStream = async () => {
 
         try {
-            const stream = await navigator.mediaDevices.getDisplayMedia({
-                video: {
-                    displaySurface: "browser",
-                },
-                audio: {
-                    suppressLocalAudioPlayback: false,
-                },
-                preferCurrentTab: false,
-                selfBrowserSurface: "exclude",
-                systemAudio: "include",
-                surfaceSwitching: "include",
-                monitorTypeSurfaces: "include",
-            });
+            if (!!(navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia)) {
 
-            if (stream) {
-                setStreamL(stream)
 
-                setInfoStream((state) => {
-                    let dataInfoStream = {
-                        isStream: true,
-                        userStreaming: nameUser
-                    }
+                const stream = await navigator.mediaDevices.getDisplayMedia({
+                    video: {
+                        displaySurface: "browser",
+                    },
+                    audio: {
+                        suppressLocalAudioPlayback: false,
+                    },
+                    preferCurrentTab: false,
+                    selfBrowserSurface: "exclude",
+                    systemAudio: "include",
+                    surfaceSwitching: "include",
+                    monitorTypeSurfaces: "include",
+                });
 
-                    sendMessague(getConnections(), 'addStreamingUsers', dataInfoStream)
+                if (stream) {
+                    setStreamL(stream)
 
-                    return {
-                        ...state,
-                        ...dataInfoStream
-                    }
+                    setInfoStream((state) => {
+                        let dataInfoStream = {
+                            isStream: true,
+                            userStreaming: nameUser
+                        }
+
+                        sendMessague(getConnections(), 'addStreamingUsers', dataInfoStream)
+
+                        return {
+                            ...state,
+                            ...dataInfoStream
+                        }
+                    })
+
+
+                }
+
+                stream.getTracks().forEach(track => {
+                    track.onended = () => {
+                        closeAllCallConnectionsOutput()
+                        console.log('La pista ha terminado (el usuario dejó de transmitir)');
+                    };
+                });
+            } else {
+                window.toast({
+                    title: 'La transmision solo esta disponible en PC',
+                    message: '',
+                    location: 'top-right',
+                    dismissable: false,
+                    theme: 'butterupcustom',
+                    type: 'error',
+                    icon: true
                 })
-
-
             }
-
-            stream.getTracks().forEach(track => {
-                track.onended = () => {
-                    closeAllCallConnectionsOutput()
-                    console.log('La pista ha terminado (el usuario dejó de transmitir)');
-                };
-            });
-
         } catch (error) {
             console.error("Error al obtener acceso a la pantalla:", error);
         }
+
     }
 
     const sendMessagueAll = (cmd, messague) => {
