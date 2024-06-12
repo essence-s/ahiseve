@@ -5,7 +5,7 @@ import IDCopyBox from '../IDCopyBox/IDCopyBox'
 import { createPortal } from "react-dom"
 
 //improve
-export default function ModalConnectPeer({ children, isOpenModal, setIsOpenModal }) {
+export default function ModalConnectPeer({ isOpenModal, setIsOpenModal }) {
 
     let [userEnteredId, setUserEnteredId] = useState('')
     // let { seekValue, setSeekValue } = usePlayerStore(state => state)
@@ -14,7 +14,8 @@ export default function ModalConnectPeer({ children, isOpenModal, setIsOpenModal
     let [se, setSe] = useState(false)
 
 
-    const handleConnectServer = () => {
+    const handleConnectServer = (event) => {
+        event.preventDefault()
         connectPeer(userEnteredId)
     }
     // const handleOpenModal = () => {
@@ -30,16 +31,15 @@ export default function ModalConnectPeer({ children, isOpenModal, setIsOpenModal
         console.log(window.location.href)
         if (new URLSearchParams(window.location.search).get('modal') == 'open') {
             setIsOpenModal(true)
-            console.log('true')
+            // console.log('true')
         } else {
             setIsOpenModal(false)
-            console.log('false')
+            // console.log('false')
         }
     }
 
     useEffect(() => {
         handleUrlChange()
-        // console.log('dddd')
         window.addEventListener('popstate', handleUrlChange)
 
         createServer()
@@ -52,18 +52,16 @@ export default function ModalConnectPeer({ children, isOpenModal, setIsOpenModal
 
         if (se) {
             if (isOpenModal && !(new URLSearchParams(window.location.search).get('modal') == 'open')) {
-                console.log('pushmodal')
+                // console.log('pushmodal')
                 window.history.pushState({}, '', '?modal=open');
             } else if (!isOpenModal && new URLSearchParams(window.location.search).get('modal') == 'open') {
                 const newUrl = `${window.location.pathname}`;
-                console.log('rt')
+                // console.log('rt')
                 window.history.pushState({}, '', newUrl);
             }
         } else {
             setSe(true)
         }
-        // console.log('use ' + window.location.href)
-        // console.log(isOpenModal)
 
     }, [isOpenModal])
 
@@ -82,10 +80,12 @@ export default function ModalConnectPeer({ children, isOpenModal, setIsOpenModal
                 </div>
                 <IDCopyBox idPeer={idPeer}></IDCopyBox>
 
-                <div className="box-peer-modal__connect-server" >
+                <form className="box-peer-modal__connect-server" onClick={(e) => handleConnectServer(e)}>
                     <p>Conectarse al Server</p>
-                    <textarea name="" id="" cols="10" rows="3" value={userEnteredId} onChange={(e) => setUserEnteredId(e.target.value)} ></textarea>
-                    <button id="handleButtonConnect" onClick={handleConnectServer}>
+                    <input name="" id="" cols="10" rows="3" value={userEnteredId} onChange={(e) => setUserEnteredId(e.target.value)} ></input>
+
+                    <button id="handleButtonConnect" >
+                        <span>Conectar</span>
                         <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plug-connected" width={24} height={24} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                             <path d="M7 12l5 5l-1.5 1.5a3.536 3.536 0 1 1 -5 -5l1.5 -1.5z" />
@@ -97,7 +97,7 @@ export default function ModalConnectPeer({ children, isOpenModal, setIsOpenModal
                         </svg>
                     </button>
 
-                </div>
+                </form>
 
                 <div className="box-peer-modal__options">
                     <span>

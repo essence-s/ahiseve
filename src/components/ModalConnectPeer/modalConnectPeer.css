@@ -35,7 +35,6 @@
     /* transition: 0.3s ease; */
     gap: 20px;
     border: solid 1px #ffffff0f;
-    position: relative;
 }
 
 
@@ -62,28 +61,50 @@
     text-align: center;
 }
 
-.box-peer-modal__connect-server button,
-.box-peer-modal__create-server button {
+.box-peer-modal__connect-server button {
     border: 0;
-    border-radius: 50%;
+    border-radius: 25px;
+    height: 38px;
+    width: fit-content;
+    background: #ababab12;
+    color: white;
+    display: flex;
+    align-items: center;
+    border: solid 1px #ffffff38;
+    /* gap: 5px; */
+    margin-top: 15px;
+    padding: 0;
+    margin-left: auto;
+    font-family: inherit;
+    font-size: var(--font-family-small);
+    cursor: pointer;
+}
+
+.box-peer-modal__connect-server span {
+    padding: 0 10px 0 12px;
+    /* grid-column: 1 / 3; */
+}
+
+.box-peer-modal__connect-server svg {
+    border: 0;
+    border-radius: 25px;
     height: 38px;
     width: 38px;
-    background: #00000070;
+    background: #ababab12;
     color: white;
-    position: absolute;
-    bottom: 5px;
     right: 4px;
     padding: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
     border: solid 1px #ffffff38;
+    gap: 5px;
 }
 
-.box-peer-modal textarea {
+.box-peer-modal input {
     border-radius: 22px;
     border: none;
-    padding: 18px;
+    padding: 28px;
     /* width: 100px; */
     background: #eef5ff21;
     color: white;

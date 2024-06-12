@@ -69,7 +69,13 @@ export const useStreamStore = create((set, get) => ({
             ...state.activeStreaming,
             captScreen: null
         }
-    }))
+    })),
 
+
+    // isVideoElementSelected: false,
+    // setIsVideoElementSelected: (data) => {
+    //     set({ isVideoElementSelected: data })
+
+    // }
 
 }))
