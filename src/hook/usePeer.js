@@ -10,13 +10,15 @@ export function usePeer() {
         connectPeer, on, createServerI, sendMessague, sendMessagueAll, callF, exitPeerNetwork
     } = usePeerStore(state => state)
 
-    let { setStreamL, getStreamL, infoStream, setInfoStream, getInfoStream,
+    let { getStreamL, infoStream, setInfoStream, getInfoStream,
         addStreamingUsers, deleteStreamingUser, addActiveStreamingUserCaptScreen,
-        getActiveStreamig, setNullActiveStreamingUserCaptScreen } = useStreamStore(state => ({
+        getActiveStreamig, setNullActiveStreamingUserCaptScreen, startStreamStore,
+        stopStreamingStore } = useStreamStore(state => ({
             setStreamL: state.setStreamL, getStreamL: state.getStreamL,
             infoStream: state.infoStream, setInfoStream: state.setInfoStream, getInfoStream: state.getInfoStream,
             addStreamingUsers: state.addStreamingUsers, deleteStreamingUser: state.deleteStreamingUser, addActiveStreamingUserCaptScreen: state.addActiveStreamingUserCaptScreen,
-            getActiveStreamig: state.getActiveStreamig, setNullActiveStreamingUserCaptScreen: state.setNullActiveStreamingUserCaptScreen
+            getActiveStreamig: state.getActiveStreamig, setNullActiveStreamingUserCaptScreen: state.setNullActiveStreamingUserCaptScreen, startStreamStore: state.startStreamStore,
+            stopStreamingStore: state.stopStreamingStore
         }))
 
     let { setIsOpenModalVideoPlayer } = modalStore(state => ({
@@ -86,66 +88,33 @@ export function usePeer() {
 
     //to improve
     const startStream = async () => {
-
         try {
-            if (!!(navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia)) {
-
-
-                const stream = await navigator.mediaDevices.getDisplayMedia({
-                    video: {
-                        displaySurface: "browser",
-                    },
-                    audio: {
-                        suppressLocalAudioPlayback: false,
-                    },
-                    preferCurrentTab: false,
-                    selfBrowserSurface: "exclude",
-                    systemAudio: "include",
-                    surfaceSwitching: "include",
-                    monitorTypeSurfaces: "include",
-                });
-
-                if (stream) {
-                    setStreamL(stream)
-
-                    setInfoStream((state) => {
-                        let dataInfoStream = {
-                            isStream: true,
-                            userStreaming: nameUser
-                        }
-
-                        sendMessague(getConnections(), 'addStreamingUsers', dataInfoStream)
-
-                        return {
-                            ...state,
-                            ...dataInfoStream
-                        }
-                    })
-
-
+            await startStreamStore()
+            setInfoStream((state) => {
+                let dataInfoStream = {
+                    isStream: true,
+                    userStreaming: nameUser
                 }
 
-                stream.getTracks().forEach(track => {
-                    track.onended = () => {
-                        closeAllCallConnectionsOutput()
-                        console.log('La pista ha terminado (el usuario dejó de transmitir)');
-                    };
-                });
-            } else {
-                window.toast({
-                    title: 'La transmision solo esta disponible en PC',
-                    message: '',
-                    location: 'top-right',
-                    dismissable: false,
-                    theme: 'butterupcustom',
-                    type: 'error',
-                    icon: true
-                })
-            }
-        } catch (error) {
-            console.error("Error al obtener acceso a la pantalla:", error);
+                sendMessague(getConnections(), 'addStreamingUsers', dataInfoStream)
+
+                return {
+                    ...state,
+                    ...dataInfoStream
+                }
+            })
+        } catch (err) {
+            console.log("Error al obtener acceso a la pantalla:", err)
         }
 
+    }
+
+    const stopStreaming = () => {
+        stopStreamingStore.then(_ => {
+            closeAllCallConnectionsOutput()
+        }).catch(err => {
+            console.log(err)
+        })
     }
 
     const viewStream = (idPeer) => {
@@ -173,13 +142,6 @@ export function usePeer() {
         })
 
         closeCallsOutput()
-    }
-
-    const stopStreaming = () => {
-        getStreamL().getTracks().forEach(track => {
-            track.stop()
-            closeAllCallConnectionsOutput()
-        })
     }
 
     const processIncomingData = (cmd, data, conn) => {

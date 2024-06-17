@@ -12,7 +12,68 @@ export const useStreamStore = create((set, get) => ({
         set({ refVideoStream })
     },
 
+    //to improve
+    startStreamStore: () => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                if (!!(navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia)) {
 
+
+                    const stream = await navigator.mediaDevices.getDisplayMedia({
+                        video: {
+                            displaySurface: "browser",
+                        },
+                        audio: {
+                            suppressLocalAudioPlayback: false,
+                        },
+                        preferCurrentTab: false,
+                        selfBrowserSurface: "exclude",
+                        systemAudio: "include",
+                        surfaceSwitching: "include",
+                        monitorTypeSurfaces: "include",
+                    });
+
+                    if (stream) {
+                        get().setStreamL(stream)
+                        stream.getTracks().forEach(track => {
+                            track.onended = () => {
+                                get().closeAllCallConnectionsOutput()
+                                console.log('La pista ha terminado (el usuario dejó de transmitir)');
+                            };
+                        });
+                        resolve('streaming')
+                    }
+                } else {
+                    window.toast({
+                        title: 'La transmision solo esta disponible en PC',
+                        message: '',
+                        location: 'top-right',
+                        dismissable: false,
+                        theme: 'butterupcustom',
+                        type: 'error',
+                        icon: true
+                    })
+                    reject('La transmision solo esta disponible en PC')
+                }
+            } catch (error) {
+                reject(error)
+            }
+        })
+
+
+    },
+    stopStreamingStore: () => {
+        return new Promise((resolve, reject) => {
+            try {
+                get().getStreamL().getTracks().forEach(track => {
+                    track.stop()
+                    resolve('stop')
+                })
+            } catch (err) {
+                reject(err)
+            }
+        })
+    },
     infoStream: {
         isStream: false,
         userStreaming: '',
