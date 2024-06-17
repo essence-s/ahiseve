@@ -1,4 +1,4 @@
-# Ahiseve
+# Ahiseve(Beta)
 
 ## Description
-✨ :v controlar del DOM una un etiqueta de video. ✨
+✨ :v version Beta para controlar y sincronizar un video. Se nesesita un Extension✨
