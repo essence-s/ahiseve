@@ -71,7 +71,7 @@ export function usePeer() {
     }
 
     const stopStreaming = () => {
-        stopStreamingStore.then(_ => {
+        stopStreamingStore().then(_ => {
             closeAllCallConnectionsOutput()
         }).catch(err => {
             console.log(err)
