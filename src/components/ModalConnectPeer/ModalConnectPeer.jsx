@@ -28,7 +28,7 @@ export default function ModalConnectPeer({ isOpenModal, setIsOpenModal }) {
     }
 
     const handleUrlChange = () => {
-        console.log(window.location.href)
+        // console.log(window.location.href)
         if (new URLSearchParams(window.location.search).get('modal') == 'open') {
             setIsOpenModal(true)
             // console.log('true')
