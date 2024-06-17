@@ -5,15 +5,14 @@ import { modalStore } from "../store/modalStore"
 
 
 export function usePeer() {
-    let { idPeer, setIdPeer, connections, pushConnections,
-        peer, setPeer, getPeer, getConnections, deleteConnection,
-        addCall, closeAndDeleteCall, closeCallsOutput,
-        addTask, updateTask, verifyTask, deleteTask,
-        connectPeer, on, createServerI, sendMessague, sendMessagueAll
+    let { idPeer, connections,
+        peer, getPeer, getConnections, closeAndDeleteCall, closeCallsOutput,
+        connectPeer, on, createServerI, sendMessague, sendMessagueAll, callF, exitPeerNetwork
     } = usePeerStore(state => state)
 
     let { setStreamL, getStreamL, infoStream, setInfoStream, getInfoStream,
-        addStreamingUsers, deleteStreamingUser, addActiveStreamingUserCaptScreen, getActiveStreamig, setNullActiveStreamingUserCaptScreen } = useStreamStore(state => ({
+        addStreamingUsers, deleteStreamingUser, addActiveStreamingUserCaptScreen,
+        getActiveStreamig, setNullActiveStreamingUserCaptScreen } = useStreamStore(state => ({
             setStreamL: state.setStreamL, getStreamL: state.getStreamL,
             infoStream: state.infoStream, setInfoStream: state.setInfoStream, getInfoStream: state.getInfoStream,
             addStreamingUsers: state.addStreamingUsers, deleteStreamingUser: state.deleteStreamingUser, addActiveStreamingUserCaptScreen: state.addActiveStreamingUserCaptScreen,
@@ -66,60 +65,6 @@ export function usePeer() {
         return name;
     }
 
-
-
-    // const connectPeer = (idEntered, pendingPeer) => {
-
-    //     if (getConnections().find(con => con.idPeer == idEntered)) {
-    //         window.toast({
-    //             title: 'Are you connected!',
-    //             message: '',
-    //             location: 'top-right',
-    //             dismissable: false,
-    //             theme: 'butterupcustom'
-    //         })
-    //         return
-    //     }
-
-    //     let conn = peer.connect(idEntered, { metadata: { eventNetwork: pendingPeer ? false : true } });
-    //     // console.log(pendingPeer ? false : true)
-    //     conn.on("data", function ({ cmd, data }) {
-    //         processIncomingData(cmd, data, conn)
-    //     });
-
-    //     conn.on("open", function () {
-    //         console.log('se conecto a ' + idEntered)
-    //         updateTask('peerListToConnect', pendingPeer, conn.peer)
-    //         let dataVerifyTask = verifyTask('peerListToConnect', pendingPeer)
-    //         // console.log(dataVerifyTask)
-    //         if (dataVerifyTask) {
-    //             deleteTask('peerListToConnect', pendingPeer)
-    //             sendMessague(
-    //                 [getConnections().find(connection => connection.idPeer == dataVerifyTask.sender)],
-    //                 'confirmPeerListToConnect',
-    //                 { pendingPeer }
-    //             )
-    //             console.log('se conecto ala network')
-    //             window.toast({
-    //                 title: 'Connected Susscesfully!',
-    //                 message: '',
-    //                 location: 'top-right',
-    //                 dismissable: false,
-    //                 theme: 'butterupcustom'
-    //             })
-    //         }
-
-    //         pushConnections(conn);
-
-    //     });
-
-    //     conn.on("close", function () {
-    //         console.log('se cerro la conexion completa')
-    //         deleteConnection(conn.peer)
-    //         deleteStreamingUser(conn.peer)
-    //     })
-    // }
-
     const createServer = async () => {
         on('openRecived', (conn) => {
             sendMessague([{ conn: conn }], 'addStreamingUsers', getInfoStream())
@@ -136,106 +81,6 @@ export function usePeer() {
             setIsOpenModalVideoPlayer(true)
         })
         createServerI()
-        // if (getPeer()) return
-
-
-        // on('data', processIncomingData)
-        // on('close', (conn) => {
-        //     deleteStreamingUser(conn.peer)
-        // })
-
-
-        // let Peer = (await import('peerjs')).default
-        // // let npeer = new Peer({
-        // //     host: "localhost",
-        // //     port: 8080,
-        // // })
-        // let npeer = new Peer({})
-
-        // setPeer(npeer)
-
-        // npeer.on("open", function (id) {
-        //     console.log("Peer creado: " + id);
-        //     setIdPeer(id)
-        // });
-
-        // npeer.on("connection", function (conn) {
-        //     conn.on("data", function ({ cmd, data }) {
-        //         processIncomingData(cmd, data, conn)
-        //     });
-
-        //     conn.on("open", function () {
-
-        //         // console.log(conn.metadata.eventNetwork)
-        //         if (conn.metadata.eventNetwork) {
-
-        //             addTask({
-
-        //                 sender: npeer.id,
-        //                 name: 'confirmPeerListToConnect',
-        //                 pendingPeer: conn.peer
-        //             })
-        //             sendMessague(
-        //                 [{ conn: conn }],
-        //                 'addTask:peerListToConnect',
-        //                 {
-        //                     name: 'peerListToConnect',
-        //                     peerListToConnect: getConnections().map(connection => connection.idPeer),
-        //                     pendingPeer: conn.peer
-        //                 }
-        //             )
-        //         }
-
-        //         pushConnections(conn);
-        //         // let backgroundUser = availableBackground(getInfoStream().onlineStreamUsers)
-
-        //         // sendMessague([conn], 'infoStream', dataInfoStream)
-        //         sendMessague([{ conn: conn }], 'addStreamingUsers', getInfoStream())
-
-        //     });
-
-        //     conn.on("close", function () {
-        //         console.log('se cerro la conexion completa cs')
-        //         deleteConnection(conn.peer)
-        //         deleteStreamingUser(conn.peer)
-        //     })
-
-        // });
-
-
-        // npeer.on("call", (call) => {
-
-        //     call.answer();
-        //     addCall(call, true, 'in')
-        //     // console.log(call)
-        //     call.on("stream", async (stream) => {
-        //         // console.log(getPeer)
-        //         console.log('recibiendo el stream')
-        //         // call.connectionId
-        //         addActiveStreamingUserCaptScreen(stream, call.peer, call.connectionId)
-        //         setIsOpenModalVideoPlayer(true)
-        //     });
-
-        //     call.on("close", () => {
-        //         console.log('se cerro la conexion de la llamada , user')
-        //         closeAndDeleteCall(call.peer, call.connectionId)
-        //         setIsOpenModalVideoPlayer(false)
-        //         // console.log(call)
-        //     });
-        // });
-
-
-        // window.addEventListener("message", function (event) {
-        //     // console.log('datarenida de evento', event)
-        //     let { cmd, data } = event.data
-        //     if (cmd == "element-action") {
-        //         if (data.status == 'sending') {
-        //             console.log('emviando', event)
-        //             sendMessagueAll(cmd, data)
-        //         }
-        //     }
-        // }, false);
-
     }
 
 
@@ -303,30 +148,6 @@ export function usePeer() {
 
     }
 
-    // const sendMessagueAll = (cmd, messague) => {
-    //     let conectionsG = getConnections()
-
-    //     conectionsG.forEach((connection) => {
-    //         connection.conn.send({
-    //             cmd: cmd,
-    //             data: {
-    //                 // ...getInfoStream(),
-    //                 ...messague
-    //             }
-    //         })
-    //     })
-    // }
-
-    // const sendMessague = (arrayConnections, cmd, messague) => {
-    //     // console.log(arrayConnections)
-    //     arrayConnections.forEach((connection) => {
-    //         connection.conn.send({
-    //             cmd: cmd,
-    //             data: messague
-    //         });
-    //     });
-    // }
-
     const viewStream = (idPeer) => {
         // let peerUserMaster = findConnection()
         // console.log(idPeer)
@@ -371,59 +192,17 @@ export function usePeer() {
                 },
             }, "*",);
 
-            console.log(data)
+            // console.log(data)
 
         } else if (cmd == 'viewStream') {
             console.log('el  id ' + conn.peer + ' pidio el stream')
-            callF(conn)
+            callF(conn, getStreamL())
         }
 
         else if (cmd == "addStreamingUsers") {
             console.log('info de user Obtenida')
             addStreamingUsers(conn.peer, { ...data })
         }
-
-
-        // else if (cmd == "addTask:peerListToConnect") {
-        //     if (data.peerListToConnect.length == 0) {
-        //         window.toast({
-        //             title: 'Connected Susscesfully!',
-        //             message: '',
-        //             location: 'top-right',
-        //             dismissable: false,
-        //             theme: 'butterupcustom'
-        //         })
-        //     } else {
-        //         addTask({
-        //             sender: conn.peer,
-        //             ...data
-        //         })
-
-        //         data.peerListToConnect.forEach(peerId => {
-        //             connectPeer(peerId, data.pendingPeer)
-        //         })
-        //     }
-
-
-        // } else if (cmd == "confirmPeerListToConnect") {
-        //     deleteTask('confirmPeerListToConnect', data.pendingPeer)
-        // }
-    }
-
-    const callF = (conn) => {
-        const call = getPeer().call(conn.peer, getStreamL());
-        console.log('se le envia el stream a ' + conn.peer)
-        addCall(call, false, 'out')
-
-        call.on("stream", (stream) => {
-            console.log('se establecio en stream')
-        });
-
-        call.on("close", () => {
-            closeAndDeleteCall(conn.peer, call.connectionId)
-            // console.log(getConnections())
-            console.log('se cerro la llamada , server , llamada posterior')
-        });
     }
 
     const closeActiveStreamig = () => {
@@ -435,18 +214,6 @@ export function usePeer() {
             setNullActiveStreamingUserCaptScreen()
         }
 
-    }
-
-    const exitPeerNetwork = () => {
-        console.log('cerrando toda la network')
-        getConnections().forEach(connection => {
-            connection.conn.close()
-            if (connection.calls) {
-                connection.calls.forEach(callObject => {
-                    callObject.call.close()
-                });
-            }
-        })
     }
 
     return {

@@ -155,12 +155,17 @@ export const usePeerStore = create((set, get) => ({
         });
 
 
+        npeer.on('error', function (err) {
+            console.log('error en peer', err)
+        });
+
+
         window.addEventListener("message", function (event) {
             // console.log('datarenida de evento', event)
             let { cmd, data } = event.data
             if (cmd == "element-action") {
                 if (data.status == 'sending') {
-                    console.log('emviando', event)
+                    // console.log('emviando', event)
                     get().sendMessagueAll(cmd, data)
                 }
             }
@@ -353,6 +358,34 @@ export const usePeerStore = create((set, get) => ({
         }))
     },
 
+    callF: (conn, stream) => {
+        const call = get().getPeer().call(conn.peer, stream);
+        console.log('se le envia el stream a ' + conn.peer)
+        get().addCall(call, false, 'out')
+
+        call.on("stream", (stream) => {
+            console.log('se establecio en stream')
+        });
+
+        call.on("close", () => {
+            get().closeAndDeleteCall(conn.peer, call.connectionId)
+            // console.log(getConnections())
+            console.log('se cerro la llamada , server , llamada posterior')
+        });
+    },
+
+    exitPeerNetwork: () => {
+        console.log('cerrando toda la network')
+        get().getConnections().forEach(connection => {
+            // improve 
+            connection.conn.close()
+            if (connection.calls) {
+                connection.calls.forEach(callObject => {
+                    callObject.call.close()
+                });
+            }
+        })
+    },
 
     tasks: [],
     getTasks: () => get().tasks,
