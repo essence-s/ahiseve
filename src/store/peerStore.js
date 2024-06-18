@@ -13,7 +13,8 @@ export const usePeerStore = create((set, get) => ({
         data: [],
         close: [],
         closeCall: [],
-        streamCall: []
+        streamCall: [],
+        callbackConnectToList: [],
     },
     on: (event, callback) => {
         set(state => ({
@@ -33,9 +34,14 @@ export const usePeerStore = create((set, get) => ({
                 funcCallback(...args)
             })
     },
-
-    // processIncomingData,
-    // setProcessIncomingData: (funcPID) => set({ processIncomingData: funcPID }),
+    cleanCallback: (event) => {
+        set(state => ({
+            connectionCallbacks: {
+                ...state.connectionCallbacks,
+                [event]: []
+            }
+        }))
+    },
 
     processIncomingDataPeer: ({ cmd, data, conn }, callback) => {
         if (cmd == "addTask:peerListToConnect") {
@@ -47,6 +53,8 @@ export const usePeerStore = create((set, get) => ({
                     dismissable: false,
                     theme: 'butterupcustom'
                 })
+                get().runCallbacks('callbackConnectToList')
+                get().cleanCallback('callbackConnectToList')
             } else {
                 get().addTask({
                     sender: conn.peer,
@@ -60,7 +68,7 @@ export const usePeerStore = create((set, get) => ({
 
 
         } else if (cmd == "confirmPeerListToConnect") {
-            deleteTask('confirmPeerListToConnect', data.pendingPeer)
+            get().deleteTask('confirmPeerListToConnect', data.pendingPeer)
         } else {
             callback()
         }
@@ -172,59 +180,72 @@ export const usePeerStore = create((set, get) => ({
         }, false);
 
     },
-    connectPeer: (idEntered, pendingPeer) => {
+    connectPeer: async (idEntered, pendingPeer, callback) => {
+        return new Promise((resolve, reject) => {
 
-        if (get().getConnections().find(con => con.idPeer == idEntered)) {
-            window.toast({
-                title: 'Are you connected!',
-                message: '',
-                location: 'top-right',
-                dismissable: false,
-                theme: 'butterupcustom'
-            })
-            return
-        }
+            if (callback) {
+                if (get().connectionCallbacks.callbackConnectToList.length == 0) {
+                    get().on('callbackConnectToList', resolve)
+                } else {
+                    reject('no puede conectarse a un nuevo grupo')
+                    return
+                }
+            }
 
-        let conn = get().peer.connect(idEntered, { metadata: { eventNetwork: pendingPeer ? false : true } });
-        // console.log(pendingPeer ? false : true)
-        conn.on("data", function ({ cmd, data }) {
-            // get().processIncomingData(cmd, data, conn)
-            get().processIncomingDataPeer({ cmd, data, conn }, () => {
-                get().runCallbacks('data', cmd, data, conn)
-            })
-        });
-
-        conn.on("open", function () {
-            console.log('se conecto a ' + idEntered)
-            get().updateTask('peerListToConnect', pendingPeer, conn.peer)
-            let dataVerifyTask = get().verifyTask('peerListToConnect', pendingPeer)
-            // console.log(dataVerifyTask)
-            if (dataVerifyTask) {
-                get().deleteTask('peerListToConnect', pendingPeer)
-                get().sendMessague(
-                    [get().getConnections().find(connection => connection.idPeer == dataVerifyTask.sender)],
-                    'confirmPeerListToConnect',
-                    { pendingPeer }
-                )
-                console.log('se conecto ala network')
+            if (get().getConnections().find(con => con.idPeer == idEntered)) {
                 window.toast({
-                    title: 'Connected Susscesfully!',
+                    title: 'Are you connected!',
                     message: '',
                     location: 'top-right',
                     dismissable: false,
                     theme: 'butterupcustom'
                 })
+                return
             }
 
-            get().pushConnections(conn);
+            let conn = get().peer.connect(idEntered, { metadata: { eventNetwork: pendingPeer ? false : true } });
+            // console.log(pendingPeer ? false : true)
+            conn.on("data", function ({ cmd, data }) {
+                // get().processIncomingData(cmd, data, conn)
+                get().processIncomingDataPeer({ cmd, data, conn }, () => {
+                    get().runCallbacks('data', cmd, data, conn)
+                })
+            });
 
-        });
+            conn.on("open", function () {
+                console.log('se conecto a ' + idEntered)
+                get().updateTask('peerListToConnect', pendingPeer, conn.peer)
+                let dataVerifyTask = get().verifyTask('peerListToConnect', pendingPeer)
+                // console.log(dataVerifyTask)
+                if (dataVerifyTask) {
+                    get().deleteTask('peerListToConnect', pendingPeer)
+                    get().sendMessague(
+                        [get().getConnections().find(connection => connection.idPeer == dataVerifyTask.sender)],
+                        'confirmPeerListToConnect',
+                        { pendingPeer }
+                    )
+                    get().runCallbacks('callbackConnectToList')
+                    get().cleanCallback('callbackConnectToList')
+                    console.log('se conecto ala network')
+                    window.toast({
+                        title: 'Connected Susscesfully!',
+                        message: '',
+                        location: 'top-right',
+                        dismissable: false,
+                        theme: 'butterupcustom'
+                    })
+                }
 
-        conn.on("close", function () {
-            console.log('se cerro la conexion completa')
-            get().deleteConnection(conn.peer)
+                get().pushConnections(conn);
 
-            get().runCallbacks('close', conn)
+            });
+
+            conn.on("close", function () {
+                console.log('se cerro la conexion completa')
+                get().deleteConnection(conn.peer)
+
+                get().runCallbacks('close', conn)
+            })
         })
     },
 
