@@ -12,12 +12,22 @@ export default function ModalConnectPeer({ isOpenModal, setIsOpenModal }) {
     let { idPeer, createServer, connectPeer } = usePeer()
 
     let [se, setSe] = useState(false)
-
+    let [load, setLoad] = useState(false)
 
     const handleConnectServer = (event) => {
         event.preventDefault()
-        connectPeer(userEnteredId)
+        if (userEnteredId != "") {
+            setLoad(true)
+            connectPeer(userEnteredId, "", 'info').then(() => {
+                setLoad(false)
+                setIsOpenModal(false)
+            }).catch((err) => {
+                console.log(err)
+                setLoad(false)
+            })
+        }
     }
+
     // const handleOpenModal = () => {
     //     window.history.pushState({}, '', '?modal=open');
     //     handleUrlChange()
@@ -80,21 +90,26 @@ export default function ModalConnectPeer({ isOpenModal, setIsOpenModal }) {
                 </div>
                 <IDCopyBox idPeer={idPeer}></IDCopyBox>
 
-                <form className="box-peer-modal__connect-server" onClick={(e) => handleConnectServer(e)}>
+                <form className="box-peer-modal__connect-server" onSubmit={(e) => handleConnectServer(e)}>
                     <p>Conectarse al Server</p>
                     <input name="" id="" cols="10" rows="3" value={userEnteredId} onChange={(e) => setUserEnteredId(e.target.value)} ></input>
 
                     <button id="handleButtonConnect" >
                         <span>Conectar</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plug-connected" width={24} height={24} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M7 12l5 5l-1.5 1.5a3.536 3.536 0 1 1 -5 -5l1.5 -1.5z" />
-                            <path d="M17 12l-5 -5l1.5 -1.5a3.536 3.536 0 1 1 5 5l-1.5 1.5z" />
-                            <path d="M3 21l2.5 -2.5" />
-                            <path d="M18.5 5.5l2.5 -2.5" />
-                            <path d="M10 11l-2 2" />
-                            <path d="M13 14l-2 2" />
-                        </svg>
+                        {load ?
+                            <svg style={{ animation: "rotateIcon 0.7s infinite linear" }} xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-loader-2">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M12 3a9 9 0 1 0 9 9" />
+                            </svg>
+                            : <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plug-connected" width={24} height={24} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M7 12l5 5l-1.5 1.5a3.536 3.536 0 1 1 -5 -5l1.5 -1.5z" />
+                                <path d="M17 12l-5 -5l1.5 -1.5a3.536 3.536 0 1 1 5 5l-1.5 1.5z" />
+                                <path d="M3 21l2.5 -2.5" />
+                                <path d="M18.5 5.5l2.5 -2.5" />
+                                <path d="M10 11l-2 2" />
+                                <path d="M13 14l-2 2" />
+                            </svg>}
                     </button>
 
                 </form>
