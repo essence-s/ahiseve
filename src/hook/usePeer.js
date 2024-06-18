@@ -50,7 +50,14 @@ export function usePeer() {
     //to improve
     const startStream = async () => {
         try {
-            await startStreamStore()
+            let stream = await startStreamStore()
+            stream.getTracks().forEach(track => {
+                track.onended = () => {
+                    closeAllCallConnectionsOutput()
+                    console.log('La pista ha terminado (el usuario dejó de transmitir)');
+                };
+            });
+
             setInfoStream((state) => {
                 let dataInfoStream = {
                     isStream: true,

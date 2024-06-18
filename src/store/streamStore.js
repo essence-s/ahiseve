@@ -35,13 +35,7 @@ export const useStreamStore = create((set, get) => ({
 
                     if (stream) {
                         get().setStreamL(stream)
-                        stream.getTracks().forEach(track => {
-                            track.onended = () => {
-                                get().closeAllCallConnectionsOutput()
-                                console.log('La pista ha terminado (el usuario dejó de transmitir)');
-                            };
-                        });
-                        resolve('streaming')
+                        resolve(stream)
                     }
                 } else {
                     window.toast({
