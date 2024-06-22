@@ -109,7 +109,13 @@
     /* width: 100px; */
     background: #eef5ff21;
     color: white;
+    font-family: inherit;
+    font-size: var(--font-size-small);
     /* field-sizing: content; */
+}
+
+.box-peer-modal input:focus {
+    outline: solid 1px #9875ffd3;
 }
 
 .box-peer-modal__options {
@@ -137,7 +143,15 @@
 }
 
 @keyframes rotateIcon {
+    0% {
+        color: #868c9700;
+        transform: rotate(0deg);
+        /* border: solid 1px #93ffb7; */
+    }
+
     100% {
+        color: white;
         transform: rotate(360deg);
+        border: solid 1px #93ffb7;
     }
 }

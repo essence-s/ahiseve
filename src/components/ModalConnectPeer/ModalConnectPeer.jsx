@@ -92,12 +92,12 @@ export default function ModalConnectPeer({ isOpenModal, setIsOpenModal }) {
 
                 <form className="box-peer-modal__connect-server" onSubmit={(e) => handleConnectServer(e)}>
                     <p>Conectarse al Server</p>
-                    <input name="" id="" cols="10" rows="3" value={userEnteredId} onChange={(e) => setUserEnteredId(e.target.value)} ></input>
+                    <input autoFocus name="" id="" cols="10" rows="3" value={userEnteredId} onChange={(e) => setUserEnteredId(e.target.value)} ></input>
 
                     <button id="handleButtonConnect" >
                         <span>Conectar</span>
                         {load ?
-                            <svg style={{ animation: "rotateIcon 0.7s infinite linear" }} xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-loader-2">
+                            <svg style={{ animation: "rotateIcon 0.8s 1 forwards linear,rotateIcon 0.8s 0.8s infinite linear" }} xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-loader-2">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                 <path d="M12 3a9 9 0 1 0 9 9" />
                             </svg>
