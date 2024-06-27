@@ -118,3 +118,32 @@
 }
 
 /* Fin Box users connected */
+
+.box-no-friends {
+    border: 2px solid #d6d4ff05;
+    padding: 50px;
+    background: #ffffff05;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    animation: changeColor 1s infinite linear;
+    color: #bbc4ff;
+}
+
+@keyframes changeColor {
+    0% {
+        color: #bbc4ff;
+    }
+
+    50% {
+        color: #ffffffe0;
+    }
+
+    100% {
+        color: #bbc4ff;
+
+    }
+}

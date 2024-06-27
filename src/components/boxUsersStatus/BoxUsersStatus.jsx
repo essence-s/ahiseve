@@ -34,13 +34,20 @@ export default function BoxUsersStatus() {
                 }
             </div>
 
-            <div className="box-users-connected">
-                {
-                    connections.map((conn, i) => <div key={i + '77'} style={{ background: conn.background }} className="box-users-connected__user">
-                        <img src={`https://picsum.photos/200/300?random=${i + 1}`} alt="" />
-                    </div>)
-                }
-            </div>
+            {
+                connections.length > 0 ?
+                    <div className="box-users-connected">
+                        {
+                            connections.map((conn, i) => <div key={i + '77'} style={{ background: conn.background }} className="box-users-connected__user">
+                                <img src={`https://picsum.photos/200/300?random=${i + 1}`} alt="" />
+                            </div>)
+                        }
+                    </div> :
+                    <div className="box-no-friends">
+                        <p>No tienes amigos</p>
+                        <p>ಥ_ಥ</p>
+                    </div>
+            }
 
             <OptionsStream infoStream={infoStream} />
         </div>
