@@ -45,7 +45,8 @@ export default function BoxUsersStatus() {
                     </div> :
                     <div className="box-no-friends">
                         <p>No tienes amigos</p>
-                        <p>ಥ_ಥ</p>
+                        <p>(っ╥﹏╥)っ</p>
+                        <p>Conectate</p>
                     </div>
             }
 

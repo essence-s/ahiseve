@@ -121,16 +121,17 @@
 
 .box-no-friends {
     border: 2px solid #d6d4ff05;
-    padding: 50px;
+    padding: 35px 55px;
     background: #ffffff05;
     border-radius: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: 600;
     animation: changeColor 1s infinite linear;
     color: #bbc4ff;
+    box-shadow: -3px -3px 10px 0 #ffffff03, 4px 4px 4px 2px #0000000d;
 }
 
 @keyframes changeColor {
