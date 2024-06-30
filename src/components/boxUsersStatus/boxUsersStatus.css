@@ -120,6 +120,7 @@
 /* Fin Box users connected */
 
 .box-no-friends {
+    position: relative;
     border: 2px solid #d6d4ff05;
     padding: 35px 55px;
     background: #ffffff05;
@@ -131,8 +132,21 @@
     font-weight: 600;
     animation: changeColor 1s infinite linear;
     color: #bbc4ff;
-    box-shadow: -3px -3px 10px 0 #ffffff03, 4px 4px 4px 2px #0000000d;
+    /* box-shadow: inset -3px -3px 10px 0 #ffffff03, inset 4px 4px 4px 2px #0000000d; */
+    box-shadow: inset -3px -3px 6px 0px #ffffff05, inset 5px 6px 4px 1px #00000017;
 }
+
+/* .box-no-friends::after {
+    background: #ffffffb8;
+    border-radius: 50%;
+    content: "";
+    height: 27px;
+    left: 9px;
+    position: absolute;
+    top: 6px;
+    transform: rotate(38deg);
+    width: 14px;
+} */
 
 @keyframes changeColor {
     0% {
