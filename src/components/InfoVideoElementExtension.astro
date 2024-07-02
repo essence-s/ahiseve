@@ -69,6 +69,7 @@
 </div>
 
 <script>
+    import { PAGE_MESSAGE_TYPES } from "./types.d";
     let isVideoElementSelected = false;
     let elementRe = document.querySelector(
         ".info-video-element-extension .info-video-element-extension__text",
@@ -125,9 +126,11 @@
         window.addEventListener(
             "message",
             function (event) {
-                // console.log(event)
                 let { cmd, data } = event.data;
-                if (cmd == "resultCheckElementVideoSelected") {
+                if (
+                    cmd ==
+                    PAGE_MESSAGE_TYPES.RESULT_CHECK_ELEMENT_VIDEO_SELECTED
+                ) {
                     setIsVideoElementSelected(data.selected);
                     // console.log("data result", event);
                 }
@@ -137,7 +140,7 @@
 
         window.postMessage(
             {
-                cmd: "checkElementVideoSelected",
+                cmd: PAGE_MESSAGE_TYPES.CHECK_ELEMENT_VIDEO_SELECTED,
                 data: "",
             },
             "*",

@@ -3,6 +3,7 @@ import { useStreamStore } from "@/store/streamStore"
 import { useState } from "react"
 import { modalStore } from "../store/modalStore"
 import { generateName } from "@/utils/functsGene"
+import { PAGE_MESSAGE_TYPES } from "@/components/types.d"
 
 
 export function usePeer() {
@@ -27,6 +28,7 @@ export function usePeer() {
     }))
 
     let [nameUser, setNameUser] = useState(generateName())
+
 
     const createServer = async () => {
         on('openRecived', (conn) => {
@@ -113,7 +115,7 @@ export function usePeer() {
     }
 
     const processIncomingData = (cmd, data, conn) => {
-        if (cmd == 'element-action') {
+        if (cmd == PAGE_MESSAGE_TYPES.ELEMENT_ACTION) {
             window.postMessage({
                 cmd: cmd,
                 data: {

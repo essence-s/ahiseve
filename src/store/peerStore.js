@@ -1,3 +1,4 @@
+import { PAGE_MESSAGE_TYPES } from "@/components/types.d";
 import { create } from "zustand";
 
 export const usePeerStore = create((set, get) => ({
@@ -171,7 +172,7 @@ export const usePeerStore = create((set, get) => ({
         window.addEventListener("message", function (event) {
             // console.log('datarenida de evento', event)
             let { cmd, data } = event.data
-            if (cmd == "element-action") {
+            if (cmd == PAGE_MESSAGE_TYPES.ELEMENT_ACTION) {
                 if (data.status == 'sending') {
                     // console.log('emviando', event)
                     get().sendMessagueAll(cmd, data)

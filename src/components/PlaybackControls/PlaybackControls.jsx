@@ -1,6 +1,7 @@
 import './playbackControls.css'
 import { usePlayerStore } from "@/store/playerStore"
 import { usePeer } from "@/hook/usePeer"
+import { PAGE_MESSAGE_TYPES } from '../types.d'
 
 
 export default function PlaybackControls({ fullScreen }) {
@@ -13,14 +14,14 @@ export default function PlaybackControls({ fullScreen }) {
 
     const handlePause = () => {
         setIsPlaying(false)
-        sendMessagueAll("element-action", {
+        sendMessagueAll(PAGE_MESSAGE_TYPES.ELEMENT_ACTION, {
             action: 'pause',
             status: 'sending',
         })
     }
     const handlePlay = () => {
         setIsPlaying(true)
-        sendMessagueAll("element-action", {
+        sendMessagueAll(PAGE_MESSAGE_TYPES.ELEMENT_ACTION, {
             action: 'play',
             status: 'sending',
         })
@@ -28,7 +29,7 @@ export default function PlaybackControls({ fullScreen }) {
 
     const handleSeek = (modeSeek) => {
         // console.log(modeSeek)
-        sendMessagueAll("element-action", {
+        sendMessagueAll(PAGE_MESSAGE_TYPES.ELEMENT_ACTION, {
             action: 'seeked',
             status: 'sending',
             dataSeek: modeSeek == "back"
