@@ -13,3 +13,5 @@ https://github.com/essence-s/ahiseve/assets/52675872/a2b89bc7-de18-48df-9e24-784
 ## Funcionalidad 2
 Si no quieres ver la transmisión puedes también usar la extensión para seleccionar tu video que se sincronizara con el de todos
 
+https://github.com/essence-s/ahiseve/assets/52675872/1ec57540-1aa2-4cc8-9de4-750236900962
+
