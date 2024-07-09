@@ -14,7 +14,7 @@
     "@fontsource/poppins": "^5.0.13",
     "@types/react": "^18.2.51",
     "@types/react-dom": "^18.2.18",
-    "astro": "^4.10.3",
+    "astro": "^4.11.5",
     "peerjs": "^1.5.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
