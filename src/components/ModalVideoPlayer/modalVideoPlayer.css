@@ -26,4 +26,5 @@
 
 .modal-video-player__container-vp {
     flex: 1;
+    overflow: hidden;
 }
