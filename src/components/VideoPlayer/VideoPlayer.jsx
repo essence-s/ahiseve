@@ -35,7 +35,10 @@ export default function VideoPlayer() {
     return (
         <div className="video-player" ref={videoContainer}>
             <video ref={refVideoStreamu} ></video>
-            <PlaybackControls fullScreen={fullScreen}></PlaybackControls>
+            <PlaybackControls 
+            fullScreen={fullScreen}
+            videoContainer={videoContainer}
+            ></PlaybackControls>
         </div>
     )
 }

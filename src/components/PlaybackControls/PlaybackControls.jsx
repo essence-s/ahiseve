@@ -2,9 +2,10 @@ import './playbackControls.css'
 import { usePlayerStore } from "@/store/playerStore"
 import { usePeer } from "@/hook/usePeer"
 import { PAGE_MESSAGE_TYPES } from '../types.d'
+import { useEffect, useRef } from 'react'
 
 
-export default function PlaybackControls({ fullScreen }) {
+export default function PlaybackControls({ fullScreen, videoContainer }) {
 
     let { isPlaying, setIsPlaying, seekValue } = usePlayerStore(state => ({
         isPlaying: state.isPlaying, setIsPlaying: state.setIsPlaying, seekValue: state.seekValue
@@ -38,8 +39,25 @@ export default function PlaybackControls({ fullScreen }) {
         })
     }
 
+    let playbackControls = useRef()
+    useEffect(() => {
+        let timeout
+        let playbackControlsElement = playbackControls.current
+        videoContainer.current.addEventListener('mousemove', function () {
+            clearTimeout(timeout)
+            playbackControlsElement.style.opacity = '1'
+            timeout = setTimeout(function () {
+                playbackControlsElement.style.opacity = '0'
+            }, 2000)
+        })
+
+        return ()=>{
+            clearTimeout(timeout)
+        }
+    }, [])
+
     return (
-        <div className="playback-controls">
+        <div className="playback-controls" ref={playbackControls}>
 
             <button className="button-seek" onClick={() => handleSeek('back')}>
                 <svg
