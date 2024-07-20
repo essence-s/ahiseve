@@ -76,7 +76,7 @@
     /* height: 125px; */
     overflow: auto;
     /* padding: 0 10px; */
-    transition: 1s;
+    /* transition: 1s; */
     flex-wrap: wrap;
     justify-content: center;
 }
