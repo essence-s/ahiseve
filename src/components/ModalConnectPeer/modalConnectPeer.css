@@ -142,16 +142,24 @@
     }
 }
 
+@keyframes giveColor {
+    0% {
+        color: #bec1c500;
+    }
+
+    100% {
+        color: #cccccf;
+    }
+}
+
 @keyframes rotateIcon {
     0% {
-        color: #868c9700;
         transform: rotate(0deg);
         /* border: solid 1px #93ffb7; */
     }
 
     100% {
-        color: white;
         transform: rotate(360deg);
-        border: solid 1px #93ffb7;
+        /* border: solid 1px #93ffb7; */
     }
 }
