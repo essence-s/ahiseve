@@ -4,9 +4,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 20px;
+    gap: 6px;
     background: #fdfeff0d;
-    padding: 5px 12px;
+    padding: 6px 6px;
     width: min-content;
     border-radius: 12px;
     border: solid 1px #ffffff0f;
@@ -25,20 +25,26 @@
 .shared-screen {
     width: 45px;
     height: 45px;
-    /* border-radius: 15px; */
-    /* box-shadow: 2px 3px 0 #eb5858; */
+    border-radius: 15px;
+    /* box-shadow: 2px 3px 0 #eb5858;    */
+    /* border: 1px #eb585817 solid !important; */
     background: #d7333000;
     color: white;
+    transition: 0.2s ease-in;
+}
+
+.shared-screen:hover {
+    box-shadow: 1px 1px 0 #eb585849;
 }
 
 .call-close {
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 45px;
     padding: 8px;
     border: 1px solid #ff604917 !important;
     box-shadow: 2px 2px 0px 0px #00000017;
-    background: #ff3e3eeb;
-    color: #f0f2ff;
+    background: #63313169;
+    color: #ef8787;
 }
 
 .options-stream__connect {
@@ -47,4 +53,9 @@
     border: 1px #00ff550f solid !important;
     background: #0000000f;
     color: #90ffa4;
+    transition: 0.2s ease-in;
+}
+
+.options-stream__connect:hover {
+    box-shadow: 1px 1px 0 #00ff5559;
 }
