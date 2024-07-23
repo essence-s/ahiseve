@@ -30,7 +30,7 @@ export default function OptionStream({ infoStream }) {
             <ModalConnectPeer  {...{ isOpenModal, setIsOpenModal }}></ModalConnectPeer>
             {infoStream.isStream ?
                 <button className="call-close" onClick={handleCloseStream}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-screen-share-off">
+                    <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-screen-share-off">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                         <path d="M21 12v3a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1v-10a1 1 0 0 1 1 -1h9" />
                         <path d="M7 20l10 0" />
@@ -43,8 +43,8 @@ export default function OptionStream({ infoStream }) {
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="icon icon-tabler icon-tabler-device-imac-share"
-                        width="22"
-                        height="22"
+                        width="24"
+                        height="24"
                         viewBox="0 0 24 24"
                         strokeWidth="2"
                         stroke="currentColor"
