@@ -77,7 +77,23 @@ export const usePeerStore = create((set, get) => ({
 		//     host: "localhost",
 		//     port: 8080,
 		// })
-		let npeer = new Peer({});
+		let npeer = new Peer({
+			config: {
+				iceServers: [
+					{ url: 'stun:stun.l.google.com:19302' },
+					{ url: 'stun:stun1.l.google.com:19302' },
+					{
+						url: 'turn:turn.bistri.com:80',
+						username: 'homeo',
+						credential: 'homeo',
+					},
+				],
+			},
+			debug: 3,
+		});
+
+		console.log(npeer);
+		// let npeer = new Peer({});
 
 		get().setPeer(npeer);
 
