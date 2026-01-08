@@ -4,8 +4,8 @@ interface Props {
 }
 
 const { title } = Astro.props;
-import "@fontsource/poppins";
-import Toast from "@/components/Toast.astro";
+import '@fontsource/poppins';
+import Toast from '@/components/Toast.astro';
 // import { ViewTransitions } from "astro:transitions";
 ---
 
@@ -39,7 +39,7 @@ import Toast from "@/components/Toast.astro";
 				--circle-dash: #f1d84b52;
 
 				/* Tipografy */
-				--font-family: "Poppins";
+				--font-family: 'Poppins';
 				--font-size-default: 0.8rem;
 				--font-size-large: 1rem;
 				--font-size-small: 0.69rem;
@@ -65,10 +65,12 @@ import Toast from "@/components/Toast.astro";
 				background: #21282b;
 			}
 			body {
-				background: radial-gradient(
-					#452d4f 0%,
-					#21282b 37%,
-					#1c1c23 72%
+				/* background: radial-gradient(#452d4f 0%, #21282b 37%, #1c1c23 72%); */
+				background-image: linear-gradient(
+					to bottom right in oklab,
+					oklch(0.21 0.006 285.885) 0%,
+					rgb(0, 0, 0) 50%,
+					oklch(0.21 0.006 285.885) 100%
 				);
 				color: white;
 				font-family: var(--font-family), sans-serif;
