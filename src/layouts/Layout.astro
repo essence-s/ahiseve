@@ -67,18 +67,36 @@ import '../styles/global.css';
 			}
 			body {
 				/* background: radial-gradient(#452d4f 0%, #21282b 37%, #1c1c23 72%); */
-				background-image: linear-gradient(
+				/* background-image: linear-gradient(
 					to bottom right in oklab,
 					oklch(0.21 0.006 285.885) 0%,
 					rgb(0, 0, 0) 50%,
 					oklch(0.21 0.006 285.885) 100%
+				); */
+				/* background: #14101a; */
+				/* background: #150f1a; */
+				/* background-image: linear-gradient(
+					to bottom right in oklab,
+					#262129 0%,
+					#100c14 50%,
+					#262129 100%
+				); */
+				background-image: linear-gradient(
+					to bottom right in oklab,
+					oklch(25.049% 0.00762 297.196) 0%,
+					#15101a 50%,
+					oklch(25.049% 0.00762 297.196) 100%
 				);
+
 				color: white;
 				font-family: var(--font-family), sans-serif;
 				font-size: var(--font-size-default);
 				line-height: var(--line-height);
 				margin: 0;
 				padding: 0;
+				height: 100vh;
+				width: 100vw;
+				overflow: hidden;
 			}
 
 			h1 {
