@@ -1,33 +1,22 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { Copy, Check, ArrowRight, Users, Wifi } from 'lucide-react';
 import { usePeer } from '@/hook/usePeer';
-import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
+import { ArrowRight, Check, Copy, Users, Wifi } from 'lucide-react';
+import { useState } from 'react';
+import { twMerge } from 'tailwind-merge';
+import { Button } from '../ui/button';
 
-interface HomeScreenProps {
-  // peerId: string;
-  // isConnected: boolean;
-  onJoin: (code: string) => void;
-  onStart: () => void;
-}
-
-export function HomeScreen({
-  // peerId,
-  // isConnected,
-  onJoin,
-  onStart,
-}: HomeScreenProps) {
+export function HomeScreen() {
   const [copied, setCopied] = useState(false);
   const [joinCode, setJoinCode] = useState('');
   const [mode, setMode] = useState<'invite' | 'join'>('invite');
 
-  let { idPeer: peerId, createServer } = usePeer();
+  let { idPeer: peerId } = usePeer();
   const isConnected = !!peerId;
 
   const shareUrl =
     typeof window !== 'undefined'
-      ? `${window.location.origin}?room=${peerId}`
+      ? `${window.location.origin}/room=${peerId}`
       : '';
 
   const handleCopy = async () => {
@@ -38,24 +27,15 @@ export function HomeScreen({
 
   const handleJoin = () => {
     if (joinCode.trim().length >= 3) {
-      onJoin(joinCode.trim());
+      // onJoin(joinCode.trim());
     }
   };
-
-  useEffect(() => {
-    createServer();
-  }, []);
 
   return (
     <main className='relative h-screen w-screen overflow-hidden '>
       {/* bg-[#09090b] */}
       {/* Subtle gradient background */}
-      <Tooltip>
-        <TooltipTrigger>Hover</TooltipTrigger>
-        <TooltipContent>
-          <p>Add to library</p>
-        </TooltipContent>
-      </Tooltip>
+
       <div className='absolute inset-0'>
         <div className='absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-white/[0.02] rounded-full blur-[120px]' />
       </div>
@@ -148,28 +128,38 @@ export function HomeScreen({
                   </div>
                 </div>
 
-                <button
-                  onClick={onStart}
-                  disabled={!isConnected}
-                  className='w-full py-3 bg-white text-black font-medium text-sm rounded-xl hover:bg-white/90 disabled:opacity-30 disabled:cursor-not-allowed transition-all'
-                >
-                  Iniciar sala
-                </button>
+                <Button asChild>
+                  <a
+                    href={isConnected ? '/room' : undefined}
+                    className={twMerge(
+                      'w-full py-3 bg-white text-black font-medium text-sm rounded-xl transition-all h-auto',
+                      isConnected
+                        ? 'hover:bg-white/90'
+                        : 'opacity-30 cursor-not-allowed pointer-events-none'
+                    )}
+                  >
+                    Iniciar sala
+                  </a>
+                </Button>
               </div>
             )}
 
             {/* Join mode */}
             {mode === 'join' && (
               <div className='space-y-3'>
-                <input
-                  type='text'
-                  placeholder='Pegar código o enlace'
-                  value={joinCode}
-                  onChange={(e) => setJoinCode(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && handleJoin()}
-                  className='w-full px-4 py-3 bg-white/[0.02] border border-white/[0.06] rounded-xl text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-white/[0.15] transition-all'
-                />
-
+                <div className='flex-1 min-w-0'>
+                  <p className='invisible text-[10px] uppercase tracking-wider text-white/30 mb-0.5'>
+                    codigo
+                  </p>
+                  <input
+                    type='text'
+                    placeholder='Pegar código o enlace'
+                    value={joinCode}
+                    onChange={(e) => setJoinCode(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleJoin()}
+                    className='w-full px-4 py-3 bg-white/[0.02] border border-white/[0.06] rounded-xl text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-white/[0.15] transition-all'
+                  />
+                </div>
                 <button
                   onClick={handleJoin}
                   disabled={joinCode.length < 3}
