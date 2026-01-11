@@ -1,0 +1,10 @@
+---
+import { PeerConnection } from '@/components/PeerConnection/PeerConnection';
+import { RoomSession } from '@/components/RoomSession/RoomSession';
+import Layout from '@/layouts/Layout.astro';
+---
+
+<Layout title='Room'>
+  <PeerConnection client:load transition:persist />
+  <RoomSession client:load /></Layout
+>
