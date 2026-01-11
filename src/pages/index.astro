@@ -4,15 +4,16 @@ import { HomeScreen } from '@/components/HomeScreen/HomeScreen';
 import HowUse from '@/components/HowUse.astro';
 import InfoVideoElementExtension from '@/components/InfoVideoElementExtension.astro';
 import ModalVideoPlayer from '@/components/ModalVideoPlayer/ModalVideoPlayer';
-import BoxUsersStatus from '@/components/boxUsersStatus/BoxUsersStatus';
+import { PeerConnection } from '@/components/PeerConnection/PeerConnection';
 import Layout from '@/layouts/Layout.astro';
 ---
 
 <Layout title='Ahiseve'>
   <main>
+    <PeerConnection client:load transition:persist />
     <ModalVideoPlayer client:load />
     <!-- <BoxUsersStatus client:load /> -->
-    <HomeScreen client:load transition:persist />
+    <HomeScreen client:load />
 
     <HowUse />
     <BoxDownloadExtension />
