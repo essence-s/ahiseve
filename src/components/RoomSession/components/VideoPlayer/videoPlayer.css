@@ -1,0 +1,13 @@
+.video-player {
+  position: relative;
+  border-radius: 6px;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  /* cursor: pointer; */
+}
+
+.video-player video {
+  width: 100%;
+  height: 100%;
+}
