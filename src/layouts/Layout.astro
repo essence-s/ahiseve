@@ -4,7 +4,8 @@ interface Props {
 }
 
 const { title } = Astro.props;
-import '@fontsource/poppins';
+// import '@fontsource/poppins';
+import '@fontsource-variable/inter';
 import Toast from '@/components/Toast.astro';
 // import { ViewTransitions } from "astro:transitions";
 import '../styles/global.css';
@@ -42,7 +43,7 @@ import { ClientRouter } from 'astro:transitions';
         --circle-dash: #f1d84b52;
 
         /* Tipografy */
-        --font-family: 'Poppins';
+        --font-family: 'Inter Variable';
         --font-size-default: 0.8rem;
         --font-size-large: 1rem;
         --font-size-small: 0.69rem;
