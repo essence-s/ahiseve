@@ -13,7 +13,6 @@ import { useStreamStore } from '@/store/streamStore';
 import {
   Cast,
   Check,
-  ChevronLeft,
   Copy,
   LogOut,
   MessageCircle,
@@ -22,15 +21,11 @@ import {
   Users,
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { Chat } from './components/Chat';
+import { DetectedVideoSelector } from './components/DetectedVideoSelector/DetectedVideoSelector';
 import ModalVideoPlayer from './components/ModalVideoPlayer/ModalVideoPlayer';
 
 export function RoomSession() {
   const [copied, setCopied] = useState(false);
-  const [activeMethod, setActiveMethod] = useState<
-    'none' | 'file' | 'extension' | 'stream'
-  >('none');
-
   const [showChat, setShowChat] = useState(false);
   const {
     idPeer,
@@ -47,6 +42,7 @@ export function RoomSession() {
     infoStream: state.infoStream,
   }));
 
+  const [showVideoSelectorModal, setShowVideoSelectorModal] = useState(false);
   const containerFullScreen = useRef();
   const peerId = idPeer;
 
@@ -231,6 +227,12 @@ export function RoomSession() {
             </div>
           </div>
         </div>
+
+        {showVideoSelectorModal && (
+          <DetectedVideoSelector
+            onClose={() => setShowVideoSelectorModal(false)}
+          />
+        )}
 
         {/* <Chat showChat={showChat} setShowChat={setShowChat} /> */}
       </main>
