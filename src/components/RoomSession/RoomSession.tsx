@@ -79,9 +79,12 @@ export function RoomSession() {
     }
   };
 
-  const handleSelectOption = (optionId) => {
+  const handleSelectOption = async (optionId) => {
     if (optionId == 'stream') {
-      startStream();
+      const statusStartStream = await startStream();
+      if (statusStartStream.message) {
+        setShowVideoSelectorModal(true);
+      }
     } else {
       console.log('todavia no implementado');
     }
