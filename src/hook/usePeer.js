@@ -99,6 +99,7 @@ export function usePeer() {
           ...dataInfoStream,
         };
       });
+      return { message: true };
     } catch (err) {
       console.log('Error al obtener acceso a la pantalla:', err);
     }
