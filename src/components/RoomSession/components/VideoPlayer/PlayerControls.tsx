@@ -9,9 +9,8 @@ import {
   Maximize,
   Pause,
   Play,
-  Settings,
-  SkipBack,
-  SkipForward,
+  RotateCcw,
+  RotateCw,
   Volume2,
   VolumeX,
 } from 'lucide-react';
@@ -101,21 +100,24 @@ export function PlayerControls({ fullScreen }) {
               <Play className='w-4 h-4 ml-0.5' fill='currentColor' />
             )}
           </Button>
-
-          <Button
-            variant='ghost'
-            size='icon'
-            className='w-9 h-9 rounded-full text-white/40 hover:text-white/60 hover:bg-white/[0.05]'
-          >
-            <SkipBack className='w-4 h-4' />
-          </Button>
-          <Button
-            variant='ghost'
-            size='icon'
-            className='w-9 h-9 rounded-full text-white/40 hover:text-white/60 hover:bg-white/[0.05]'
-          >
-            <SkipForward className='w-4 h-4' />
-          </Button>
+          <div className='flex'>
+            <Button
+              variant='ghost'
+              size='icon'
+              className='w-9 h-9 rounded-full text-white/40 hover:text-white/60 hover:bg-white/[0.05]'
+            >
+              {/* <SkipBack className='w-4 h-4' /> */}
+              <RotateCcw className='w-4 h-4' />
+            </Button>
+            <Button
+              variant='ghost'
+              size='icon'
+              className='w-9 h-9 rounded-full text-white/40 hover:text-white/60 hover:bg-white/[0.05]'
+            >
+              {/* <SkipForward className='w-4 h-4' /> */}
+              <RotateCw className='w-4 h-4' />
+            </Button>
+          </div>
 
           <span className='text-xs text-white/40 font-mono ml-3'>
             {formatTime(currentTime)} / {formatTime(duration)}
@@ -145,18 +147,18 @@ export function PlayerControls({ fullScreen }) {
                   setVolume(v[0]);
                   setIsMuted(false);
                 }}
-                className='cursor-pointer'
+                className='cursor-pointer slider-no-thumb'
               />
             </div>
           </div>
 
-          <Button
+          {/* <Button
             variant='ghost'
             size='icon'
             className='w-9 h-9 rounded-full text-white/40 hover:text-white/60 hover:bg-white/[0.05]'
           >
             <Settings className='w-4 h-4' />
-          </Button>
+          </Button> */}
 
           <Button
             onClick={handleFullScreen}
