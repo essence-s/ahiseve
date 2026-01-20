@@ -102,7 +102,7 @@ export function RoomSession() {
   return (
     <TooltipProvider>
       <main
-        className='relative h-screen w-screen overflow-hidden'
+        className='relative h-dvh w-screen overflow-hidden'
         style={{ background: '#09090b' }}
         // style={{ background: '#09090bdb' }}
         // onMouseMove={handleMouseMove}
@@ -128,10 +128,12 @@ export function RoomSession() {
           <div className='flex items-center justify-between'>
             <button
               onClick={handleCopy}
-              className='group flex items-center gap-3 px-4 py-2 bg-white/[0.03] rounded-full border border-white/[0.08] hover:border-white/[0.15] transition-all'
+              className='group flex items-center gap-3 px-4 py-2 bg-white/[0.03] rounded-full border border-white/[0.08] hover:border-white/[0.15] transition-all text-left min-w-0 mr-5'
             >
               <div className='w-1.5 h-1.5 rounded-full bg-emerald-400' />
-              <span className='text-sm font-mono text-white/50'>{peerId}</span>
+              <span className='text-sm font-mono text-white/50 truncate flex-1'>
+                {peerId}
+              </span>
               <div className='w-px h-3 bg-white/10' />
               {copied ? (
                 <Check className='w-3.5 h-3.5 text-white/60' />
@@ -142,7 +144,7 @@ export function RoomSession() {
 
             <div className='flex items-center gap-1.5'>
               {/* Participants */}
-              <div className='flex items-center gap-2 px-3 py-2 bg-white/[0.03] rounded-full border border-white/[0.08]'>
+              <div className='flex items-center gap-2 px-3 py-2 bg-white/[0.03] rounded-full border border-white/[0.08] h-9'>
                 {connections.length > 0 && (
                   <div className='flex -space-x-1.5'>
                     {connections.map((p, i) => (
@@ -151,7 +153,7 @@ export function RoomSession() {
                           {/* <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-medium text-white/60 border border-[#09090b]"> */}
                           <div className='w-6 h-6 rounded-full bg-[#28282a] flex items-center justify-center text-[10px] font-medium text-white/60 border border-[#09090b]'>
                             {/* {p.name[0]} */}
-                            do
+                            {p.idPeer.slice(0, 2)}
                           </div>
                         </TooltipTrigger>
                         <TooltipContent side='bottom' className='text-xs'>
@@ -214,14 +216,15 @@ export function RoomSession() {
                 );
               })}
             </div>
-            <div className='flex gap-2'>
+            <div className='flex gap-2 flex-col sm:flex-row'>
               {methods.map((method) => (
                 <button
                   key={method.id}
                   onClick={() => handleSelectOption(method.id)}
                   className='group flex flex-col items-center gap-2.5 p-5 w-28 bg-white/[0.02] rounded-2xl border border-white/[0.06] hover:border-white/[0.12] hover:bg-white/[0.04] transition-all duration-300'
                 >
-                  <method.icon className='w-5 h-5 text-white/40 group-hover:text-white/60 transition-colors' />
+                  {/* <method.icon className='w-5 h-5 text-white/40 group-hover:text-white/60 transition-colors' /> */}
+                  <method.icon className='w-5 h-5 opacity-40 group-hover:opacity-55 transition-opacity' />
                   <span className='text-xs font-medium text-white/40 group-hover:text-white/60 transition-colors'>
                     {method.label}
                   </span>
