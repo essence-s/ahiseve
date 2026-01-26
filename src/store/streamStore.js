@@ -2,15 +2,8 @@ import { create } from 'zustand';
 
 export const useStreamStore = create((set, get) => ({
   streamL: '',
-  setStreamL: (stream) => set({ stream }),
-  getStreamL: () => get().stream,
-  //ref
-  refVideoStream: '',
-  getRefVideoStream: () => get().refVideoStream,
-  setRefVideoStream: (refVideoStream) => {
-    // console.log(refVideoStream)
-    set({ refVideoStream });
-  },
+  setStreamL: (streamL) => set({ streamL }),
+  getStreamL: () => get().streamL,
 
   //to improve
   startStreamStore: () => {

@@ -4,6 +4,7 @@ import { useStreamStore } from '@/store/streamStore';
 import { generateName } from '@/utils/functsGene';
 import { useState } from 'react';
 import { modalStore } from '../store/modalStore';
+import { usePlayerStore } from '@/store/playerStore';
 
 export function usePeer() {
   let {
@@ -21,6 +22,8 @@ export function usePeer() {
     sendMessagueAll,
     callF,
     exitPeerNetwork,
+    elementAction,
+    setElementAction,
   } = usePeerStore((state) => state);
 
   let {
@@ -55,6 +58,8 @@ export function usePeer() {
     setIsOpenModalVideoPlayer: state.setIsOpenModalVideoPlayer,
   }));
 
+  const { getPlayerInfo, setPlayerInfo } = usePlayerStore();
+
   let [nameUser, setNameUser] = useState(generateName());
 
   const createServer = async () => {
@@ -69,6 +74,8 @@ export function usePeer() {
       setIsOpenModalVideoPlayer(false);
     });
     on('streamCall', (stream, call) => {
+      console.log('busca playerINfo', call);
+      setPlayerInfo(call.metadata.playerInfo);
       addActiveStreamingUserCaptScreen(stream, call.peer, call.connectionId);
       setIsOpenModalVideoPlayer(true);
     });
@@ -145,21 +152,28 @@ export function usePeer() {
 
   const processIncomingData = (cmd, data, conn) => {
     if (cmd == PAGE_MESSAGE_TYPES.ELEMENT_ACTION) {
-      window.postMessage(
-        {
-          cmd: cmd,
-          data: {
-            ...data,
-            status: 'received',
+      if (getActiveStreamig().captScreen) {
+        // console.log('elementAction 2', data);
+        // setElementAction({ ...data });
+        setElementAction({ ...data });
+      } else {
+        window.postMessage(
+          {
+            cmd: cmd,
+            data: {
+              ...data,
+              status: 'received',
+            },
           },
-        },
-        '*'
-      );
+          '*'
+        );
+      }
 
       // console.log(data)
     } else if (cmd == 'viewStream') {
       console.log('el  id ' + conn.peer + ' pidio el stream');
-      callF(conn, getStreamL());
+      // console.log('apunto callF', getPlayerInfo());
+      callF(conn, getStreamL(), { playerInfo: getPlayerInfo() });
     } else if (cmd == 'addStreamingUsers') {
       console.log('info de user Obtenida');
       addStreamingUsers(conn.peer, { ...data });
@@ -191,5 +205,6 @@ export function usePeer() {
     sendMessagueAll,
     closeActiveStreamig,
     exitPeerNetwork,
+    elementAction,
   };
 }

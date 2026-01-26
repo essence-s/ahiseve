@@ -10,4 +10,10 @@ export const usePlayerStore = create((set, get) => ({
   containerFullScreen: null,
   setContainerFullScreen: (elementRef) =>
     set({ containerFullScreen: elementRef }),
+
+  playerInfo: {},
+  getPlayerInfo: () => get().playerInfo,
+  setPlayerInfo: (playerInfo) => {
+    set({ playerInfo });
+  },
 }));

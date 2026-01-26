@@ -9,6 +9,12 @@ export const usePeerStore = create((set, get) => ({
   setPeer: (npeer) => set({ peer: npeer }),
   getPeer: () => get().peer,
 
+  elementAction: {
+    action: '',
+    mediaCurrentTime: 0,
+  },
+  setElementAction: (state) => set({ elementAction: state }),
+
   connectionCallbacks: {
     openRecived: [],
     data: [],
@@ -74,9 +80,9 @@ export const usePeerStore = create((set, get) => ({
 
     let Peer = (await import('peerjs')).default;
     // let npeer = new Peer({
-    //     host: "localhost",
-    //     port: 8080,
-    // })
+    //   host: 'localhost',
+    //   port: 8080,
+    // });
     let npeer = new Peer({});
 
     get().setPeer(npeer);
@@ -379,8 +385,9 @@ export const usePeerStore = create((set, get) => ({
     }));
   },
 
-  callF: (conn, stream) => {
-    const call = get().getPeer().call(conn.peer, stream);
+  callF: (conn, stream, metadata) => {
+    // console.log(metadata);
+    const call = get().getPeer().call(conn.peer, stream, { metadata });
     console.log('se le envia el stream a ' + conn.peer);
     get().addCall(call, false, 'out');
 
