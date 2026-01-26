@@ -88,23 +88,6 @@ export function RoomSession() {
         {/* Main content */}
         <div className='relative flex items-center justify-center h-full'>
           <div className='flex flex-col items-center gap-6'>
-            <div className='box-users-transmitting'>
-              {Object.entries(streamingUsers).map(([key, value]: any) => {
-                return (
-                  value.isStream && (
-                    <div className='box-is-streaming' key={key}>
-                      {value.userStreaming} is transmitting
-                      <div
-                        className='box-is-streaming__button-view-streaming'
-                        onClick={() => viewStream(key)}
-                      >
-                        watch stream <span></span>
-                      </div>
-                    </div>
-                  )
-                );
-              })}
-            </div>
             <div className='flex gap-2 flex-col sm:flex-row'>
               {methods.map((method) => (
                 <button
