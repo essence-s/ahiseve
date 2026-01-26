@@ -4,6 +4,7 @@ import { PAGE_MESSAGE_TYPES } from '@/components/types.d';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { usePeer } from '@/hook/usePeer';
+import { formatTime } from '@/lib/utils';
 import { usePlayerStore } from '@/store/playerStore';
 import {
   Maximize,
@@ -14,27 +15,19 @@ import {
   Volume2,
   VolumeX,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export function PlayerControls({ fullScreen }) {
   // const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
-  const [duration] = useState(3600);
+  const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(80);
   const [isMuted, setIsMuted] = useState(false);
 
-  const { isPlaying, setIsPlaying, controlsVisible, setControlsVisible } =
+  const { isPlaying, setIsPlaying, controlsVisible, seekValue } =
     usePlayerStore();
-  let { sendMessagueAll } = usePeer();
-
-  const formatTime = (seconds: number) => {
-    const h = Math.floor(seconds / 3600);
-    const m = Math.floor((seconds % 3600) / 60);
-    const s = seconds % 60;
-    return h > 0
-      ? `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`
-      : `${m}:${s.toString().padStart(2, '0')}`;
-  };
+  let { sendMessagueAll, elementAction } = usePeer();
+  const { playerInfo } = usePlayerStore();
 
   const handlePauseOrPlay = (isPlaying: boolean) => {
     if (isPlaying) {
@@ -46,6 +39,7 @@ export function PlayerControls({ fullScreen }) {
 
   const handlePause = () => {
     setIsPlaying(false);
+    clear();
     sendMessagueAll(PAGE_MESSAGE_TYPES.ELEMENT_ACTION, {
       action: 'pause',
       status: 'sending',
@@ -53,10 +47,30 @@ export function PlayerControls({ fullScreen }) {
   };
   const handlePlay = () => {
     setIsPlaying(true);
+    addSetInterval();
     sendMessagueAll(PAGE_MESSAGE_TYPES.ELEMENT_ACTION, {
       action: 'play',
       status: 'sending',
     });
+  };
+
+  const handleSeek = (modeSeek: any) => {
+    // console.log(modeSeek)
+    sendMessagueAll(PAGE_MESSAGE_TYPES.ELEMENT_ACTION, {
+      action: 'seeked',
+      status: 'sending',
+      dataSeek:
+        modeSeek == 'back' ? parseInt(seekValue) * -1 : parseInt(seekValue),
+    });
+  };
+
+  const handleSeekCurrentTime = (v) => {
+    sendMessagueAll(PAGE_MESSAGE_TYPES.ELEMENT_ACTION, {
+      action: 'seeked',
+      status: 'sending',
+      mediaCurrentTime: v[0],
+    });
+    setCurrentTime(v[0]);
   };
 
   const handleFullScreen = () => {
@@ -67,6 +81,57 @@ export function PlayerControls({ fullScreen }) {
     //   status: 'sending',
     // });
   };
+
+  const intervalRef = useRef(null);
+
+  const clear = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  };
+
+  const addSetInterval = () => {
+    clear();
+    intervalRef.current = setInterval(() => {
+      setCurrentTime((prev) => {
+        if (prev >= duration) {
+          clear();
+          return prev;
+        }
+        return prev + 1;
+      });
+    }, 1000);
+  };
+
+  useEffect(() => {
+    // const intervalRef.current = intervalRef.current;
+
+    console.log('use effect element action', elementAction);
+    if (elementAction) {
+      if (elementAction.action == 'play') {
+        setIsPlaying(true);
+        addSetInterval();
+      } else if (elementAction.action == 'pause') {
+        setIsPlaying(false);
+        clear();
+      } else if (
+        elementAction.action == 'seeked' &&
+        elementAction.mediaCurrentTime
+      ) {
+        setCurrentTime(elementAction.mediaCurrentTime);
+        if (isPlaying) addSetInterval();
+      }
+    }
+
+    return () => clear();
+  }, [elementAction, duration]);
+
+  useEffect(() => {
+    if (playerInfo) {
+      setDuration(playerInfo.duration);
+    }
+  }, [playerInfo]);
 
   return (
     <div
@@ -81,7 +146,7 @@ export function PlayerControls({ fullScreen }) {
           value={[currentTime]}
           max={duration}
           step={1}
-          onValueChange={(v) => setCurrentTime(v[0])}
+          onValueChange={handleSeekCurrentTime}
           className='cursor-pointer'
         />
       </div>
@@ -102,6 +167,7 @@ export function PlayerControls({ fullScreen }) {
           </Button>
           <div className='flex'>
             <Button
+              onClick={() => handleSeek('back')}
               variant='ghost'
               size='icon'
               className='w-9 h-9 rounded-full text-white/40 hover:text-white/60 hover:bg-white/[0.05]'
@@ -110,6 +176,7 @@ export function PlayerControls({ fullScreen }) {
               <RotateCcw className='w-4 h-4' />
             </Button>
             <Button
+              onClick={() => handleSeek('next')}
               variant='ghost'
               size='icon'
               className='w-9 h-9 rounded-full text-white/40 hover:text-white/60 hover:bg-white/[0.05]'

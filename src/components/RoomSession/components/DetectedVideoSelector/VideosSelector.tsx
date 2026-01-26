@@ -1,6 +1,6 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { cn, formatTime } from '@/lib/utils';
 import { Check, Play } from 'lucide-react';
 import { useEffect } from 'react';
 import type { Video } from './types/detectedVideoSelector';
@@ -81,11 +81,11 @@ export function VideosSelector({
                       </span>
                     </div>
                     <div className='flex items-center justify-between'>
-                      {/* <div className='flex-1'>
+                      <div className='flex-1'>
                         <p className='text-[11px] font-medium text-white/90 text-left line-clamp-2'>
-                          {video.title}
+                          {formatTime(video.duration)}
                         </p>
-                      </div> */}
+                      </div>
                       <Play
                         className='w-3.5 h-3.5 text-white/80 ml-1 flex-shrink-0'
                         fill='currentColor'

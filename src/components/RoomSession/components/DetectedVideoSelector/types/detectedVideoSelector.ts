@@ -8,4 +8,6 @@ export type Tab = {
 export type Video = {
   img: string;
   number: string;
+  duration: number;
+  frameId: number;
 };
