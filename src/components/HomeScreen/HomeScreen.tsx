@@ -16,7 +16,7 @@ export function HomeScreen() {
 
   const shareUrl =
     typeof window !== 'undefined'
-      ? `${window.location.origin}/room=${peerId}`
+      ? `${window.location.origin}/room?invite=${peerId}`
       : '';
 
   const handleCopy = async () => {
