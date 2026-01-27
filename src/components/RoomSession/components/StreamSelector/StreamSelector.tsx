@@ -38,8 +38,9 @@ export function StreamSelector({
         {/* Header */}
         <div className='p-4 sm:p-6 border-b border-white/[0.08] flex items-center justify-between'>
           <div className='flex items-center gap-2'>
-            <div className='w-2 h-2 rounded-full bg-emerald-500 animate-pulse' />
-            <h2 className='text-lg sm:text-xl font-semibold text-white'>
+            {/* <div className='w-2 h-2 rounded-full bg-emerald-500 animate-pulse' /> */}
+
+            <h2 className='text-xs sm:text-sm font-medium text-white/90 truncate'>
               Transmisiones activas
             </h2>
             <span className='text-xs sm:text-sm text-white/50'>
