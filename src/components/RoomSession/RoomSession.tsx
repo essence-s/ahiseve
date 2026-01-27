@@ -74,7 +74,7 @@ export function RoomSession() {
         />
 
         {/* Top bar */}
-        <TopBar />
+        <TopBar setShowVideoSelectorModal={setShowVideoSelectorModal} />
 
         {/* Main content */}
         <div className='relative flex items-center justify-center h-full'>

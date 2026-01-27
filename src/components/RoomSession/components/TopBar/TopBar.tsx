@@ -9,11 +9,11 @@ import {
 import { usePeer } from '@/hook/usePeer';
 import { usePlayerStore } from '@/store/playerStore';
 import { useStreamStore } from '@/store/streamStore';
-import { Check, Copy, LogOut, Radio, Users } from 'lucide-react';
+import { Check, Copy, LogOut, Puzzle, Radio, Users } from 'lucide-react';
 import { useState } from 'react';
 import { StreamSelector } from '../StreamSelector/StreamSelector';
 
-export function TopBar() {
+export function TopBar({ setShowVideoSelectorModal }) {
   const [copied, setCopied] = useState(false);
   // const [showChat, setShowChat] = useState(false);
   const { idPeer, connections } = usePeer();
@@ -108,6 +108,26 @@ export function TopBar() {
               )}
               <Users className='w-3.5 h-3.5 text-white/30' />
             </div>
+
+            {/* Video Selector Button */}
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className='relative'>
+                  <Button
+                    variant='ghost'
+                    size='icon'
+                    onClick={() => setShowVideoSelectorModal(true)}
+                    className='w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/[0.03] text-white/40 hover:text-white/60 border border-white/[0.08] transition-colors'
+                    title='Seleccionar Video'
+                  >
+                    <Puzzle className='w-3.5 h-3.5 sm:w-4 sm:h-4' />
+                  </Button>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent side='bottom' className='text-xs'>
+                Seleccionar Video
+              </TooltipContent>
+            </Tooltip>
 
             {/* Stream Button */}
             <Tooltip>
