@@ -3,7 +3,6 @@
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { usePeer } from '@/hook/usePeer';
 import { usePlayerStore } from '@/store/playerStore';
-import { useStreamStore } from '@/store/streamStore';
 import { Cast, MonitorPlay, Upload } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { DetectedVideoSelector } from './components/DetectedVideoSelector/DetectedVideoSelector';
@@ -11,13 +10,8 @@ import ModalVideoPlayer from './components/ModalVideoPlayer/ModalVideoPlayer';
 import { TopBar } from './components/TopBar/TopBar';
 
 export function RoomSession() {
-  const { idPeer, connectPeer, startStream, viewStream } = usePeer();
+  const { idPeer, connectPeer, startStream } = usePeer();
   const { setContainerFullScreen } = usePlayerStore();
-
-  let { streamingUsers, infoStream } = useStreamStore((state) => ({
-    streamingUsers: state.streamingUsers,
-    infoStream: state.infoStream,
-  }));
 
   const [showVideoSelectorModal, setShowVideoSelectorModal] = useState(false);
   const containerFullScreen = useRef();
@@ -62,15 +56,12 @@ export function RoomSession() {
   useEffect(() => {
     setContainerFullScreen(containerFullScreen);
   }, []);
-  // console.log(connections);
 
   return (
     <TooltipProvider>
       <main
         className='relative h-dvh w-screen overflow-hidden'
         style={{ background: '#09090b' }}
-        // style={{ background: '#09090bdb' }}
-        // onMouseMove={handleMouseMove}
         ref={containerFullScreen}
       >
         <ModalVideoPlayer />
