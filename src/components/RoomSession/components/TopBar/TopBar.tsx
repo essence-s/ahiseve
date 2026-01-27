@@ -117,7 +117,7 @@ export function TopBar({ setShowVideoSelectorModal }) {
                     variant='ghost'
                     size='icon'
                     onClick={() => setShowVideoSelectorModal(true)}
-                    className='w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/[0.03] text-white/40 hover:text-white/60 border border-white/[0.08] transition-colors'
+                    className='w-9 h-9 rounded-full bg-white/[0.03] text-white/40 hover:text-white/60 border border-white/[0.08] transition-colors'
                     title='Seleccionar Video'
                   >
                     <Puzzle className='w-3.5 h-3.5 sm:w-4 sm:h-4' />
