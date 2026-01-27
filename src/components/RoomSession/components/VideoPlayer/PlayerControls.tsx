@@ -104,11 +104,20 @@ export function PlayerControls() {
   const handleFullScreen = () => {
     const doc: any = document;
     const elem: any = containerFullScreen.current;
+    const orientation = (screen as any).orientation;
 
     if (doc.fullscreenElement || doc.webkitFullscreenElement) {
       (doc.exitFullscreen ?? doc.webkitExitFullscreen).call(doc);
+
+      if (orientation && orientation.unlock) {
+        orientation.unlock();
+      }
     } else {
       (elem.requestFullscreen ?? elem.webkitRequestFullscreen).call(elem);
+
+      if (orientation && orientation.lock) {
+        orientation.lock('landscape').catch(() => {});
+      }
     }
   };
 
