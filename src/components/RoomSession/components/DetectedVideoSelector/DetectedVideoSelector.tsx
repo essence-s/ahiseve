@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react';
 import { TabsSelector } from './TabsSelector';
 import { VideosSelector } from './VideosSelector';
 import type { Tab, Video } from './types/detectedVideoSelector';
-import { usePlayerStore } from '@/store/playerStore';
 
 type StreamModalProps = {
   onClose: () => void;
@@ -18,7 +17,6 @@ export function DetectedVideoSelector({ onClose }: StreamModalProps) {
   const [videos, setVideos] = useState<Video[]>([]);
   const [selectedTab, setSelectedTab] = useState<Tab | null>(null);
   const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
-  const { setPlayerInfo } = usePlayerStore();
 
   const handleTabSelect = (tab: Tab) => {
     setSelectedTab(tab);
@@ -49,9 +47,6 @@ export function DetectedVideoSelector({ onClose }: StreamModalProps) {
         frameId: selectedVideo.frameId,
       };
 
-      setPlayerInfo({
-        duration: selectedVideo.duration,
-      });
       window.postMessage(
         {
           cmd: PAGE_MESSAGE_TYPES.ADD_EVENTS_ELEMENT,

@@ -74,7 +74,6 @@ export function usePeer() {
       setIsOpenModalVideoPlayer(false);
     });
     on('streamCall', (stream, call) => {
-      console.log('busca playerINfo', call);
       setPlayerInfo(call.metadata.playerInfo);
       addActiveStreamingUserCaptScreen(stream, call.peer, call.connectionId);
       setIsOpenModalVideoPlayer(true);
@@ -173,7 +172,25 @@ export function usePeer() {
     } else if (cmd == 'viewStream') {
       console.log('el  id ' + conn.peer + ' pidio el stream');
       // console.log('apunto callF', getPlayerInfo());
-      callF(conn, getStreamL(), { playerInfo: getPlayerInfo() });
+
+      window.addEventListener(
+        'message',
+        function (event) {
+          let { cmd, data } = event.data;
+          if (cmd == PAGE_MESSAGE_TYPES.RESULT_VIDEO_INFO) {
+            callF(conn, getStreamL(), { playerInfo: data });
+          }
+        },
+        false
+      );
+
+      window.postMessage(
+        {
+          cmd: PAGE_MESSAGE_TYPES.GET_VIDEO_INFO,
+          data: '',
+        },
+        '*'
+      );
     } else if (cmd == 'addStreamingUsers') {
       console.log('info de user Obtenida');
       addStreamingUsers(conn.peer, { ...data });
