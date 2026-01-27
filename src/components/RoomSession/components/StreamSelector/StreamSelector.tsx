@@ -32,6 +32,11 @@ export function StreamSelector({
   }));
   const { viewStream } = usePeer();
 
+  const handleViewStream = (key: any) => {
+    viewStream(key);
+    onClose();
+  };
+
   return (
     <div className='fixed inset-0 bg-black/50 backdrop-blur-sm z-10 flex items-center justify-center p-4'>
       <div className='w-full max-w-2xl max-h-[90vh] bg-[#09090b] rounded-2xl border border-white/[0.08] overflow-hidden flex flex-col animate-in fade-in-0 duration-300'>
@@ -71,7 +76,7 @@ export function StreamSelector({
                     <button
                       key={key}
                       // onClick={() => handleSelectBroadcast(broadcast)}
-                      onClick={() => viewStream(key)}
+                      onClick={() => handleViewStream(key)}
                       className={`group relative rounded-xl overflow-hidden transition-all duration-300 ${
                         selectedId === key
                           ? 'ring-2 ring-white/30 scale-105'
