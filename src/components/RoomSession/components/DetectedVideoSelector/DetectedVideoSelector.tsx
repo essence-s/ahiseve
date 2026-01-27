@@ -37,8 +37,6 @@ export function DetectedVideoSelector({ onClose }: StreamModalProps) {
 
   const handleConfirm = () => {
     if (selectedVideo) {
-      console.log('video seleccionado :', selectedVideo);
-      console.log('tab seleccionado :', selectedTab);
       const selectedData = {
         number: selectedVideo.number,
         img: selectedVideo.img,
