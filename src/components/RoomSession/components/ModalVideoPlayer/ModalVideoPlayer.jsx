@@ -18,13 +18,9 @@ export default function ModalVideoPlayer() {
       return !state;
     });
   };
-
+  if (!isOpenModalVideoPlayer) return null;
   return (
-    <div
-      className={`modal-video-player ${
-        isOpenModalVideoPlayer ? 'open-modal-vp' : ''
-      }`}
-    >
+    <div className='modal-video-player animate-in fade-in-0 duration-300'>
       <VideoPlayer />
     </div>
   );
