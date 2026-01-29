@@ -207,6 +207,13 @@ export function PlayerControls() {
     };
   }, [skipFeedback]);
 
+  useEffect(() => {
+    return () => {
+      if (controlsTimeout.current) clearTimeout(controlsTimeout.current);
+      setControlsVisible(true);
+    };
+  }, []);
+
   // Detectar doble Click para saltos
   const handlePlayerClick = useCallback(
     (
