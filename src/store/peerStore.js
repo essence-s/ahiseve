@@ -78,18 +78,21 @@ export const usePeerStore = create((set, get) => ({
   createServerI: async () => {
     if (get().getPeer()) return;
 
+    let storedId = localStorage.getItem('myPeerId');
+
     let Peer = (await import('peerjs')).default;
     // let npeer = new Peer({
     //   host: 'localhost',
     //   port: 8080,
     // });
-    let npeer = new Peer({});
+    let npeer = new Peer(storedId, {});
 
     get().setPeer(npeer);
 
     npeer.on('open', function (id) {
       console.log('Peer creado: ' + id);
       get().setIdPeer(id);
+      localStorage.setItem('myPeerId', id);
     });
 
     npeer.on('connection', function (conn) {
