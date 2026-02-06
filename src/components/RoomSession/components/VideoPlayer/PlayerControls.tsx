@@ -51,8 +51,8 @@ export function PlayerControls() {
   let { sendMessagueAll, elementAction } = usePeer();
   const { playerInfo } = usePlayerStore();
 
-  const handlePauseOrPlay = (isPlaying: boolean) => {
-    if (isPlaying) {
+  const handlePauseOrPlay = (isPause: boolean) => {
+    if (isPause) {
       handlePlay();
     } else {
       handlePause();
@@ -213,6 +213,24 @@ export function PlayerControls() {
       setControlsVisible(true);
     };
   }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (document.activeElement?.tagName === 'BUTTON') {
+        return;
+      }
+      if (e.code === 'Space') {
+        e.preventDefault();
+        handlePauseOrPlay(!isPlaying);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isPlaying]);
 
   // Detectar doble Click para saltos
   const handlePlayerClick = useCallback(
