@@ -10,6 +10,7 @@ import Toast from '@/components/Toast.astro';
 // import { ViewTransitions } from "astro:transitions";
 import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
+import { PeerConnection } from '@/components/PeerConnection/PeerConnection';
 ---
 
 <html lang='en'>
@@ -24,6 +25,7 @@ import { ClientRouter } from 'astro:transitions';
     <ClientRouter />
   </head>
   <body class='dark'>
+    <PeerConnection client:load transition:persist />
     <slot />
     <Toast />
     <style is:global>

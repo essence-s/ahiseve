@@ -1,6 +1,6 @@
 'use client';
 
-import { usePeer } from '@/hook/usePeer';
+import { usePeerStore } from '@/store/peerStore';
 import { ArrowRight, Check, Copy, Users, Wifi } from 'lucide-react';
 import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
@@ -11,7 +11,7 @@ export function HomeScreen() {
   const [joinCode, setJoinCode] = useState('');
   const [mode, setMode] = useState<'invite' | 'join'>('invite');
 
-  let { idPeer: peerId } = usePeer();
+  const peerId = usePeerStore((state) => state.idPeer);
   const isConnected = !!peerId;
 
   const shareUrl =

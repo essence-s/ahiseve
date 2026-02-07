@@ -1,52 +1,22 @@
-import { PAGE_MESSAGE_TYPES } from '@/components/types.d';
 import { usePeerStore } from '@/store/peerStore';
 import { useStreamStore } from '@/store/streamStore';
 import { generateName } from '@/utils/functsGene';
 import { useState } from 'react';
-import { modalStore } from '../store/modalStore';
-import { usePlayerStore } from '@/store/playerStore';
 
 export function usePeer() {
-  let {
-    idPeer,
-    connections,
-    peer,
-    getPeer,
-    getConnections,
-    closeAndDeleteCall,
-    closeCallsOutput,
-    connectPeer,
-    on,
-    createServerI,
-    sendMessague,
-    sendMessagueAll,
-    callF,
-    exitPeerNetwork,
-    elementAction,
-    setElementAction,
-  } = usePeerStore((state) => state);
+  const getConnections = usePeerStore((state) => state.getConnections);
+  const closeAndDeleteCall = usePeerStore((state) => state.closeAndDeleteCall);
+  const closeCallsOutput = usePeerStore((state) => state.closeCallsOutput);
+  const sendMessague = usePeerStore((state) => state.sendMessague);
 
-  let {
-    getStreamL,
-    infoStream,
+  const {
     setInfoStream,
-    getInfoStream,
-    addStreamingUsers,
-    deleteStreamingUser,
-    addActiveStreamingUserCaptScreen,
     getActiveStreamig,
     setNullActiveStreamingUserCaptScreen,
     startStreamStore,
     stopStreamingStore,
   } = useStreamStore((state) => ({
-    setStreamL: state.setStreamL,
-    getStreamL: state.getStreamL,
-    infoStream: state.infoStream,
     setInfoStream: state.setInfoStream,
-    getInfoStream: state.getInfoStream,
-    addStreamingUsers: state.addStreamingUsers,
-    deleteStreamingUser: state.deleteStreamingUser,
-    addActiveStreamingUserCaptScreen: state.addActiveStreamingUserCaptScreen,
     getActiveStreamig: state.getActiveStreamig,
     setNullActiveStreamingUserCaptScreen:
       state.setNullActiveStreamingUserCaptScreen,
@@ -54,32 +24,7 @@ export function usePeer() {
     stopStreamingStore: state.stopStreamingStore,
   }));
 
-  let { setIsOpenModalVideoPlayer } = modalStore((state) => ({
-    setIsOpenModalVideoPlayer: state.setIsOpenModalVideoPlayer,
-  }));
-
-  const { getPlayerInfo, setPlayerInfo } = usePlayerStore();
-
   let [nameUser, setNameUser] = useState(generateName());
-
-  const createServer = async () => {
-    on('openRecived', (conn) => {
-      sendMessague([{ conn: conn }], 'addStreamingUsers', getInfoStream());
-    });
-    on('data', processIncomingData);
-    on('close', (conn) => {
-      deleteStreamingUser(conn.peer);
-    });
-    on('closeCall', () => {
-      setIsOpenModalVideoPlayer(false);
-    });
-    on('streamCall', (stream, call) => {
-      setPlayerInfo(call.metadata.playerInfo);
-      addActiveStreamingUserCaptScreen(stream, call.peer, call.connectionId);
-      setIsOpenModalVideoPlayer(true);
-    });
-    createServerI();
-  };
 
   //to improve
   const startStream = async () => {
@@ -122,8 +67,6 @@ export function usePeer() {
   };
 
   const viewStream = (idPeer) => {
-    // let peerUserMaster = findConnection()
-    // console.log(idPeer)
     let dataFind = getConnections().find(
       (connection) => connection.idPeer == idPeer
     );
@@ -149,56 +92,7 @@ export function usePeer() {
     closeCallsOutput();
   };
 
-  const processIncomingData = (cmd, data, conn) => {
-    if (cmd == PAGE_MESSAGE_TYPES.ELEMENT_ACTION) {
-      if (getActiveStreamig().captScreen) {
-        // console.log('elementAction 2', data);
-        // setElementAction({ ...data });
-        setElementAction({ ...data });
-      } else {
-        window.postMessage(
-          {
-            cmd: cmd,
-            data: {
-              ...data,
-              status: 'received',
-            },
-          },
-          '*'
-        );
-      }
-
-      // console.log(data)
-    } else if (cmd == 'viewStream') {
-      console.log('el  id ' + conn.peer + ' pidio el stream');
-      // console.log('apunto callF', getPlayerInfo());
-
-      window.addEventListener(
-        'message',
-        function (event) {
-          let { cmd, data } = event.data;
-          if (cmd == PAGE_MESSAGE_TYPES.RESULT_VIDEO_INFO) {
-            callF(conn, getStreamL(), { playerInfo: data });
-          }
-        },
-        false
-      );
-
-      window.postMessage(
-        {
-          cmd: PAGE_MESSAGE_TYPES.GET_VIDEO_INFO,
-          data: '',
-        },
-        '*'
-      );
-    } else if (cmd == 'addStreamingUsers') {
-      console.log('info de user Obtenida');
-      addStreamingUsers(conn.peer, { ...data });
-    }
-  };
-
   const closeActiveStreamig = () => {
-    // console.log(getActiveStreamig())
     let dataCaptScreen = getActiveStreamig().captScreen;
     if (dataCaptScreen) {
       let { idPeer, idCall } = dataCaptScreen;
@@ -208,20 +102,9 @@ export function usePeer() {
   };
 
   return {
-    idPeer,
-    connectPeer,
-    createServer,
-    connections,
     startStream,
-    infoStream,
-    peer,
-    getPeer,
-    getConnections,
     viewStream,
     stopStreaming,
-    sendMessagueAll,
     closeActiveStreamig,
-    exitPeerNetwork,
-    elementAction,
   };
 }

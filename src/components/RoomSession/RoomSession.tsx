@@ -8,9 +8,13 @@ import { useEffect, useRef, useState } from 'react';
 import { DetectedVideoSelector } from './components/DetectedVideoSelector/DetectedVideoSelector';
 import ModalVideoPlayer from './components/ModalVideoPlayer/ModalVideoPlayer';
 import { TopBar } from './components/TopBar/TopBar';
+import { usePeerStore } from '@/store/peerStore';
 
 export function RoomSession() {
-  const { idPeer, connectPeer, startStream } = usePeer();
+  const { startStream } = usePeer();
+  const idPeer = usePeerStore((state) => state.idPeer);
+  const connect = usePeerStore((state) => state.connect);
+
   const { setContainerFullScreen } = usePlayerStore();
 
   const [showVideoSelectorModal, setShowVideoSelectorModal] = useState(false);
@@ -28,7 +32,7 @@ export function RoomSession() {
     const inviteId = params.get('invite');
 
     if (inviteId && idPeer) {
-      connectPeer(inviteId, '', 'info')
+      connect(inviteId, '', 'info')
         .then(() => {
           console.log('conectado');
         })

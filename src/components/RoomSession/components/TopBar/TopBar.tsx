@@ -6,7 +6,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { usePeer } from '@/hook/usePeer';
+import { usePeerStore } from '@/store/peerStore';
 import { usePlayerStore } from '@/store/playerStore';
 import { useStreamStore } from '@/store/streamStore';
 import { Check, Copy, LogOut, Puzzle, Radio, Users } from 'lucide-react';
@@ -16,7 +16,9 @@ import { StreamSelector } from '../StreamSelector/StreamSelector';
 export function TopBar({ setShowVideoSelectorModal }) {
   const [copied, setCopied] = useState(false);
   // const [showChat, setShowChat] = useState(false);
-  const { idPeer, connections } = usePeer();
+  const idPeer = usePeerStore((state) => state.idPeer);
+  const connections = usePeerStore((state) => state.connections);
+
   const { controlsVisible } = usePlayerStore();
 
   const [showStreamSelector, setShowStreamSelector] = useState(false);
