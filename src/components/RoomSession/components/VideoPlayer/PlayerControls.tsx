@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { usePeer } from '@/hook/usePeer';
 import { formatTime } from '@/lib/utils';
+import { usePeerStore } from '@/store/peerStore';
 import { usePlayerStore } from '@/store/playerStore';
 import {
   Maximize,
@@ -34,6 +35,7 @@ export function PlayerControls() {
     setControlsVisible,
     seekValue,
     containerFullScreen,
+    playerInfo,
   } = usePlayerStore();
 
   const [skipFeedback, setSkipFeedback] = useState<'rewind' | 'forward' | null>(
@@ -48,8 +50,9 @@ export function PlayerControls() {
   const tapPosition = useRef({ x: 0, y: 0 });
   const playerRef = useRef<HTMLDivElement>(null);
 
-  let { sendMessagueAll, elementAction } = usePeer();
-  const { playerInfo } = usePlayerStore();
+  // let { sendMessagueAll, elementAction } = usePeer();
+  const sendMessagueAll = usePeerStore((state) => state.sendMessagueAll);
+  const elementAction = usePeerStore((state) => state.elementAction);
 
   const handlePauseOrPlay = (isPause: boolean) => {
     if (isPause) {
