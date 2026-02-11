@@ -24,7 +24,7 @@ export function DetectedVideoSelector({ onClose }: StreamModalProps) {
     setVideos([]);
     window.postMessage(
       {
-        cmd: PAGE_MESSAGE_TYPES.GET_VIDEOS_DATA,
+        cmd: PAGE_MESSAGE_TYPES.DISPLAY_VIDEOS_ON_SELECTED_PAGE,
         data: { tabId: tab.id },
       },
       '*'
