@@ -14,6 +14,7 @@ export function PeerConnection() {
   const setConnect = usePeerStore((state) => state.setConnect);
   const addCall = usePeerStore((state) => state.addCall);
   const deleteConnection = usePeerStore((state) => state.deleteConnection);
+  const sendMessagueAll = usePeerStore((state) => state.sendMessagueAll);
 
   let {
     getStreamL,
@@ -119,6 +120,18 @@ export function PeerConnection() {
 
   useEffect(() => {
     createServer();
+    window.addEventListener(
+      'message',
+      function (event) {
+        let { cmd, data } = event.data;
+        if (cmd == PAGE_MESSAGE_TYPES.ELEMENT_ACTION) {
+          if (data.status == 'sending') {
+            sendMessagueAll(cmd, data);
+          }
+        }
+      },
+      false
+    );
   }, []);
 
   return null;
