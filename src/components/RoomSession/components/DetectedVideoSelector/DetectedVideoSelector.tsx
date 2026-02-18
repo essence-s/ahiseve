@@ -64,6 +64,26 @@ export function DetectedVideoSelector({ onClose }: StreamModalProps) {
     }
   };
 
+  const [isDetectorVideoEnabled, setIsDetectorVideoEnabled] = useState(false);
+  const toggleVideoDetector = () => {
+    if (isDetectorVideoEnabled) {
+      window.postMessage(
+        {
+          cmd: PAGE_MESSAGE_TYPES.DISABLE_VIDEO_DETECTOR,
+        },
+        '*'
+      );
+    } else {
+      window.postMessage(
+        {
+          cmd: PAGE_MESSAGE_TYPES.ENABLE_VIDEO_DETECTOR,
+        },
+        '*'
+      );
+    }
+    setIsDetectorVideoEnabled((prev) => !prev);
+  };
+
   useEffect(() => {
     const messageHandler = (event: MessageEvent) => {
       if (event.source != window) return;
@@ -78,6 +98,8 @@ export function DetectedVideoSelector({ onClose }: StreamModalProps) {
             return [...state, ...data];
           });
         }
+      } else if (cmd == PAGE_MESSAGE_TYPES.VIDEO_DETECTOR_STATUS) {
+        setIsDetectorVideoEnabled(data);
       }
     };
 
@@ -120,7 +142,18 @@ export function DetectedVideoSelector({ onClose }: StreamModalProps) {
         </div>
 
         <div className='flex-1 overflow-y-auto p-4 sm:p-5'>
-          {!selectedTab ? (
+          <p>
+            Cuando esta activo puedes ir ala pagina donde esta el video y
+            aparecera la interfaz que detecta el video
+          </p>
+          <p>cuando selecciones tu video la interfaz desaparecera</p>
+
+          <Button onClick={toggleVideoDetector}>
+            {isDetectorVideoEnabled
+              ? 'desactivar modo detector de Video'
+              : 'activar modo detector de Video'}
+          </Button>
+          {/* {!selectedTab ? (
             <TabsSelector
               tabs={tabs}
               onTabSelect={handleTabSelect}
@@ -133,7 +166,7 @@ export function DetectedVideoSelector({ onClose }: StreamModalProps) {
               onVideoSelect={handleVideoSelect}
               onConfirm={handleConfirm}
             />
-          )}
+          )} */}
         </div>
 
         <div className='border-t border-white/[0.06] p-3 sm:p-4 flex items-center justify-between'>
