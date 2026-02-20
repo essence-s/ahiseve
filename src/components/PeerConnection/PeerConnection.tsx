@@ -12,6 +12,7 @@ export function PeerConnection() {
   const setElementAction = usePeerStore((state) => state.setElementAction);
   const pushConnections = usePeerStore((state) => state.pushConnections);
   const setConnect = usePeerStore((state) => state.setConnect);
+  const setCall = usePeerStore((state) => state.setCall);
   const addCall = usePeerStore((state) => state.addCall);
   const deleteConnection = usePeerStore((state) => state.deleteConnection);
   const sendMessagueAll = usePeerStore((state) => state.sendMessagueAll);
@@ -60,19 +61,21 @@ export function PeerConnection() {
       addCall(call, false, 'out');
     });
     peerNetwork.on('callRecived', (call) => {
+      // call.answer(getStreamL());
+      call.answer(getStreamL(), { playerInfo: 'probando' });
       addCall(call, true, 'in');
     });
     peerNetwork.on('closeCall', () => {
       setIsOpenModalVideoPlayer(false);
     });
     peerNetwork.on('streamCall', (stream, call) => {
-      setPlayerInfo(call.metadata.playerInfo);
+      // setPlayerInfo(call.metadata.playerInfo);
       addActiveStreamingUserCaptScreen(stream, call.peer, call.connectionId);
       setIsOpenModalVideoPlayer(true);
     });
     peerNetwork.init();
     setConnect(peerNetwork.connect);
-    // setCall(peerNetwork.callF);
+    setCall(peerNetwork.callF);
   };
 
   const processIncomingData = (cmd, data, conn) => {

@@ -8,6 +8,7 @@ export function usePeer() {
   const closeAndDeleteCall = usePeerStore((state) => state.closeAndDeleteCall);
   const closeCallsOutput = usePeerStore((state) => state.closeCallsOutput);
   const sendMessague = usePeerStore((state) => state.sendMessague);
+  const call = usePeerStore((state) => state.call);
 
   const {
     setInfoStream,
@@ -70,8 +71,11 @@ export function usePeer() {
     let dataFind = getConnections().find(
       (connection) => connection.idPeer == idPeer
     );
-    dataFind &&
-      dataFind.conn.send({ cmd: 'viewStream', data: { peer: idPeer } });
+    if (dataFind) {
+      call(dataFind.conn);
+    }
+    // dataFind &&
+    //   dataFind.conn.send({ cmd: 'viewStream', data: { peer: idPeer } });
   };
 
   const closeAllCallConnectionsOutput = () => {

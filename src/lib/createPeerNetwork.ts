@@ -36,12 +36,12 @@ export function createPeerNetwork() {
     });
 
     peer.on('call', (call) => {
-      call.answer();
-      addCall(call, true, 'in');
       emit('callRecived', call);
+      addCall(call, true, 'in');
       call.on('stream', async (stream) => {
-        console.log('recibiendo el stream');
-        emit('streamCall', stream, call);
+        // console.log('recibiendo el stream');
+        console.log('se establecio en stream');
+        // emit('streamCall', stream, call);
       });
 
       call.on('close', () => {
@@ -49,6 +49,7 @@ export function createPeerNetwork() {
         closeAndDeleteCall(call.peer, call.connectionId);
         emit('closeCall', call);
       });
+      // call.on('error', (error) => console.log('error en call', error));
     });
 
     peer.on('error', (error) => console.log('error en peer', error));
@@ -332,13 +333,31 @@ export function createPeerNetwork() {
   };
 
   const callF = (conn, stream, metadata) => {
-    const call = peer.call(conn.peer, stream, { metadata });
-    console.log('se le envia el stream a ' + conn.peer);
+    const emptyStream = new MediaStream();
+    const call = peer.call(conn.peer, emptyStream, {
+      constraints: {
+        offerToReceiveAudio: true,
+        offerToReceiveVideo: true,
+      },
+    });
+    // const call = peer.call(conn.peer, emptyStream, {
+    //   sdpTransform: (sdp) => {
+    //     // Forzar el offerToReceiveAudio / Video en el SDP
+    //     return sdp.replace(/a=sendrecv/g, 'a=recvonly');
+    //   },
+    // });
+    // const call = peer.call(conn.peer, stream, { metadata });
+    console.log('call', call);
+    console.log('se hace la llamada a ' + conn.peer);
+    // console.log('se le envia el stream a ' + conn.peer);
     addCall(call, false, 'out');
     emit('callSend', call);
 
     call.on('stream', (stream) => {
-      console.log('se establecio en stream');
+      // console.log('se establecio en stream');
+      console.log('recibiendo el stream');
+      console.log('call en stream', call);
+      emit('streamCall', stream, call);
     });
 
     call.on('close', () => {
