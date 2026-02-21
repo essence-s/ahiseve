@@ -13,10 +13,15 @@ export type RemoteStreamInfo = {
   stream: MediaStream;
 };
 
+export type StreamNotificationData = {
+  username: string;
+};
+
 export type StreamStoreState = {
   localStream: MediaStream | null;
   remoteStream: RemoteStreamInfo;
   availableStreamPeers: Record<PeerId, AvailableStreamPeerInfo>;
+  streamNotificationState: StreamNotificationData | null;
 };
 
 type StreamStoreActions = {
@@ -37,6 +42,9 @@ type StreamStoreActions = {
   getRemoteStream: () => RemoteStreamInfo;
   setRemoteStream: (info: RemoteStreamInfo) => void;
   clearRemoteStream: () => void;
+
+  showNotification: (data: StreamNotificationData) => void;
+  clearNotification: () => void;
 };
 
 export const useStreamStore = create<StreamStoreState & StreamStoreActions>(
@@ -44,6 +52,7 @@ export const useStreamStore = create<StreamStoreState & StreamStoreActions>(
     localStream: null,
     remoteStream: null,
     availableStreamPeers: {},
+    streamNotificationState: null,
 
     // Local Stream
     getLocalStream: () => get().localStream,
@@ -72,7 +81,10 @@ export const useStreamStore = create<StreamStoreState & StreamStoreActions>(
     // Remote Streams
     getRemoteStream: () => get().remoteStream,
     setRemoteStream: (info) => set({ remoteStream: info }),
-
     clearRemoteStream: () => set({ remoteStream: null }),
+
+    // Stream Notification
+    showNotification: (data) => set({ streamNotificationState: data }),
+    clearNotification: () => set({ streamNotificationState: null }),
   })
 );

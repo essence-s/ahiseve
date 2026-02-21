@@ -26,7 +26,7 @@ export function PeerConnection() {
   const setRemoteStream = useStreamStore((state) => state.setRemoteStream);
   const getRemoteStream = useStreamStore((state) => state.getRemoteStream);
   const clearRemoteStream = useStreamStore((state) => state.clearRemoteStream);
-
+  const showNotification = useStreamStore((state) => state.showNotification);
   const addAvailableStreamPeer = useStreamStore(
     (state) => state.addAvailableStreamPeer
   );
@@ -110,7 +110,8 @@ export function PeerConnection() {
       }
     } else if (cmd == 'addAvailableStreamPeer') {
       console.log('info addAvailableStreamPeer');
-      addAvailableStreamPeer(conn.peer, { ...data });
+      showNotification({ username: data.username });
+      addAvailableStreamPeer(conn.peer, data);
     } else if (cmd == 'removeAvailableStreamPeer') {
       console.log('info removeAvailableStreamPeer');
       removeAvailableStreamPeer(conn.peer);

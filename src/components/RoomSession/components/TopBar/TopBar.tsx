@@ -12,6 +12,7 @@ import { useStreamStore } from '@/store/streamStore';
 import { Check, Copy, LogOut, Puzzle, RadioTower, Users } from 'lucide-react';
 import { useState } from 'react';
 import { StreamSelector } from '../StreamSelector/StreamSelector';
+import { StreamNotification } from '../StreamNotification';
 
 export function TopBar({ setShowVideoSelectorModal }) {
   const [copied, setCopied] = useState(false);
@@ -23,7 +24,10 @@ export function TopBar({ setShowVideoSelectorModal }) {
 
   const [showStreamSelector, setShowStreamSelector] = useState(false);
   // const [showStreamNotification, setShowStreamNotification] = useState(false);
-
+  const clearNotification = useStreamStore((state) => state.clearNotification);
+  const streamNotificationState = useStreamStore(
+    (state) => state.streamNotificationState
+  );
   const availableStreamPeers = useStreamStore(
     (state) => state.availableStreamPeers
   );
@@ -58,6 +62,13 @@ export function TopBar({ setShowVideoSelectorModal }) {
             setShowStreamSelector(false);
           }}
           onClose={() => setShowStreamSelector(false)}
+        />
+      )}
+
+      {streamNotificationState && (
+        <StreamNotification
+          username={streamNotificationState.username}
+          onClose={clearNotification}
         />
       )}
 

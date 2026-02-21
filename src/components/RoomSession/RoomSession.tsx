@@ -92,7 +92,7 @@ export function RoomSession() {
                 <div className='w-1 h-1 rounded-full bg-[#fff4d4ce]' />
               </div>
               <h2 className='text-3xl sm:text-4xl sm:leading-[1.14] font-bold text-white'>
-                Elige tu contenido
+                Elige un video
               </h2>
               <p className='text-sm sm:text-base text-white/60 max-w-lg mx-auto leading-relaxed'>
                 Selecciona desde la extensión de tu navegador o sube un video
