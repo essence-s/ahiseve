@@ -4,8 +4,6 @@ import { PAGE_MESSAGE_TYPES } from '@/components/types.d';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { TabsSelector } from './TabsSelector';
-import { VideosSelector } from './VideosSelector';
 import type { Tab, Video } from './types/detectedVideoSelector';
 
 type StreamModalProps = {
@@ -100,6 +98,18 @@ export function DetectedVideoSelector({ onClose }: StreamModalProps) {
         }
       } else if (cmd == PAGE_MESSAGE_TYPES.VIDEO_DETECTOR_STATUS) {
         setIsDetectorVideoEnabled(data);
+
+        // aprovechamos que video detector status solo llega cuando se elijio el video y pedimos informacion del video
+        // el resultado llega en el PeerConnection.tsx
+        if (data == false) {
+          window.postMessage(
+            {
+              cmd: PAGE_MESSAGE_TYPES.GET_VIDEO_INFO,
+              data: '',
+            },
+            '*'
+          );
+        }
       }
     };
 

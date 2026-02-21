@@ -114,6 +114,8 @@ export function PeerConnection() {
     } else if (cmd == 'removeAvailableStreamPeer') {
       console.log('info removeAvailableStreamPeer');
       removeAvailableStreamPeer(conn.peer);
+    } else if (cmd == PAGE_MESSAGE_TYPES.RESULT_VIDEO_INFO) {
+      setPlayerInfo(data);
     }
     //  else if (cmd == 'viewStream') {
     //   console.log('el  id ' + conn.peer + ' pidio el stream');
@@ -150,6 +152,8 @@ export function PeerConnection() {
           if (data.status == 'sending') {
             sendMessagueAll(cmd, data);
           }
+        } else if (cmd == PAGE_MESSAGE_TYPES.RESULT_VIDEO_INFO) {
+          sendMessagueAll(cmd, data);
         }
       },
       false
