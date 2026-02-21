@@ -15,6 +15,7 @@ export function usePeer() {
   const getLocalStream = useStreamStore((state) => state.getLocalStream);
   const getRemoteStream = useStreamStore((state) => state.getRemoteStream);
   const clearRemoteStream = useStreamStore((state) => state.clearRemoteStream);
+  const clearLocalStream = useStreamStore((state) => state.clearLocalStream);
 
   //to improve
   const startStream = async () => {
@@ -67,6 +68,7 @@ export function usePeer() {
       }
     } catch (error) {
       console.log('Error al obtener acceso a la pantalla:', error);
+      return { message: false };
     }
   };
 
@@ -98,7 +100,7 @@ export function usePeer() {
     sendMessague(getConnections(), 'removeAvailableStreamPeer', {
       username: user.username,
     });
-
+    clearLocalStream();
     closeCallsOutput();
   };
 
