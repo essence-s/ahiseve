@@ -43,6 +43,17 @@ export const usePeerStore = create<PeerStore>((set, get) => ({
     });
   },
 
+  sendMessageById: (peersId, cmd, message) => {
+    peersId.forEach((id) => {
+      get()
+        .connections.find((connection) => connection.idPeer == id)
+        .conn.send({
+          cmd: cmd,
+          data: message,
+        });
+    });
+  },
+
   connections: [],
   getConnections: () => get().connections,
   pushConnections: (connection) => {
@@ -204,6 +215,11 @@ type PeerStore = {
   sendMessagueAll: (cmd: string, messague: Record<string, any>) => void;
   sendMessague: (
     arrayConnections: { conn: ConnType }[],
+    cmd: string,
+    messague: Record<string, any>
+  ) => void;
+  sendMessageById: (
+    peersId: string[],
     cmd: string,
     messague: Record<string, any>
   ) => void;

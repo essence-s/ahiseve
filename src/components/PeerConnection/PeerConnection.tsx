@@ -116,6 +116,8 @@ export function PeerConnection() {
       removeAvailableStreamPeer(conn.peer);
     } else if (cmd == PAGE_MESSAGE_TYPES.RESULT_VIDEO_INFO) {
       setPlayerInfo(data);
+    } else if (cmd == PAGE_MESSAGE_TYPES.GET_VIDEO_INFO) {
+      window.postMessage({ cmd: PAGE_MESSAGE_TYPES.GET_VIDEO_INFO }, '*');
     }
     //  else if (cmd == 'viewStream') {
     //   console.log('el  id ' + conn.peer + ' pidio el stream');

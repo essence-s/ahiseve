@@ -1,7 +1,9 @@
 'use client';
 
+import { PAGE_MESSAGE_TYPES } from '@/components/types.d';
 import { Button } from '@/components/ui/button';
 import { usePeer } from '@/hook/usePeer';
+import { usePeerStore } from '@/store/peerStore';
 import { useStreamStore } from '@/store/streamStore';
 import { Radio, X } from 'lucide-react';
 import { useState } from 'react';
@@ -29,10 +31,13 @@ export function StreamSelector({
   const availableStreamPeers = useStreamStore(
     (state) => state.availableStreamPeers
   );
+  const sendMessageById = usePeerStore((state) => state.sendMessageById);
+
   const { viewStream } = usePeer();
 
-  const handleViewStream = (key: any) => {
-    viewStream(key);
+  const handleViewStream = (peerId: string) => {
+    viewStream(peerId);
+    sendMessageById([peerId], PAGE_MESSAGE_TYPES.GET_VIDEO_INFO, {});
     onClose();
   };
 
