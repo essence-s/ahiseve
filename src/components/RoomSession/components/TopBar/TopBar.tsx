@@ -9,7 +9,7 @@ import {
 import { usePeerStore } from '@/store/peerStore';
 import { usePlayerStore } from '@/store/playerStore';
 import { useStreamStore } from '@/store/streamStore';
-import { Check, Copy, LogOut, Puzzle, Radio, Users } from 'lucide-react';
+import { Check, Copy, LogOut, Puzzle, RadioTower, Users } from 'lucide-react';
 import { useState } from 'react';
 import { StreamSelector } from '../StreamSelector/StreamSelector';
 
@@ -117,7 +117,7 @@ export function TopBar({ setShowVideoSelectorModal }) {
                     variant='ghost'
                     size='icon'
                     onClick={() => setShowVideoSelectorModal(true)}
-                    className='w-9 h-9 rounded-full bg-white/[0.03] text-white/40 hover:text-white/60 border border-white/[0.08] transition-colors'
+                    className='w-9 h-9 rounded-full bg-[#ffd4e11a] text-[#ffd4e1ea] hover:text-[#ffd4e1] hover:bg-[#ffd4e134]! border border-[#ffd4e17c] transition-colors'
                     title='Seleccionar Video'
                   >
                     <Puzzle className='w-3.5 h-3.5 sm:w-4 sm:h-4' />
@@ -143,7 +143,7 @@ export function TopBar({ setShowVideoSelectorModal }) {
                         : 'bg-white/[0.03] text-white/40 hover:text-white/60 border-white/[0.08]'
                     }`}
                   >
-                    <Radio className='w-3.5 h-3.5 sm:w-4 sm:h-4 relative z-10' />
+                    <RadioTower className='w-3.5 h-3.5 sm:w-4 sm:h-4' />
                     {availableStreamPeersLength > 0 && (
                       <>
                         <div className='absolute inset-0 rounded-full bg-emerald-400/20 animate-pulse' />
