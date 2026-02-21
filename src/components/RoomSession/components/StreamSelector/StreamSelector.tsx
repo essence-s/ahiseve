@@ -26,10 +26,9 @@ export function StreamSelector({
 }: StreamSelectorProps) {
   const [broadcasts, setBroadcasts] = useState<Stream[]>();
   const [selectedId, setSelectedId] = useState<string | null>();
-  let { streamingUsers, infoStream } = useStreamStore((state) => ({
-    streamingUsers: state.streamingUsers,
-    infoStream: state.infoStream,
-  }));
+  const availableStreamPeers = useStreamStore(
+    (state) => state.availableStreamPeers
+  );
   const { viewStream } = usePeer();
 
   const handleViewStream = (key: any) => {
@@ -49,11 +48,7 @@ export function StreamSelector({
               Transmisiones activas
             </h2>
             <span className='text-xs sm:text-sm text-white/50'>
-              {
-                Object.entries(streamingUsers).map(
-                  ([_, user]: any) => user.isStream
-                ).length
-              }
+              {Object.entries(availableStreamPeers).length}
             </span>
           </div>
           <Button
@@ -68,63 +63,60 @@ export function StreamSelector({
 
         {/* Broadcasts Grid */}
         <div className='flex-1 overflow-y-auto p-4 sm:p-6'>
-          {Object.entries(streamingUsers).length > 0 ? (
+          {Object.entries(availableStreamPeers).length > 0 ? (
             <div className='grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4'>
-              {Object.entries(streamingUsers).map(
-                ([key, value]: any) =>
-                  value.isStream && (
-                    <button
-                      key={key}
-                      // onClick={() => handleSelectBroadcast(broadcast)}
-                      onClick={() => handleViewStream(key)}
-                      className={`group relative rounded-xl overflow-hidden transition-all duration-300 ${
-                        selectedId === key
-                          ? 'ring-2 ring-white/30 scale-105'
-                          : 'hover:ring-1 hover:ring-white/20'
-                      }`}
-                    >
-                      {/* Thumbnail */}
-                      <div className='aspect-video bg-white/[0.02] relative overflow-hidden'>
-                        <img
-                          // src={broadcast.thumbnail || '/placeholder.png'}
-                          src={'/placeholder.png'}
-                          alt={value.userStreaming}
-                          className='w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity'
-                        />
-                        <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent' />
+              {Object.entries(availableStreamPeers).map(([key, value]) => (
+                <button
+                  key={key}
+                  // onClick={() => handleSelectBroadcast(broadcast)}
+                  onClick={() => handleViewStream(key)}
+                  className={`group relative rounded-xl overflow-hidden transition-all duration-300 ${
+                    selectedId === key
+                      ? 'ring-2 ring-white/30 scale-105'
+                      : 'hover:ring-1 hover:ring-white/20'
+                  }`}
+                >
+                  {/* Thumbnail */}
+                  <div className='aspect-video bg-white/[0.02] relative overflow-hidden'>
+                    <img
+                      // src={broadcast.thumbnail || '/placeholder.png'}
+                      src={'/placeholder.png'}
+                      alt={value.username}
+                      className='w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity'
+                    />
+                    <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent' />
 
-                        {/* Live badge */}
-                        <div className='absolute top-2 left-2 flex items-center gap-1.5 px-2 py-1 bg-emerald-500/20 border border-emerald-500/40 rounded-full'>
-                          <div className='w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse' />
-                          <span className='text-[10px] sm:text-xs font-medium text-emerald-400'>
-                            EN VIVO
-                          </span>
-                        </div>
+                    {/* Live badge */}
+                    <div className='absolute top-2 left-2 flex items-center gap-1.5 px-2 py-1 bg-emerald-500/20 border border-emerald-500/40 rounded-full'>
+                      <div className='w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse' />
+                      <span className='text-[10px] sm:text-xs font-medium text-emerald-400'>
+                        EN VIVO
+                      </span>
+                    </div>
 
-                        {/* Selection indicator */}
-                        {/* {selectedId === broadcast.id && (
+                    {/* Selection indicator */}
+                    {/* {selectedId === broadcast.id && (
                           <div className='absolute top-2 right-2 w-6 h-6 rounded-full bg-white/10 border border-white/30 flex items-center justify-center'>
                             <div className='w-3 h-3 rounded-full bg-white' />
                           </div>
                         )} */}
 
-                        {/* Info overlay */}
-                        <div className='absolute bottom-0 left-0 right-0 p-2 sm:p-3'>
-                          <div className='flex items-center justify-between mt-1'>
-                            <div className='flex items-center gap-1.5 min-w-0'>
-                              <div className='w-4 h-4 rounded-full bg-white/20 flex-shrink-0 flex items-center justify-center text-[10px] font-medium text-white/80'>
-                                {value.userStreaming[0]}
-                              </div>
-                              <span className='text-[10px] sm:text-xs text-white/70 truncate'>
-                                {value.userStreaming}
-                              </span>
-                            </div>
+                    {/* Info overlay */}
+                    <div className='absolute bottom-0 left-0 right-0 p-2 sm:p-3'>
+                      <div className='flex items-center justify-between mt-1'>
+                        <div className='flex items-center gap-1.5 min-w-0'>
+                          <div className='w-4 h-4 rounded-full bg-white/20 flex-shrink-0 flex items-center justify-center text-[10px] font-medium text-white/80'>
+                            {value.username[0]}
                           </div>
+                          <span className='text-[10px] sm:text-xs text-white/70 truncate'>
+                            {value.username}
+                          </span>
                         </div>
                       </div>
-                    </button>
-                  )
-              )}
+                    </div>
+                  </div>
+                </button>
+              ))}
             </div>
           ) : (
             <div className='flex flex-col items-center justify-center py-8 text-center'>

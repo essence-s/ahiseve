@@ -45,9 +45,9 @@ export function createPeerNetwork() {
       });
 
       call.on('close', () => {
-        console.log('se cerro la conexion de la llamada , user');
+        console.log('se cerro la conexion de la llamada que se recibio');
         closeAndDeleteCall(call.peer, call.connectionId);
-        emit('closeCall', call);
+        // emit('closeCall', call);
       });
       // call.on('error', (error) => console.log('error en call', error));
     });
@@ -347,7 +347,7 @@ export function createPeerNetwork() {
     //   },
     // });
     // const call = peer.call(conn.peer, stream, { metadata });
-    console.log('call', call);
+    // console.log('call', call);
     console.log('se hace la llamada a ' + conn.peer);
     // console.log('se le envia el stream a ' + conn.peer);
     addCall(call, false, 'out');
@@ -356,13 +356,13 @@ export function createPeerNetwork() {
     call.on('stream', (stream) => {
       // console.log('se establecio en stream');
       console.log('recibiendo el stream');
-      console.log('call en stream', call);
       emit('streamCall', stream, call);
     });
 
     call.on('close', () => {
       closeAndDeleteCall(conn.peer, call.connectionId);
-      console.log('se cerro la llamada , server , llamada posterior');
+      emit('closeCall', call);
+      console.log('se cerro la llamada que se inicio');
     });
   };
 

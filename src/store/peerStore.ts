@@ -124,7 +124,8 @@ export const usePeerStore = create<PeerStore>((set, get) => ({
         return {
           ...connection,
           calls: connection.calls.filter((call) => {
-            if (call.inOrOut == 'out') {
+            if (call.inOrOut == 'in') {
+              // if (call.inOrOut == 'out') {
               call.call.close();
               return false;
             }

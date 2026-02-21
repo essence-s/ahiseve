@@ -3,8 +3,10 @@ import { modalStore } from '@/store/modalStore';
 import { usePeerStore } from '@/store/peerStore';
 import { usePlayerStore } from '@/store/playerStore';
 import { useStreamStore } from '@/store/streamStore';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { PAGE_MESSAGE_TYPES } from '../types.d';
+import { useUserStore } from '@/store/userStore';
+import { generateName } from '@/utils/functsGene';
 
 export function PeerConnection() {
   const setIdPeer = usePeerStore((state) => state.setIdPeer);
@@ -16,27 +18,27 @@ export function PeerConnection() {
   const addCall = usePeerStore((state) => state.addCall);
   const deleteConnection = usePeerStore((state) => state.deleteConnection);
   const sendMessagueAll = usePeerStore((state) => state.sendMessagueAll);
+  const closeAndDeleteCall = usePeerStore((state) => state.closeAndDeleteCall);
 
-  let {
-    getStreamL,
-    getInfoStream,
-    addStreamingUsers,
-    deleteStreamingUser,
-    addActiveStreamingUserCaptScreen,
-    getActiveStreamig,
-  } = useStreamStore((state) => ({
-    getStreamL: state.getStreamL,
-    getInfoStream: state.getInfoStream,
-    addStreamingUsers: state.addStreamingUsers,
-    deleteStreamingUser: state.deleteStreamingUser,
-    addActiveStreamingUserCaptScreen: state.addActiveStreamingUserCaptScreen,
-    getActiveStreamig: state.getActiveStreamig,
-  }));
+  const [username, _] = useState(generateName());
+
+  const getLocalStream = useStreamStore((state) => state.getLocalStream);
+  const setRemoteStream = useStreamStore((state) => state.setRemoteStream);
+  const getRemoteStream = useStreamStore((state) => state.getRemoteStream);
+  const clearRemoteStream = useStreamStore((state) => state.clearRemoteStream);
+
+  const addAvailableStreamPeer = useStreamStore(
+    (state) => state.addAvailableStreamPeer
+  );
+  const removeAvailableStreamPeer = useStreamStore(
+    (state) => state.removeAvailableStreamPeer
+  );
 
   let { setIsOpenModalVideoPlayer } = modalStore((state) => ({
     setIsOpenModalVideoPlayer: state.setIsOpenModalVideoPlayer,
   }));
 
+  const setUser = useUserStore((state) => state.setUser);
   const { setPlayerInfo } = usePlayerStore();
   const peerNetwork = createPeerNetwork();
 
@@ -49,28 +51,40 @@ export function PeerConnection() {
       pushConnections(conn);
       if (status == 'sent') {
       } else {
-        sendMessague([{ conn }], 'addStreamingUsers', getInfoStream());
+        if (getLocalStream())
+          sendMessague([{ conn }], 'addAvailableStreamPeer', { username });
       }
     });
     peerNetwork.on('data', processIncomingData);
     peerNetwork.on('close', (conn) => {
       deleteConnection(conn.peer);
-      deleteStreamingUser(conn.peer);
+      removeAvailableStreamPeer(conn.peer);
+      // deleteStreamingUser(conn.peer);
     });
     peerNetwork.on('callSend', (call) => {
       addCall(call, false, 'out');
     });
     peerNetwork.on('callRecived', (call) => {
-      // call.answer(getStreamL());
-      call.answer(getStreamL(), { playerInfo: 'probando' });
+      call.answer(getLocalStream(), { playerInfo: 'probando' });
       addCall(call, true, 'in');
     });
-    peerNetwork.on('closeCall', () => {
+    peerNetwork.on('closeCall', (call) => {
       setIsOpenModalVideoPlayer(false);
+      // removeAvailableStreamPeer(call.peer);
+      clearRemoteStream();
     });
     peerNetwork.on('streamCall', (stream, call) => {
       // setPlayerInfo(call.metadata.playerInfo);
-      addActiveStreamingUserCaptScreen(stream, call.peer, call.connectionId);
+      // addActiveStreamingUserCaptScreen(stream, call.peer, call.connectionId);
+      if (getRemoteStream()) {
+        closeAndDeleteCall(getRemoteStream().peerId, getRemoteStream().callId);
+      }
+
+      setRemoteStream({
+        peerId: call.peer,
+        callId: call.connectionId,
+        stream: stream,
+      });
       setIsOpenModalVideoPlayer(true);
     });
     peerNetwork.init();
@@ -80,7 +94,7 @@ export function PeerConnection() {
 
   const processIncomingData = (cmd, data, conn) => {
     if (cmd == PAGE_MESSAGE_TYPES.ELEMENT_ACTION) {
-      if (getActiveStreamig().captScreen) {
+      if (getRemoteStream()) {
         setElementAction({ ...data });
       } else {
         window.postMessage(
@@ -94,34 +108,39 @@ export function PeerConnection() {
           '*'
         );
       }
-    } else if (cmd == 'viewStream') {
-      console.log('el  id ' + conn.peer + ' pidio el stream');
-
-      window.addEventListener(
-        'message',
-        function (event) {
-          let { cmd, data } = event.data;
-          if (cmd == PAGE_MESSAGE_TYPES.RESULT_VIDEO_INFO) {
-            peerNetwork.callF(conn, getStreamL(), { playerInfo: data });
-          }
-        },
-        false
-      );
-
-      window.postMessage(
-        {
-          cmd: PAGE_MESSAGE_TYPES.GET_VIDEO_INFO,
-          data: '',
-        },
-        '*'
-      );
-    } else if (cmd == 'addStreamingUsers') {
-      console.log('info de StreamingUsers');
-      addStreamingUsers(conn.peer, { ...data });
+    } else if (cmd == 'addAvailableStreamPeer') {
+      console.log('info addAvailableStreamPeer');
+      addAvailableStreamPeer(conn.peer, { ...data });
+    } else if (cmd == 'removeAvailableStreamPeer') {
+      console.log('info removeAvailableStreamPeer');
+      removeAvailableStreamPeer(conn.peer);
     }
+    //  else if (cmd == 'viewStream') {
+    //   console.log('el  id ' + conn.peer + ' pidio el stream');
+
+    //   window.addEventListener(
+    //     'message',
+    //     function (event) {
+    //       let { cmd, data } = event.data;
+    //       if (cmd == PAGE_MESSAGE_TYPES.RESULT_VIDEO_INFO) {
+    //         peerNetwork.callF(conn, getStreamL(), { playerInfo: data });
+    //       }
+    //     },
+    //     false
+    //   );
+
+    //   window.postMessage(
+    //     {
+    //       cmd: PAGE_MESSAGE_TYPES.GET_VIDEO_INFO,
+    //       data: '',
+    //     },
+    //     '*'
+    //   );
+    // }
   };
 
   useEffect(() => {
+    setUser({ username });
     createServer();
     window.addEventListener(
       'message',

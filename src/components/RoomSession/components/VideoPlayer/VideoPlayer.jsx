@@ -4,19 +4,17 @@ import { PlayerControls } from './PlayerControls';
 import './videoPlayer.css';
 
 export default function VideoPlayer() {
-  let { activeStreaming } = useStreamStore((state) => ({
-    activeStreaming: state.activeStreaming,
-  }));
+  const remoteStream = useStreamStore((state) => state.remoteStream);
 
   let refVideoStreamu = useRef();
 
   useEffect(() => {
-    refVideoStreamu.current.srcObject = activeStreaming.captScreen?.stream;
+    refVideoStreamu.current.srcObject = remoteStream.stream;
     let playPromise = refVideoStreamu.current.play();
     if (playPromise !== undefined) {
       playPromise.then((_) => {}).catch((error) => {});
     }
-  }, [activeStreaming]);
+  }, [remoteStream]);
 
   return (
     <div className='video-player'>
