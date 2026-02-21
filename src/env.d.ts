@@ -9,7 +9,7 @@ declare global {
       message: string;
       type?: string;
       location?: string;
-      icon?: string;
+      icon?: boolean;
       theme?: string;
       customIcon?: string;
       dismissable?: boolean;
