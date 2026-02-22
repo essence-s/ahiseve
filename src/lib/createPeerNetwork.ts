@@ -49,7 +49,7 @@ export function createPeerNetwork() {
         closeAndDeleteCall(call.peer, call.connectionId);
         // emit('closeCall', call);
       });
-      // call.on('error', (error) => console.log('error en call', error));
+      call.on('error', (error) => console.log('error en call', error));
     });
 
     peer.on('error', (error) => console.log('error en peer', error));
@@ -333,21 +333,19 @@ export function createPeerNetwork() {
   };
 
   const callF = (conn, stream, metadata) => {
-    const emptyStream = new MediaStream();
-    const call = peer.call(conn.peer, emptyStream, {
+    const options = {
       constraints: {
-        offerToReceiveAudio: true,
-        offerToReceiveVideo: true,
+        mandatory: {
+          OfferToReceiveAudio: true,
+          OfferToReceiveVideo: true,
+        },
+        offerToReceiveAudio: 1,
+        offerToReceiveVideo: 1,
       },
-    });
-    // const call = peer.call(conn.peer, emptyStream, {
-    //   sdpTransform: (sdp) => {
-    //     // Forzar el offerToReceiveAudio / Video en el SDP
-    //     return sdp.replace(/a=sendrecv/g, 'a=recvonly');
-    //   },
-    // });
-    // const call = peer.call(conn.peer, stream, { metadata });
-    // console.log('call', call);
+    };
+
+    const call = peer.call(conn.peer, new MediaStream(), options);
+
     console.log('se hace la llamada a ' + conn.peer);
     // console.log('se le envia el stream a ' + conn.peer);
     addCall(call, false, 'out');
@@ -364,6 +362,7 @@ export function createPeerNetwork() {
       emit('closeCall', call);
       console.log('se cerro la llamada que se inicio');
     });
+    call.on('error', (error) => console.log('error en call', error));
   };
 
   const exitPeerNetwork = () => {

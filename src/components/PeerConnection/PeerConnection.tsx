@@ -65,7 +65,8 @@ export function PeerConnection() {
       addCall(call, false, 'out');
     });
     peerNetwork.on('callRecived', (call) => {
-      call.answer(getLocalStream(), { playerInfo: 'probando' });
+      // console.log('call', call);
+      call.answer(getLocalStream());
       addCall(call, true, 'in');
     });
     peerNetwork.on('closeCall', (call) => {
@@ -74,18 +75,22 @@ export function PeerConnection() {
       clearRemoteStream();
     });
     peerNetwork.on('streamCall', (stream, call) => {
-      // setPlayerInfo(call.metadata.playerInfo);
-      // addActiveStreamingUserCaptScreen(stream, call.peer, call.connectionId);
-      if (getRemoteStream()) {
-        closeAndDeleteCall(getRemoteStream().peerId, getRemoteStream().callId);
+      const existing = getRemoteStream();
+
+      // Si ya hay uno y es de otro call cerramos la call
+      if (existing && existing.callId !== call.connectionId) {
+        closeAndDeleteCall(existing.peerId, existing.callId);
       }
 
-      setRemoteStream({
-        peerId: call.peer,
-        callId: call.connectionId,
-        stream: stream,
-      });
-      setIsOpenModalVideoPlayer(true);
+      // Solo registrar si no existe o es otro call
+      if (!existing || existing.callId !== call.connectionId) {
+        setRemoteStream({
+          peerId: call.peer,
+          callId: call.connectionId,
+          stream: stream,
+        });
+        setIsOpenModalVideoPlayer(true);
+      }
     });
     peerNetwork.init();
     setConnect(peerNetwork.connect);
