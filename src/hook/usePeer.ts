@@ -26,6 +26,9 @@ export function usePeer() {
         const stream = await navigator.mediaDevices.getDisplayMedia({
           video: {
             displaySurface: 'browser',
+            width: 1280,
+            height: 720,
+            frameRate: 30,
           },
           audio: {
             suppressLocalAudioPlayback: false,
