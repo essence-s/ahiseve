@@ -32,7 +32,7 @@ type PlayerStore = {
 const initialPlayerInfo: PlayerInfo = {
   number: '',
   currentTime: 0,
-  duration: 300,
+  duration: 0,
   paused: true,
   playbackRate: 1,
   volume: 1,

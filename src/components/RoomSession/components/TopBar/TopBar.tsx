@@ -6,29 +6,33 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { usePeer } from '@/hook/usePeer';
+import { usePeerStore } from '@/store/peerStore';
 import { usePlayerStore } from '@/store/playerStore';
 import { useStreamStore } from '@/store/streamStore';
-import { Check, Copy, LogOut, Puzzle, Radio, Users } from 'lucide-react';
+import { Check, Copy, LogOut, Puzzle, RadioTower, Users } from 'lucide-react';
 import { useState } from 'react';
 import { StreamSelector } from '../StreamSelector/StreamSelector';
+import { StreamNotification } from '../StreamNotification';
 
 export function TopBar({ setShowVideoSelectorModal }) {
   const [copied, setCopied] = useState(false);
   // const [showChat, setShowChat] = useState(false);
-  const { idPeer, connections } = usePeer();
+  const idPeer = usePeerStore((state) => state.idPeer);
+  const connections = usePeerStore((state) => state.connections);
+
   const { controlsVisible } = usePlayerStore();
 
   const [showStreamSelector, setShowStreamSelector] = useState(false);
   // const [showStreamNotification, setShowStreamNotification] = useState(false);
-  let { streamingUsers } = useStreamStore((state) => ({
-    streamingUsers: state.streamingUsers,
-  }));
-
-  const activeStream = Object.entries(streamingUsers).filter(
-    ([_, user]: any) => (user.isStream ? user : false)
+  const clearNotification = useStreamStore((state) => state.clearNotification);
+  const streamNotificationState = useStreamStore(
+    (state) => state.streamNotificationState
   );
-  const activeStreamLength = activeStream.length;
+  const availableStreamPeers = useStreamStore(
+    (state) => state.availableStreamPeers
+  );
+  const availableStreamPeersLength =
+    Object.entries(availableStreamPeers).length;
 
   const peerId = idPeer;
   const shareUrl =
@@ -58,6 +62,13 @@ export function TopBar({ setShowVideoSelectorModal }) {
             setShowStreamSelector(false);
           }}
           onClose={() => setShowStreamSelector(false)}
+        />
+      )}
+
+      {streamNotificationState && (
+        <StreamNotification
+          username={streamNotificationState.username}
+          onClose={clearNotification}
         />
       )}
 
@@ -117,7 +128,7 @@ export function TopBar({ setShowVideoSelectorModal }) {
                     variant='ghost'
                     size='icon'
                     onClick={() => setShowVideoSelectorModal(true)}
-                    className='w-9 h-9 rounded-full bg-white/[0.03] text-white/40 hover:text-white/60 border border-white/[0.08] transition-colors'
+                    className='w-9 h-9 rounded-full bg-[#ffd4e11a] text-[#ffd4e1ea] hover:text-[#ffd4e1] hover:bg-[#ffd4e134]! border border-[#ffd4e17c] transition-colors'
                     title='Seleccionar Video'
                   >
                     <Puzzle className='w-3.5 h-3.5 sm:w-4 sm:h-4' />
@@ -138,23 +149,23 @@ export function TopBar({ setShowVideoSelectorModal }) {
                     size='icon'
                     onClick={() => setShowStreamSelector(!showStreamSelector)}
                     className={`w-9! h-9! rounded-full border transition-all duration-300 relative overflow-hidden group ${
-                      activeStreamLength > 0
+                      availableStreamPeersLength > 0
                         ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/50 hover:border-emerald-400/80 hover:bg-emerald-500/30 shadow-lg shadow-emerald-500/20'
                         : 'bg-white/[0.03] text-white/40 hover:text-white/60 border-white/[0.08]'
                     }`}
                   >
-                    <Radio className='w-3.5 h-3.5 sm:w-4 sm:h-4 relative z-10' />
-                    {activeStreamLength > 0 && (
+                    <RadioTower className='w-3.5 h-3.5 sm:w-4 sm:h-4' />
+                    {availableStreamPeersLength > 0 && (
                       <>
                         <div className='absolute inset-0 rounded-full bg-emerald-400/20 animate-pulse' />
                         <div className='absolute -inset-4 rounded-full border border-emerald-400/30 group-hover:border-emerald-400/60 animate-pulse' />
                       </>
                     )}
                   </Button>
-                  {activeStreamLength > 0 && (
+                  {availableStreamPeersLength > 0 && (
                     <div className='absolute -top-1 -right-1 min-w-max'>
                       <span className='inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-emerald-500 rounded-full shadow-lg shadow-emerald-500/50 animate-bounce'>
-                        {activeStreamLength}
+                        {availableStreamPeersLength}
                       </span>
                     </div>
                   )}
@@ -163,13 +174,13 @@ export function TopBar({ setShowVideoSelectorModal }) {
               <TooltipContent
                 side='bottom'
                 className={`text-xs ${
-                  activeStreamLength > 0
+                  availableStreamPeersLength > 0
                     ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-200'
                     : ''
                 }`}
               >
-                {activeStreamLength > 0
-                  ? `${activeStreamLength} transmisiones activas`
+                {availableStreamPeersLength > 0
+                  ? `${availableStreamPeersLength} transmisiones activas`
                   : 'Sin transmisiones'}
               </TooltipContent>
             </Tooltip>

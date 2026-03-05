@@ -4,8 +4,6 @@ import { PAGE_MESSAGE_TYPES } from '@/components/types.d';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { TabsSelector } from './TabsSelector';
-import { VideosSelector } from './VideosSelector';
 import type { Tab, Video } from './types/detectedVideoSelector';
 
 type StreamModalProps = {
@@ -24,7 +22,7 @@ export function DetectedVideoSelector({ onClose }: StreamModalProps) {
     setVideos([]);
     window.postMessage(
       {
-        cmd: PAGE_MESSAGE_TYPES.GET_VIDEOS_DATA,
+        cmd: PAGE_MESSAGE_TYPES.DISPLAY_VIDEOS_ON_SELECTED_PAGE,
         data: { tabId: tab.id },
       },
       '*'
@@ -64,6 +62,26 @@ export function DetectedVideoSelector({ onClose }: StreamModalProps) {
     }
   };
 
+  const [isDetectorVideoEnabled, setIsDetectorVideoEnabled] = useState(false);
+  const toggleVideoDetector = () => {
+    if (isDetectorVideoEnabled) {
+      window.postMessage(
+        {
+          cmd: PAGE_MESSAGE_TYPES.DISABLE_VIDEO_DETECTOR,
+        },
+        '*'
+      );
+    } else {
+      window.postMessage(
+        {
+          cmd: PAGE_MESSAGE_TYPES.ENABLE_VIDEO_DETECTOR,
+        },
+        '*'
+      );
+    }
+    setIsDetectorVideoEnabled((prev) => !prev);
+  };
+
   useEffect(() => {
     const messageHandler = (event: MessageEvent) => {
       if (event.source != window) return;
@@ -77,6 +95,20 @@ export function DetectedVideoSelector({ onClose }: StreamModalProps) {
             if (!state) return;
             return [...state, ...data];
           });
+        }
+      } else if (cmd == PAGE_MESSAGE_TYPES.VIDEO_DETECTOR_STATUS) {
+        setIsDetectorVideoEnabled(data);
+
+        // aprovechamos que video detector status solo llega cuando se elijio el video y pedimos informacion del video
+        // el resultado llega en el PeerConnection.tsx
+        if (data == false) {
+          window.postMessage(
+            {
+              cmd: PAGE_MESSAGE_TYPES.GET_VIDEO_INFO,
+              data: '',
+            },
+            '*'
+          );
         }
       }
     };
@@ -120,7 +152,18 @@ export function DetectedVideoSelector({ onClose }: StreamModalProps) {
         </div>
 
         <div className='flex-1 overflow-y-auto p-4 sm:p-5'>
-          {!selectedTab ? (
+          <p>
+            Cuando esta activo puedes ir ala pagina donde esta el video y
+            aparecera la interfaz que detecta el video
+          </p>
+          <p>cuando selecciones tu video la interfaz desaparecera</p>
+
+          <Button onClick={toggleVideoDetector}>
+            {isDetectorVideoEnabled
+              ? 'desactivar modo detector de Video'
+              : 'activar modo detector de Video'}
+          </Button>
+          {/* {!selectedTab ? (
             <TabsSelector
               tabs={tabs}
               onTabSelect={handleTabSelect}
@@ -133,7 +176,7 @@ export function DetectedVideoSelector({ onClose }: StreamModalProps) {
               onVideoSelect={handleVideoSelect}
               onConfirm={handleConfirm}
             />
-          )}
+          )} */}
         </div>
 
         <div className='border-t border-white/[0.06] p-3 sm:p-4 flex items-center justify-between'>

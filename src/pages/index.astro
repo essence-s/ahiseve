@@ -3,13 +3,12 @@ import BoxDownloadExtension from '@/components/BoxDownloadExtension.astro';
 import { HomeScreen } from '@/components/HomeScreen/HomeScreen';
 import HowUse from '@/components/HowUse.astro';
 import InfoVideoElementExtension from '@/components/InfoVideoElementExtension.astro';
-import { PeerConnection } from '@/components/PeerConnection/PeerConnection';
 import Layout from '@/layouts/Layout.astro';
 ---
 
 <Layout title='Ahiseve'>
   <main>
-    <PeerConnection client:load transition:persist />
+    <!-- <PeerConnection client:load transition:persist /> -->
     <!-- <BoxUsersStatus client:load /> -->
     <HomeScreen client:load />
 
