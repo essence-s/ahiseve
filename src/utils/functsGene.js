@@ -23,16 +23,37 @@ export function availableBackground(arrayUser) {
   return available.length > 0 ? available[0] : getRandomColor();
 }
 
-//to improve
 export function generateName() {
-  const caracters =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let name = '';
+  const adjectives = [
+    'Happy',
+    'Fast',
+    'Strong',
+    'Clever',
+    'Brave',
+    'Calm',
+    'Bright',
+    'Quick',
+    'Kind',
+    'Bold',
+  ];
 
-  for (let i = 0; i < 6; i++) {
-    const indice = Math.floor(Math.random() * caracters.length);
-    name += caracters.charAt(indice);
-  }
+  const nouns = [
+    'Tiger',
+    'Wolf',
+    'Fox',
+    'Lion',
+    'Eagle',
+    'Bear',
+    'Hawk',
+    'Panda',
+    'Falcon',
+    'Rhino',
+  ];
 
-  return name;
+  const adjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+  const noun = nouns[Math.floor(Math.random() * nouns.length)];
+  // Generar un número aleatorio entre 0 y 999
+  const number = Math.floor(Math.random() * 1000);
+
+  return `${adjective}${noun}${number}`;
 }
