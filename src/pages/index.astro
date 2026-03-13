@@ -1,24 +1,12 @@
 ---
 import BoxDownloadExtension from '@/components/BoxDownloadExtension.astro';
-import { HomeScreen } from '@/components/HomeScreen/HomeScreen';
+import HomeScreen from '@/components/HomeScreen/HomeScreen.astro';
 import HowUse from '@/components/HowUse.astro';
-import InfoVideoElementExtension from '@/components/InfoVideoElementExtension.astro';
 import Layout from '@/layouts/Layout.astro';
 ---
 
 <Layout title='Ahiseve'>
-  <main>
-    <!-- <PeerConnection client:load transition:persist /> -->
-    <!-- <BoxUsersStatus client:load /> -->
-    <HomeScreen client:load />
-
-    <HowUse />
-    <BoxDownloadExtension />
-    <InfoVideoElementExtension />
-  </main>
+  <HomeScreen />
+  <HowUse />
+  <BoxDownloadExtension />
 </Layout>
-
-<style>
-  body {
-  }
-</style>
