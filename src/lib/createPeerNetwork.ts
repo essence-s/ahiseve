@@ -236,7 +236,7 @@ export function createPeerNetwork() {
 
   let tasks = [];
   const addTask = (task) => {
-    tasks = [tasks, task];
+    tasks.push(task);
   };
 
   const updateTask = (name, pendingPeer, data) => {
