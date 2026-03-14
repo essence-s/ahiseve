@@ -65,17 +65,9 @@ export function RoomSession() {
     <TooltipProvider>
       <main
         className='relative h-dvh w-screen overflow-hidden'
-        style={{ background: '#09090b' }}
         ref={containerFullScreen}
       >
         <ModalVideoPlayer />
-        <div
-          className='absolute inset-0 opacity-[0.015]'
-          style={{
-            backgroundImage: `radial-gradient(rgba(255,255,255,0.7) 1px, transparent 1px)`,
-            backgroundSize: '24px 24px',
-          }}
-        />
 
         {/* Top bar */}
         <TopBar setShowVideoSelectorModal={setShowVideoSelectorModal} />
@@ -84,13 +76,6 @@ export function RoomSession() {
         <div className='relative flex items-center justify-center h-full p-4 sm:p-6'>
           <div className='flex flex-col items-center gap-6 sm:gap-8 max-w-2xl'>
             <div className='text-center space-y-3'>
-              <div className='flex items-center justify-center gap-2 mb-1'>
-                <div className='w-1 h-1 rounded-full bg-[#ffd4e1ce]' />
-                <span className='text-xs sm:text-sm font-medium text-white/50 uppercase tracking-widest'>
-                  Comenzar
-                </span>
-                <div className='w-1 h-1 rounded-full bg-[#fff4d4ce]' />
-              </div>
               <h2 className='text-3xl sm:text-4xl sm:leading-[1.14] font-bold text-white'>
                 Elige un video
               </h2>
@@ -104,13 +89,7 @@ export function RoomSession() {
               {/* Opción 1: Extensión */}
               <button
                 onClick={() => setShowVideoSelectorModal(true)}
-                className='group relative flex flex-col items-center gap-3 p-6 sm:p-8 rounded-2xl overflow-hidden transition-all duration-300 hover:scale-105'
-                style={{
-                  background:
-                    'linear-gradient(135deg, rgba(255, 212, 225, 0.08) 0%, rgba(255, 212, 225, 0.02) 100%)',
-                  border: '1px solid rgba(255, 212, 225, 0.25)',
-                  boxShadow: 'inset 0 0 20px rgba(255, 212, 225, 0.02)',
-                }}
+                className='group relative flex flex-col items-center gap-3 p-6 sm:p-8 rounded-2xl overflow-hidden transition-all duration-300 hover:scale-105 bg-[#ffffff0a] border border-white/6'
               >
                 <div
                   className='absolute inset-0 opacity-0 group-hover:opacity-40 transition-opacity duration-300'
@@ -124,8 +103,7 @@ export function RoomSession() {
                   style={{
                     background:
                       'linear-gradient(135deg, #FFD4E1 0%, #F0D4E8 100%)',
-                    boxShadow:
-                      '0 6px 15px rgba(255, 212, 225, 0.15), 0 0 20px rgba(240, 212, 232, 0.08)',
+                    boxShadow: '0 2px 10px rgba(255, 212, 225, 0.10)',
                   }}
                 >
                   <Puzzle className='w-7 h-7 sm:w-8 sm:h-8 text-[#292529] drop-shadow-lg' />
@@ -144,13 +122,7 @@ export function RoomSession() {
               {/* Opción 2: Subir archivo */}
               <button
                 // onClick={handleFileSelected}
-                className='group relative flex flex-col items-center gap-3 p-6 sm:p-8 rounded-2xl overflow-hidden transition-all duration-300 hover:scale-105'
-                style={{
-                  background:
-                    'linear-gradient(135deg, rgba(255, 244, 212, 0.08) 0%, rgba(255, 244, 212, 0.02) 100%)',
-                  border: '1px solid rgba(255, 244, 212, 0.25)',
-                  boxShadow: 'inset 0 0 20px rgba(255, 244, 212, 0.02)',
-                }}
+                className='group relative flex flex-col items-center gap-3 p-6 sm:p-8 rounded-2xl overflow-hidden transition-all duration-300 hover:scale-105 bg-[#ffffff0a] border border-white/6'
               >
                 <div
                   className='absolute inset-0 opacity-0 group-hover:opacity-40 transition-opacity duration-300'
@@ -164,8 +136,7 @@ export function RoomSession() {
                   style={{
                     background:
                       'linear-gradient(135deg, #FFF4D4 0%, #FFE8B8 100%)',
-                    boxShadow:
-                      '0 6px 15px rgba(255, 244, 212, 0.15), 0 0 20px rgba(255, 232, 184, 0.08)',
+                    boxShadow: '0 2px 10px rgba(255, 244, 212, 0.10)',
                   }}
                 >
                   <Upload className='w-7 h-7 sm:w-8 sm:h-8 text-[#2b2825] drop-shadow-lg' />

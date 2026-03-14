@@ -5,24 +5,6 @@ import { YourName } from './YourName';
 ---
 
 <main class='relative h-screen w-screen overflow-hidden'>
-  {/* Subtle gradient background */}
-  <div class='absolute inset-0'>
-    <div
-      class='absolute top-0 left-1/2 -translate-x-1/2 w-200 h-100 bg-white/[0.02] rounded-full blur-[120px]'
-    >
-    </div>
-  </div>
-
-  {/* Dot pattern */}
-  <div
-    class='absolute inset-0 opacity-[0.4]'
-    style={{
-      backgroundImage: `radial-gradient(rgba(255,255,255,0.07) 1px, transparent 1px)`,
-      backgroundSize: '24px 24px',
-    }}
-  >
-  </div>
-
   {/* Content */}
   <div
     class='relative z-0 flex flex-col items-center justify-center h-full px-6'
@@ -39,7 +21,7 @@ import { YourName } from './YourName';
 
     {/* Main card */}
     <div class='w-full max-w-xs'>
-      <div class='bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5'>
+      <div class='bg-[#ffffff0a] border border-white/[0.06] rounded-2xl p-5'>
         <div class='flex justify-center mb-5'>
           <button
             class='flex items-center justify-center gap-2 text-sm font-medium text-white'

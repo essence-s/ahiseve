@@ -9,21 +9,22 @@ import {
 import { usePeerStore } from '@/store/peerStore';
 import { usePlayerStore } from '@/store/playerStore';
 import { useStreamStore } from '@/store/streamStore';
-import { Check, Copy, LogOut, Puzzle, RadioTower, Users } from 'lucide-react';
+import { useUserStore } from '@/store/userStore';
+import { LogOut, Puzzle, RadioTower, SquarePen, Users } from 'lucide-react';
 import { useState } from 'react';
-import { StreamSelector } from '../StreamSelector/StreamSelector';
+import { EditUsername } from '../EditUsername';
 import { StreamNotification } from '../StreamNotification';
+import { StreamSelector } from '../StreamSelector/StreamSelector';
 
 export function TopBar({ setShowVideoSelectorModal }) {
-  const [copied, setCopied] = useState(false);
-  // const [showChat, setShowChat] = useState(false);
-  const idPeer = usePeerStore((state) => state.idPeer);
   const connections = usePeerStore((state) => state.connections);
+  const user = useUserStore((state) => state.user);
 
   const { controlsVisible } = usePlayerStore();
 
   const [showStreamSelector, setShowStreamSelector] = useState(false);
-  // const [showStreamNotification, setShowStreamNotification] = useState(false);
+  const [showEditUsername, setShowEditUsername] = useState(false);
+
   const clearNotification = useStreamStore((state) => state.clearNotification);
   const streamNotificationState = useStreamStore(
     (state) => state.streamNotificationState
@@ -34,20 +35,11 @@ export function TopBar({ setShowVideoSelectorModal }) {
   const availableStreamPeersLength =
     Object.entries(availableStreamPeers).length;
 
-  const peerId = idPeer;
-  const shareUrl =
-    typeof window !== 'undefined'
-      ? `${window.location.origin}/room?invite=${peerId}`
-      : '';
-
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(shareUrl);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
   return (
     <>
+      {showEditUsername && (
+        <EditUsername onClose={() => setShowEditUsername(false)} />
+      )}
       {/* Broadcast Selector Modal */}
       {showStreamSelector && (
         <StreamSelector
@@ -71,9 +63,9 @@ export function TopBar({ setShowVideoSelectorModal }) {
           onClose={clearNotification}
         />
       )}
-
+      {/* bg-gradient-to-t from-transparent via-[#09090b]/80 to-[#09090b] */}
       <div
-        className={`absolute top-0 left-0 right-0 z-10 p-4 bg-gradient-to-t from-transparent via-[#09090b]/80 to-[#09090b] transition-all duration-500 ${
+        className={`absolute top-0 left-0 right-0 z-10 p-4  transition-all duration-500 ${
           controlsVisible
             ? 'opacity-100 translate-y-0'
             : 'opacity-0 -translate-y-4'
@@ -81,24 +73,20 @@ export function TopBar({ setShowVideoSelectorModal }) {
       >
         <div className='flex items-center justify-between'>
           <button
-            onClick={handleCopy}
-            className='group flex items-center gap-3 px-4 py-2 bg-white/[0.03] rounded-full border border-white/[0.08] hover:border-white/[0.15] transition-all text-left min-w-0 mr-5'
+            onClick={() => setShowEditUsername(true)}
+            className='group flex items-center gap-3 px-4 py-2 bg-white/3 rounded-full border border-white/8 hover:border-white/15 transition-all text-left min-w-0 mr-5'
           >
             <div className='w-1.5 h-1.5 rounded-full bg-emerald-400' />
-            <span className='text-sm font-mono text-white/50 truncate flex-1'>
-              {peerId}
+            <span className='md:text-sm text-xs font-mono text-white/50 truncate flex-1'>
+              {user?.username}
             </span>
             <div className='w-px h-3 bg-white/10' />
-            {copied ? (
-              <Check className='w-3.5 h-3.5 text-white/60' />
-            ) : (
-              <Copy className='w-3.5 h-3.5 text-white/30 group-hover:text-white/50 transition-colors' />
-            )}
+            <SquarePen className='w-3.5 h-3.5 text-white/60' />
           </button>
 
           <div className='flex items-center gap-1.5'>
             {/* Participants */}
-            <div className='flex items-center gap-2 px-3 py-2 bg-white/[0.03] rounded-full border border-white/[0.08] h-9'>
+            <div className='flex items-center gap-2 px-3 py-2 bg-white/3 rounded-full border border-white/8 h-9'>
               {connections.length > 0 && (
                 <div className='flex -space-x-1.5'>
                   {connections.map((p, i) => (
@@ -151,7 +139,7 @@ export function TopBar({ setShowVideoSelectorModal }) {
                     className={`w-9! h-9! rounded-full border transition-all duration-300 relative overflow-hidden group ${
                       availableStreamPeersLength > 0
                         ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/50 hover:border-emerald-400/80 hover:bg-emerald-500/30 shadow-lg shadow-emerald-500/20'
-                        : 'bg-white/[0.03] text-white/40 hover:text-white/60 border-white/[0.08]'
+                        : 'bg-white/3 text-white/40 hover:text-white/60 border-white/8'
                     }`}
                   >
                     <RadioTower className='w-3.5 h-3.5 sm:w-4 sm:h-4' />
@@ -204,7 +192,7 @@ export function TopBar({ setShowVideoSelectorModal }) {
               variant='ghost'
               size='icon'
               asChild
-              className='w-9 h-9 rounded-full bg-white/[0.03] text-white/40 hover:bg-white/[0.06] hover:text-white/60 border border-white/[0.08] transition-colors'
+              className='w-9 h-9 rounded-full bg-white/3 text-white/40 hover:bg-white/6 hover:text-white/60 border border-white/8 transition-colors'
             >
               <a href='/'>
                 <LogOut className='w-4 h-4' />
