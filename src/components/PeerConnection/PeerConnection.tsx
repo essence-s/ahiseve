@@ -20,8 +20,6 @@ export function PeerConnection() {
   const sendMessagueAll = usePeerStore((state) => state.sendMessagueAll);
   const closeAndDeleteCall = usePeerStore((state) => state.closeAndDeleteCall);
 
-  const [username, _] = useState(generateName());
-
   const getLocalStream = useStreamStore((state) => state.getLocalStream);
   const setRemoteStream = useStreamStore((state) => state.setRemoteStream);
   const getRemoteStream = useStreamStore((state) => state.getRemoteStream);
@@ -39,6 +37,7 @@ export function PeerConnection() {
   }));
 
   const setUser = useUserStore((state) => state.setUser);
+  const user = useUserStore((state) => state.user);
   const { setPlayerInfo } = usePlayerStore();
   const peerNetwork = createPeerNetwork();
 
@@ -52,7 +51,9 @@ export function PeerConnection() {
       if (status == 'sent') {
       } else {
         if (getLocalStream())
-          sendMessague([{ conn }], 'addAvailableStreamPeer', { username });
+          sendMessague([{ conn }], 'addAvailableStreamPeer', {
+            username: user.username,
+          });
       }
     });
     peerNetwork.on('data', processIncomingData);
@@ -150,6 +151,7 @@ export function PeerConnection() {
   };
 
   useEffect(() => {
+    const username = localStorage.getItem('username') || generateName();
     setUser({ username });
     createServer();
     window.addEventListener(
