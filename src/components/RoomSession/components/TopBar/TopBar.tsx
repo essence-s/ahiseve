@@ -15,10 +15,14 @@ import { useState } from 'react';
 import { EditUsername } from '../EditUsername';
 import { StreamNotification } from '../StreamNotification';
 import { StreamSelector } from '../StreamSelector/StreamSelector';
+import { modalStore } from '@/store/modalStore';
 
 export function TopBar({ setShowVideoSelectorModal }) {
   const connections = usePeerStore((state) => state.connections);
   const user = useUserStore((state) => state.user);
+  const isOpenModalVideoPlayer = modalStore(
+    (state) => state.isOpenModalVideoPlayer
+  );
 
   const { controlsVisible } = usePlayerStore();
 
@@ -63,9 +67,11 @@ export function TopBar({ setShowVideoSelectorModal }) {
           onClose={clearNotification}
         />
       )}
-      {/* bg-gradient-to-t from-transparent via-[#09090b]/80 to-[#09090b] */}
       <div
         className={`absolute top-0 left-0 right-0 z-10 p-4  transition-all duration-500 ${
+          isOpenModalVideoPlayer &&
+          'bg-linear-to-t from-transparent via-[#09090b]/80 to-[#09090b]'
+        } ${
           controlsVisible
             ? 'opacity-100 translate-y-0'
             : 'opacity-0 -translate-y-4'
@@ -92,7 +98,7 @@ export function TopBar({ setShowVideoSelectorModal }) {
                   {connections.map((p, i) => (
                     <Tooltip key={p.idPeer}>
                       <TooltipTrigger asChild>
-                        <div className='w-6 h-6 rounded-full bg-[#28282a] flex items-center justify-center text-[10px] font-medium text-white/60 border border-[#09090b]'>
+                        <div className='w-6 h-6 rounded-full bg-[#28282a] flex items-center justify-center text-[10px] font-medium text-white/60 border border-[#141218]'>
                           {/* {p.name[0]} */}
                           {p.idPeer.slice(0, 2)}
                         </div>
