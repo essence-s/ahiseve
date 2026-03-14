@@ -67,7 +67,6 @@ export function TopBar({ setShowVideoSelectorModal }) {
           onClose={clearNotification}
         />
       )}
-      {/* bg-gradient-to-t from-transparent via-[#09090b]/80 to-[#09090b] */}
       <div
         className={`absolute top-0 left-0 right-0 z-10 p-4  transition-all duration-500 ${
           isOpenModalVideoPlayer &&
@@ -99,7 +98,7 @@ export function TopBar({ setShowVideoSelectorModal }) {
                   {connections.map((p, i) => (
                     <Tooltip key={p.idPeer}>
                       <TooltipTrigger asChild>
-                        <div className='w-6 h-6 rounded-full bg-[#28282a] flex items-center justify-center text-[10px] font-medium text-white/60 border border-[#09090b]'>
+                        <div className='w-6 h-6 rounded-full bg-[#28282a] flex items-center justify-center text-[10px] font-medium text-white/60 border border-[#141218]'>
                           {/* {p.name[0]} */}
                           {p.idPeer.slice(0, 2)}
                         </div>

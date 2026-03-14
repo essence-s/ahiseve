@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { ChevronLeft, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import type { Tab, Video } from './types/detectedVideoSelector';
+import { Modal } from '../Modal';
 
 type StreamModalProps = {
   onClose: () => void;
@@ -128,42 +129,41 @@ export function DetectedVideoSelector({ onClose }: StreamModalProps) {
   }, []);
 
   return (
-    <div className='fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fadeIn'>
-      <div className='w-full max-w-xl sm:max-w-2xl max-h-[85vh] sm:max-h-[80vh] bg-[#09090b] border border-white/[0.08] rounded-2xl shadow-2xl overflow-hidden flex flex-col animate-slideUp'>
-        <div className='flex items-center justify-between p-4 sm:p-5 border-b border-white/[0.06]'>
-          <div className='flex-1 min-w-0'>
-            <h2 className='text-xs sm:text-sm font-medium text-white/90 truncate'>
-              {selectedTab ? 'Videos disponibles' : 'Selecciona una pestaña'}
-            </h2>
-            <p className='text-xs text-white/40 mt-1'>
-              {selectedTab
-                ? 'Elige el video a sincronizar'
-                : 'Elige en qué pestaña esta el video'}
-            </p>
-          </div>
-          <Button
-            variant='ghost'
-            size='icon'
-            onClick={onClose}
-            className='w-8 h-8 rounded-full text-white/40 hover:text-white/60 hover:bg-white/[0.05] transition-all duration-300 flex-shrink-0 ml-2'
-          >
-            <X className='w-4 h-4' />
-          </Button>
-        </div>
-
-        <div className='flex-1 overflow-y-auto p-4 sm:p-5'>
-          <p>
-            Cuando esta activo puedes ir ala pagina donde esta el video y
-            aparecera la interfaz que detecta el video
+    <Modal className='max-w-xl sm:max-w-2xl max-h-[85vh] sm:max-h-[80vh]'>
+      <div className='flex items-center justify-between p-4 sm:p-5 border-b border-white/[0.06]'>
+        <div className='flex-1 min-w-0'>
+          <h2 className='text-xs sm:text-sm font-medium text-white/90 truncate'>
+            {selectedTab ? 'Videos disponibles' : 'Selecciona una pestaña'}
+          </h2>
+          <p className='text-xs text-white/40 mt-1'>
+            {selectedTab
+              ? 'Elige el video a sincronizar'
+              : 'Elige en qué pestaña esta el video'}
           </p>
-          <p>cuando selecciones tu video la interfaz desaparecera</p>
+        </div>
+        <Button
+          variant='ghost'
+          size='icon'
+          onClick={onClose}
+          className='w-8 h-8 rounded-full text-white/40 hover:text-white/60 hover:bg-white/[0.05] transition-all duration-300 flex-shrink-0 ml-2'
+        >
+          <X className='w-4 h-4' />
+        </Button>
+      </div>
 
-          <Button onClick={toggleVideoDetector}>
-            {isDetectorVideoEnabled
-              ? 'desactivar modo detector de Video'
-              : 'activar modo detector de Video'}
-          </Button>
-          {/* {!selectedTab ? (
+      <div className='flex-1 overflow-y-auto p-4 sm:p-5'>
+        <p>
+          Cuando esta activo puedes ir ala pagina donde esta el video y
+          aparecera la interfaz que detecta el video
+        </p>
+        <p>cuando selecciones tu video la interfaz desaparecera</p>
+
+        <Button onClick={toggleVideoDetector}>
+          {isDetectorVideoEnabled
+            ? 'desactivar modo detector de Video'
+            : 'activar modo detector de Video'}
+        </Button>
+        {/* {!selectedTab ? (
             <TabsSelector
               tabs={tabs}
               onTabSelect={handleTabSelect}
@@ -177,20 +177,19 @@ export function DetectedVideoSelector({ onClose }: StreamModalProps) {
               onConfirm={handleConfirm}
             />
           )} */}
-        </div>
-
-        <div className='border-t border-white/[0.06] p-3 sm:p-4 flex items-center justify-between'>
-          <Button
-            variant='ghost'
-            size='sm'
-            onClick={handleBack}
-            className='flex items-center gap-1.5 text-xs text-white/40 hover:text-white/60 hover:bg-white/[0.05] transition-all duration-300'
-          >
-            <ChevronLeft className='w-3.5 h-3.5' />
-            {selectedTab ? 'Atrás' : 'Cerrar'}
-          </Button>
-        </div>
       </div>
-    </div>
+
+      <div className='border-t border-white/[0.06] p-3 sm:p-4 flex items-center justify-between'>
+        <Button
+          variant='ghost'
+          size='sm'
+          onClick={handleBack}
+          className='flex items-center gap-1.5 text-xs text-white/40 hover:text-white/60 hover:bg-white/[0.05] transition-all duration-300'
+        >
+          <ChevronLeft className='w-3.5 h-3.5' />
+          {selectedTab ? 'Atrás' : 'Cerrar'}
+        </Button>
+      </div>
+    </Modal>
   );
 }
