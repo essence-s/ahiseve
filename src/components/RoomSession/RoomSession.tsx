@@ -68,16 +68,6 @@ export function RoomSession() {
         ref={containerFullScreen}
       >
         <ModalVideoPlayer />
-        <div className='absolute inset-0'>
-          <div className='absolute top-50 left-1/2 -translate-x-1/2 w-120 h-120 bg-[#ffffff0c] rounded-full blur-[80px]'></div>
-        </div>
-        <div
-          className='absolute inset-0 opacity-[0.4]'
-          style={{
-            backgroundImage: `radial-gradient(rgba(255,255,255,0.07) 1px, transparent 1px)`,
-            backgroundSize: '24px 24px',
-          }}
-        ></div>
 
         {/* Top bar */}
         <TopBar setShowVideoSelectorModal={setShowVideoSelectorModal} />
@@ -99,7 +89,7 @@ export function RoomSession() {
               {/* Opción 1: Extensión */}
               <button
                 onClick={() => setShowVideoSelectorModal(true)}
-                className='group relative flex flex-col items-center gap-3 p-6 sm:p-8 rounded-2xl overflow-hidden transition-all duration-300 hover:scale-105 bg-[#ffffff0a] border border-white/[0.06]'
+                className='group relative flex flex-col items-center gap-3 p-6 sm:p-8 rounded-2xl overflow-hidden transition-all duration-300 hover:scale-105 bg-[#ffffff0a] border border-white/6'
               >
                 <div
                   className='absolute inset-0 opacity-0 group-hover:opacity-40 transition-opacity duration-300'
@@ -132,7 +122,7 @@ export function RoomSession() {
               {/* Opción 2: Subir archivo */}
               <button
                 // onClick={handleFileSelected}
-                className='group relative flex flex-col items-center gap-3 p-6 sm:p-8 rounded-2xl overflow-hidden transition-all duration-300 hover:scale-105 bg-[#ffffff0a] border border-white/[0.06]'
+                className='group relative flex flex-col items-center gap-3 p-6 sm:p-8 rounded-2xl overflow-hidden transition-all duration-300 hover:scale-105 bg-[#ffffff0a] border border-white/6'
               >
                 <div
                   className='absolute inset-0 opacity-0 group-hover:opacity-40 transition-opacity duration-300'
