@@ -3,10 +3,10 @@ import { modalStore } from '@/store/modalStore';
 import { usePeerStore } from '@/store/peerStore';
 import { usePlayerStore } from '@/store/playerStore';
 import { useStreamStore } from '@/store/streamStore';
-import { useEffect, useState } from 'react';
-import { PAGE_MESSAGE_TYPES } from '../types.d';
 import { useUserStore } from '@/store/userStore';
 import { generateName } from '@/utils/functsGene';
+import { useEffect } from 'react';
+import { PAGE_MESSAGE_TYPES } from '../types.d';
 
 export function PeerConnection() {
   const setIdPeer = usePeerStore((state) => state.setIdPeer);
@@ -37,7 +37,7 @@ export function PeerConnection() {
   }));
 
   const setUser = useUserStore((state) => state.setUser);
-  const user = useUserStore((state) => state.user);
+  const getUser = useUserStore((state) => state.getUser);
   const { setPlayerInfo } = usePlayerStore();
   const peerNetwork = createPeerNetwork();
 
@@ -52,7 +52,7 @@ export function PeerConnection() {
       } else {
         if (getLocalStream())
           sendMessague([{ conn }], 'addAvailableStreamPeer', {
-            username: user.username,
+            username: getUser().username,
           });
       }
     });
@@ -152,7 +152,8 @@ export function PeerConnection() {
 
   useEffect(() => {
     const username = localStorage.getItem('username') || generateName();
-    setUser({ username });
+    const newUser = { username };
+    setUser(newUser);
     createServer();
     window.addEventListener(
       'message',
