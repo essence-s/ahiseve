@@ -1,12 +1,12 @@
 ---
-import BoxDownloadExtension from '@/components/BoxDownloadExtension.astro';
+import BoxDownloadExtension from '@/components/BoxDownloadExtension';
 import HomeScreen from '@/components/HomeScreen/HomeScreen.astro';
-import HowUse from '@/components/HowUse.astro';
+import HowUse from '@/components/HowUse';
 import Layout from '@/layouts/Layout.astro';
 ---
 
 <Layout title='Ahiseve'>
   <HomeScreen />
-  <HowUse />
-  <BoxDownloadExtension />
+  <HowUse client:load />
+  <BoxDownloadExtension client:load />
 </Layout>
