@@ -1,10 +1,10 @@
+import { Modal } from '@/components/Modal/Modal';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ChevronLeft, X } from 'lucide-react';
-import { Modal } from './Modal';
 import { useUserStore } from '@/store/userStore';
-import { useState } from 'react';
 import { generateName } from '@/utils/functsGene';
+import { ChevronLeft, X } from 'lucide-react';
+import { useState } from 'react';
 
 type EditUsernameProps = {
   onClose: () => void;
@@ -30,7 +30,7 @@ export function EditUsername({ onClose }: EditUsernameProps) {
   };
 
   return (
-    <Modal className='max-w-100 max-h-[85vh] sm:max-h-[80vh]'>
+    <Modal className='max-w-100 max-h-[85vh] sm:max-h-[80vh]' onClose={onClose}>
       {/* Header */}
       <div className='flex items-center justify-between p-4 sm:p-5 border-b border-white/6'>
         <div className='flex-1 min-w-0'>
