@@ -1,5 +1,6 @@
 'use client';
 
+import { Modal } from '@/components/Modal/Modal';
 import { PAGE_MESSAGE_TYPES } from '@/components/types.d';
 import { Button } from '@/components/ui/button';
 import { usePeer } from '@/hook/usePeer';
@@ -7,7 +8,6 @@ import { usePeerStore } from '@/store/peerStore';
 import { useStreamStore } from '@/store/streamStore';
 import { Radio, X } from 'lucide-react';
 import { useState } from 'react';
-import { Modal } from '../Modal';
 
 interface Stream {
   id: string;
@@ -43,7 +43,7 @@ export function StreamSelector({
   };
 
   return (
-    <Modal>
+    <Modal onClose={onClose}>
       {/* Header */}
       <div className='p-4 sm:p-6 border-b border-white/[0.08] flex items-center justify-between'>
         <div className='flex items-center gap-2'>

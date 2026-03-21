@@ -1,10 +1,10 @@
 'use client';
 
+import { Modal } from '@/components/Modal/Modal';
 import { PAGE_MESSAGE_TYPES } from '@/components/types.d';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Modal } from '../Modal';
 
 type StreamModalProps = {
   onClose: () => void;
@@ -61,7 +61,7 @@ export function DetectedVideoSelector({ onClose }: StreamModalProps) {
   }, []);
 
   return (
-    <Modal className='max-w-xl max-h-[85vh] sm:max-h-[80vh]'>
+    <Modal className='max-w-xl max-h-[85vh] sm:max-h-[80vh]' onClose={onClose}>
       <div className='flex items-center justify-between p-4 sm:p-5 border-b border-white/6'>
         <div className='flex-1 min-w-0'>
           <h2 className='text-xs sm:text-sm font-medium text-white/90 truncate'>
