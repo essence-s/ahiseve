@@ -3,20 +3,19 @@
 ## Description
 ✨ :v version Beta para controlar y sincronizar un video. Se nesesita un Extension✨
 
-Puedes descargar la extension desde el repositorio [https://github.com/essence-s/media-element-selection-extension](https://github.com/essence-s/media-element-selection-extension) o desde la pagina web dandole al icono
-
-## Primera Funcionalidad
-Puedes compartir tu pantalla los demas amigos tendran la opcion de una barra que controla el video desde la pagina que se conectaron, el que transmite debe tener la extensión que da la opción de controlar el video. dejo un video o puedes verlo mas claro en el video de youtube [https://youtu.be/hO7fOd6jtgc](https://youtu.be/hO7fOd6jtgc)
+Puedes descargar la extension desde el repositorio [https://github.com/essence-s/ahiseve-extension/tree/dist](https://github.com/essence-s/ahiseve-extension/tree/dist)
 
 
+## Formas de Uso
+Los usuarios que se conectan a la sala tambien deben hacer lo mismo.
 
+### Opcion 1
+Puedes subir tu video o tener el link de tu video mp4(link del recurso de video).
 
-https://github.com/essence-s/ahiseve/assets/52675872/0d8663f3-a257-4365-9bf6-a10b4678d490
+### Opcion 2
+Puedes usar la extension para poder usar un video de una pagina web externa , la extension te permite seleccionar el video de la pagina externa y usarlo para sincronizar.
 
-
-
-## Funcionalidad 2
-Si no quieres ver la transmisión puedes también usar la extensión para seleccionar tu video que se sincronizara con el de todos
-
-https://github.com/essence-s/ahiseve/assets/52675872/1ec57540-1aa2-4cc8-9de4-750236900962
+### Adicional 
+Puedes compartir tu pantalla si el otro usuario no uso un video subido o no selecciono el video con la extension el usuario tendra algo parecido a controles de un reproductor.
+El transmitir video no es estable no se recomienda esta opcion si no es local en tu propia casa con tu misma red wifi
 
