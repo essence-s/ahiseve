@@ -10,6 +10,8 @@ import { useEffect, useRef, useState } from 'react';
 import { DetectedVideoSelector } from './components/DetectedVideoSelector/DetectedVideoSelector';
 import ModalVideoPlayer from './components/ModalVideoPlayer/ModalVideoPlayer';
 import { TopBar } from './components/TopBar/TopBar';
+import { VideoUploadModal } from './components/VideoUpload/VideoUpload';
+import { UploadedVideoPlayer } from './components/VideoUpload/UploadedVideoPlayer';
 
 export function RoomSession() {
   const { startStream, stopStreaming } = usePeer();
@@ -20,6 +22,9 @@ export function RoomSession() {
   const { setContainerFullScreen } = usePlayerStore();
 
   const [showVideoSelectorModal, setShowVideoSelectorModal] = useState(false);
+  const [showVideoUploadModal, setShowVideoUploadModal] = useState(false);
+  const [uploadedVideoFile, setUploadedVideoFile] = useState<File | null>(null);
+
   const containerFullScreen = useRef();
 
   const handleInvite = () => {
@@ -53,6 +58,10 @@ export function RoomSession() {
     }
   };
 
+  const handleVideoReady = (file) => {
+    setUploadedVideoFile(file);
+  };
+
   useEffect(() => {
     handleInvite();
   }, [idPeer]);
@@ -68,6 +77,19 @@ export function RoomSession() {
         ref={containerFullScreen}
       >
         <ModalVideoPlayer />
+
+        {uploadedVideoFile && (
+          <UploadedVideoPlayer
+            videoFile={uploadedVideoFile}
+            // onBack={handleBackToSelection}
+          />
+        )}
+
+        <VideoUploadModal
+          open={showVideoUploadModal}
+          onOpenChange={setShowVideoUploadModal}
+          onVideoReady={handleVideoReady}
+        />
 
         {/* Top bar */}
         <TopBar setShowVideoSelectorModal={setShowVideoSelectorModal} />
@@ -121,7 +143,7 @@ export function RoomSession() {
 
               {/* Opción 2: Subir archivo */}
               <button
-                // onClick={handleFileSelected}
+                onClick={() => setShowVideoUploadModal(true)}
                 className='group relative flex flex-col items-center gap-3 p-6 sm:p-8 rounded-2xl overflow-hidden transition-all duration-300 hover:scale-105 bg-[#ffffff0a] border border-white/6'
               >
                 <div
