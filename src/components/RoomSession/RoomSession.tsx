@@ -111,30 +111,28 @@ export function RoomSession() {
               {/* Opción 1: Extensión */}
               <button
                 onClick={() => setShowVideoSelectorModal(true)}
-                className='group relative flex flex-col items-center gap-3 p-6 sm:p-8 rounded-2xl overflow-hidden transition-all duration-300 hover:scale-105 bg-[#ffffff0a] border border-white/6'
+                className='group relative flex flex-col items-center gap-3 p-6 sm:p-8 rounded-2xl overflow-hidden transition-all duration-300 hover:scale-102 bg-[#ffffff0a] border border-white/10 hover:border-white/20'
+                style={{
+                  boxShadow: `
+                    inset -3px -3px 10px rgba(0,0,0,0.25),
+                    inset 3px 3px 12px rgba(255,255,255,0.06)
+                  `,
+                }}
               >
                 <div
-                  className='absolute inset-0 opacity-0 group-hover:opacity-40 transition-opacity duration-300'
+                  className='absolute -inset-[50%] w-[200%] h-[200%] pointer-events-none'
                   style={{
                     background:
-                      'radial-gradient(circle at 30% 30%, rgba(255, 212, 225, 0.06), transparent)',
+                      'linear-gradient(120deg, transparent 40%, rgba(255,255,255,0.06) 50%, transparent 60%)',
+                    animation: 'moonFast 10s infinite linear',
+                    animationDelay: '0s',
                   }}
                 />
-                <div
-                  className='relative w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all duration-300'
-                  style={{
-                    background:
-                      'linear-gradient(135deg, #FFD4E1 0%, #F0D4E8 100%)',
-                    boxShadow: '0 2px 10px rgba(255, 212, 225, 0.10)',
-                  }}
-                >
-                  <Puzzle className='w-7 h-7 sm:w-8 sm:h-8 text-[#292529] drop-shadow-lg' />
+                <div className='relative w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all duration-300 bg-black/10 border border-white/2'>
+                  <Puzzle className='w-7 h-7 sm:w-8 sm:h-8 text-white' />
                 </div>
                 <div className='relative text-center'>
-                  <p
-                    className='font-bold text-white text-sm sm:text-base'
-                    style={{ color: '#FFD4E1' }}
-                  >
+                  <p className='font-bold text-white text-sm sm:text-base'>
                     Extensión
                   </p>
                   <p className='text-xs text-white/60'>Desde tu navegador</p>
@@ -144,30 +142,28 @@ export function RoomSession() {
               {/* Opción 2: Subir archivo */}
               <button
                 onClick={() => setShowVideoUploadModal(true)}
-                className='group relative flex flex-col items-center gap-3 p-6 sm:p-8 rounded-2xl overflow-hidden transition-all duration-300 hover:scale-105 bg-[#ffffff0a] border border-white/6'
+                className='group relative flex flex-col items-center gap-3 p-6 sm:p-8 rounded-2xl overflow-hidden transition-all duration-300 hover:scale-102 bg-[#ffffff0a] border border-white/10 hover:border-white/20'
+                style={{
+                  boxShadow: `
+                    inset -3px -3px 10px rgba(0,0,0,0.25),
+                    inset 3px 3px 12px rgba(255,255,255,0.06)
+                  `,
+                }}
               >
                 <div
-                  className='absolute inset-0 opacity-0 group-hover:opacity-40 transition-opacity duration-300'
+                  className='absolute -inset-[50%] w-[200%] h-[200%] pointer-events-none'
                   style={{
                     background:
-                      'radial-gradient(circle at 30% 30%, rgba(255, 244, 212, 0.06), transparent)',
+                      'linear-gradient(120deg, transparent 40%, rgba(255,255,255,0.06) 50%, transparent 60%)',
+                    animation: 'moonFast 10s infinite linear',
+                    animationDelay: '-9.7s',
                   }}
                 />
-                <div
-                  className='relative w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all duration-300'
-                  style={{
-                    background:
-                      'linear-gradient(135deg, #FFF4D4 0%, #FFE8B8 100%)',
-                    boxShadow: '0 2px 10px rgba(255, 244, 212, 0.10)',
-                  }}
-                >
-                  <Upload className='w-7 h-7 sm:w-8 sm:h-8 text-[#2b2825] drop-shadow-lg' />
+                <div className='relative w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all duration-300 bg-black/10 border border-white/2'>
+                  <Upload className='w-7 h-7 sm:w-8 sm:h-8 text-white' />
                 </div>
                 <div className='relative text-center'>
-                  <p
-                    className='font-bold text-white text-sm sm:text-base'
-                    style={{ color: '#FFF4D4' }}
-                  >
+                  <p className='font-bold text-white text-sm sm:text-base'>
                     Subir video
                   </p>
                   <p className='text-xs text-white/60'>Desde tu dispositivo</p>

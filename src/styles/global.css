@@ -191,6 +191,26 @@
     }
   }
 
+  @keyframes moonFast {
+    0% {
+      transform: translateX(-50%) translateY(-50%);
+    }
+    7% {
+      transform: translateX(50%) translateY(50%);
+    }
+    100% {
+      transform: translateX(50%) translateY(50%);
+    }
+  }
+
+  /* .animate-moonFast {
+    animation: moonFast 10s infinite linear;
+  }
+  .animate-moonFast-delay {
+    animation: moonFast 10s infinite linear;
+    animation-delay: -9.7s;
+  } */
+
   .animate-fadeIn {
     animation: fadeIn 0.3s ease-out;
   }
