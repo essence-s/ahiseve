@@ -69,6 +69,7 @@ export function createPeerNetwork() {
           name: 'confirmPeerListToConnect',
           pendingPeer: conn.peer,
         });
+        // CONN_LIST_STEP 01 Enviar la lista a la nueva conexion
         sendTo([{ conn }], 'addTask:peerListToConnect', {
           name: 'peerListToConnect',
           peerListToConnect: Object.keys(connections),
@@ -89,6 +90,8 @@ export function createPeerNetwork() {
 
   const connect = async (idEntered, pendingPeer, callback?) => {
     return new Promise((resolve, reject) => {
+      // al conectar desde el componente puede enviar el callback para
+      // recibir si termino de conectarse a la lista
       if (callback) {
         if (handlers.callbackConnectToList.length == 0) {
           on('callbackConnectToList', resolve);
@@ -109,6 +112,9 @@ export function createPeerNetwork() {
         return;
       }
 
+      // CONN_LIST_STEP 05 hacer la conexion enviando un parametro por metadata
+      // el parametro eventNetwork le dice al abrir la conexion que sea tratado como una
+      // conexion de lista
       let conn = peer.connect(idEntered, {
         metadata: { eventNetwork: pendingPeer ? false : true },
       });
@@ -121,11 +127,16 @@ export function createPeerNetwork() {
 
       conn.on('open', function () {
         console.log('se conecto a ' + idEntered);
+        // CONN_LIST_STEP 06 cuando recibimos tambien la conexion que hicimos
+        // actualizamos muestra lista de conectados
         updateTask('peerListToConnect', pendingPeer, conn.peer);
         let dataVerifyTask = verifyTask('peerListToConnect', pendingPeer);
 
+        // CONN_LIST_STEP 07 verificamos si se termino la tarea de las lista a conectar
         if (dataVerifyTask) {
+          // si se termino eliminamos la tarea
           deleteTask('peerListToConnect', pendingPeer);
+          // CONN_LIST_STEP 08 enviamos el mensaje de se termino de conectar al que nos envio la lista
           sendTo(
             [connections[dataVerifyTask.sender]],
             'confirmPeerListToConnect',
@@ -192,7 +203,9 @@ export function createPeerNetwork() {
   };
 
   const processIncomingDataPeer = ({ cmd, data, conn }, callback) => {
+    // CONN_LIST_STEP 02 llegada del la lista a conectar
     if (cmd == 'addTask:peerListToConnect') {
+      // si la lista esta vacia entonces mandamos el mensaje de conectado
       if (data.peerListToConnect.length == 0) {
         window.toast({
           title: 'Connected Susscesfully!',
@@ -204,15 +217,19 @@ export function createPeerNetwork() {
         emit('callbackConnectToList');
         cleanEmit('callbackConnectToList');
       } else {
+        // CONN_LIST_STEP 03 se agrega la tarea de conectarse a los peers de la lista que se recibio
         addTask({
           sender: conn.peer,
           ...data,
         });
 
+        // CONN_LIST_STEP 04 empezamos la conexio los peers de la lista
         data.peerListToConnect.forEach((peerId) => {
           connect(peerId, data.pendingPeer);
         });
       }
+
+      // CONN_LIST_STEP 09 llegada de la confirmacion del termino de la conexion de la lista
     } else if (cmd == 'confirmPeerListToConnect') {
       deleteTask('confirmPeerListToConnect', data.pendingPeer);
     } else {
