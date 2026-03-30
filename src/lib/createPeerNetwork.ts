@@ -1,4 +1,9 @@
 import Peer from 'peerjs';
+const peerServer = import.meta.env.PUBLIC_PEER_SERVER;
+const stunUrl = import.meta.env.PUBLIC_PEER_STUN;
+const turnUrl = import.meta.env.PUBLIC_PEER_TURN_URL;
+const turnUser = import.meta.env.PUBLIC_PEER_TURN_USERNAME;
+const turnPass = import.meta.env.PUBLIC_PEER_TURN_PASSWORD;
 
 export function createPeerNetwork() {
   let myPeerId = null;
@@ -18,11 +23,30 @@ export function createPeerNetwork() {
 
   const init = () => {
     const storedId = localStorage.getItem('myPeerId');
-    // peer = new Peer(storedId, {
-    //   host: 'localhost',
-    //   port: 8080,
-    // });
-    peer = new Peer(storedId);
+    let peerOptions: any = {};
+
+    if (peerServer) {
+      peerOptions.host = peerServer;
+      peerOptions.secure = true;
+    }
+
+    if (turnUrl && turnUser && turnPass) {
+      peerOptions = {
+        ...peerOptions,
+        config: {
+          iceServers: [
+            { urls: stunUrl || 'stun:stun.l.google.com:19302' },
+            {
+              urls: turnUrl,
+              username: turnUser,
+              credential: turnPass,
+            },
+          ],
+        },
+      };
+    }
+
+    peer = new Peer(storedId, peerOptions);
 
     peer.on('open', (peerId) => {
       console.log('Peer creado: ' + peerId);
