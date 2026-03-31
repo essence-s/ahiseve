@@ -1,19 +1,27 @@
-# Ahiseve(Beta)
+# **Ahiseve (Beta)**
 
-## Description
-✨ :v version Beta para controlar y sincronizar un video. Se nesesita un Extension✨
+Es una **web donde tú y tus amigos pueden ver videos juntos en tiempo real** y controlar la reproducción como si estuvieran en la misma pantalla. (pueden controlar la reproducción del video)
 
-Puedes descargar la extension desde el repositorio [https://github.com/essence-s/ahiseve-extension/tree/dist](https://github.com/essence-s/ahiseve-extension/tree/dist)
+## **Modos de Uso**
+Ahiseve ofrece varias formas de ver videos con amigos y puedes mezclar estas opciones según tu caso.
+
+### Video subido directamente
+
+Cargar el video directo en la pagina, para eso todos deben tener el video descargado, después podrán pausar o reproducirlo de forma sincronizada. 
+
+[▶️ Ver video](https://youtu.be/ICNsReHQXYs)
+
+<a href="https://youtu.be/ICNsReHQXYs" target="_blank">
+  <img width="400" alt="imagen" src="https://github.com/user-attachments/assets/09bf0dc4-5eaf-4d7d-afd3-61bdd4b0c2f0" />
+</a>
 
 
-## Formas de Uso
-Los usuarios que se conectan a la sala tambien deben hacer lo mismo.
 
-### Opcion 1
-Puedes subir tu video o tener el link de tu video mp4(link del recurso de video).
+### Video desde otra web (YouTube, etc.)
 
-### Opcion 2
-Puedes usar la extension para poder usar un video de una pagina web externa , la extension te permite seleccionar el video de la pagina externa y usarlo para sincronizar.
+Sincroniza videos de otras plataformas instalando la extensión.
+
+⚠️ Requiere tener la extensión instalada. [vea mas abajo la seccion de instalacion de la extension](#instalar-la-extension-opcional)
 
 [▶️ Ver video](https://www.youtube.com/watch?v=0dwZc8lXNII)
 
@@ -21,7 +29,38 @@ Puedes usar la extension para poder usar un video de una pagina web externa , la
   <img width="400" alt="imagen" src="https://github.com/user-attachments/assets/5edd774c-4fbf-47bd-81c5-9f264c1e381b" />
 </a>
 
-### Adicional 
-Puedes compartir tu pantalla si el otro usuario no uso un video subido o no selecciono el video con la extension el usuario tendra algo parecido a controles de un reproductor.
-El transmitir video no es estable no se recomienda esta opcion si no es local en tu propia casa con tu misma red wifi
+
+## **Opcional puede trasmitir su pantalla**
+
+Si el otro usuario no sube un video o no usa la extencion puede recibir una transmicion y controlar tambien el video aunque no es muy estable pero funciona
+
+[▶️ Ver video](https://youtu.be/djPcwMMnsYw)
+
+<a href="https://youtu.be/djPcwMMnsYw" target="_blank">
+  <img width="400" alt="imagen" src="https://github.com/user-attachments/assets/6b3fee56-eb69-40e3-a161-b87bcf6dd3b8" />
+</a>
+
+
+## **Instalar la extension (opcional)**
+
+Repositorio de la extension
+https://github.com/essence-s/ahiseve-extension/tree/dist
+
+No se olvide de activar el **Modo Desarrollador** como en la imagen asi le sale las opciones para instalar la extension
+<img width="400" alt="Image" src="https://github.com/user-attachments/assets/4e8d18e9-87b8-4faf-9feb-7a0a39ed3940" />
+
+En el video se muestra como instalar manualmente y su modo de uso es simple.
+
+[▶️ Ver video tutorial de como instalar la extension](https://youtu.be/fAUrK5MGT4k)
+
+<a href="https://youtu.be/fAUrK5MGT4k" target="_blank">
+  <img width="400" alt="imagen" src="https://github.com/user-attachments/assets/b9c31a71-f677-494c-bf5e-71f7b8717762" />
+</a>
+
+
+## **Demo**
+
+En desarrollo
+[https://ahiseve.vercel.app/](https://ahiseve.vercel.app/)
+
 
