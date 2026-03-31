@@ -3,7 +3,6 @@
 import { PAGE_MESSAGE_TYPES } from '@/components/types.d';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
-import { usePeer } from '@/hook/usePeer';
 import { formatTime } from '@/lib/utils';
 import { usePeerStore } from '@/store/peerStore';
 import { usePlayerStore } from '@/store/playerStore';
@@ -11,8 +10,7 @@ import {
   Maximize,
   Pause,
   Play,
-  RotateCcw,
-  RotateCw,
+  Rewind,
   SkipBack,
   SkipForward,
   Volume2,
@@ -444,7 +442,7 @@ export function PlayerControls() {
 
       {/* Bottom Controls Bar */}
       <div
-        className={`absolute bottom-0 left-0 right-0 px-4 sm:px-6 py-4 sm:py-5 bg-gradient-to-t from-[#09090b] via-[#09090b]/85 to-transparent transition-all duration-300 ${
+        className={`absolute bottom-0 left-0 right-0 px-4 sm:px-6 py-4 sm:py-5 bg-linear-to-t from-[#09090b] via-[#09090b]/85 to-transparent transition-all duration-300 ${
           controlsVisible
             ? 'opacity-100 translate-y-0'
             : 'opacity-0 translate-y-4 pointer-events-none'
@@ -470,7 +468,7 @@ export function PlayerControls() {
               variant='ghost'
               size='icon'
               onClick={() => handlePauseOrPlay(!isPlaying)}
-              className='w-10 h-10 rounded-full bg-white/[0.05] hover:bg-white/[0.08] text-white/70 cursor-pointer'
+              className='w-10 h-10 rounded-full bg-white/5 hover:bg-white/8 text-white/70 cursor-pointer'
             >
               {isPlaying ? (
                 <Pause className='w-4 h-4' fill='currentColor' />
@@ -483,19 +481,17 @@ export function PlayerControls() {
                 onClick={() => handleSeek('back')}
                 variant='ghost'
                 size='icon'
-                className='w-9 h-9 rounded-full text-white/40 hover:text-white/60 hover:bg-white/[0.05]'
+                className='w-9 h-9 rounded-full opacity-40 hover:opacity-60 hover:bg-white/5'
               >
-                {/* <SkipBack className='w-4 h-4' /> */}
-                <RotateCcw className='w-4 h-4' />
+                <Rewind className='w-4 h-4' />
               </Button>
               <Button
                 onClick={() => handleSeek('next')}
                 variant='ghost'
                 size='icon'
-                className='w-9 h-9 rounded-full text-white/40 hover:text-white/60 hover:bg-white/[0.05]'
+                className='w-9 h-9 rounded-full opacity-40 hover:opacity-60 hover:bg-white/5'
               >
-                {/* <SkipForward className='w-4 h-4' /> */}
-                <RotateCw className='w-4 h-4' />
+                <Rewind className='w-4 h-4 rotate-y-180' />
               </Button>
             </div>
 
@@ -510,7 +506,7 @@ export function PlayerControls() {
                 variant='ghost'
                 size='icon'
                 onClick={() => setIsMuted(!isMuted)}
-                className='w-9 h-9 rounded-full text-white/40 hover:text-white/60 hover:bg-white/[0.05]'
+                className='w-9 h-9 rounded-full text-white/40 hover:text-white/60 hover:bg-white/5'
               >
                 {isMuted || volume === 0 ? (
                   <VolumeX className='w-4 h-4' />

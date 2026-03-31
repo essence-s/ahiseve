@@ -1,6 +1,7 @@
 'use client';
 
 import { PAGE_MESSAGE_TYPES } from '@/components/types.d';
+import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { usePeerStore } from '@/store/peerStore';
 import {
@@ -8,9 +9,8 @@ import {
   Minimize,
   Pause,
   Play,
+  Rewind,
   Settings,
-  SkipBack,
-  SkipForward,
   Volume2,
   VolumeX,
 } from 'lucide-react';
@@ -349,106 +349,100 @@ export function UploadedVideoPlayer({
           </button>
         </div>
 
-        {/* Bottom controls */}
-        <div className='absolute bottom-0 left-0 right-0 p-4 space-y-3'>
+        {/* Bottom Controls Bar */}
+        <div
+          className='absolute bottom-0 left-0 right-0 px-4 sm:px-6 py-4 sm:py-5 bg-linear-to-t from-[#09090b] via-[#09090b]/85 to-transparent transition-all duration-300'
+          onClick={(e) => e.stopPropagation()}
+        >
           {/* Progress bar */}
-          <div className='relative w-full h-1 group'>
-            {/* Buffer bar */}
-            <div
-              className='absolute inset-y-0 left-0 bg-white/20 rounded-full'
-              style={{ width: `${buffered}%` }}
-            />
+          <div className='mb-3 sm:mb-4 flex items-center'>
             <Slider
               value={[currentTime]}
               max={duration || 100}
               step={0.1}
               onValueChange={handleSeek}
-              className='cursor-pointer'
+              className='cursor-pointer flex-1'
             />
           </div>
 
-          {/* Controls row */}
-          <div className='flex items-center justify-between gap-2'>
-            {/* Left controls */}
-            <div className='flex items-center gap-1 sm:gap-2'>
-              {/* Play/Pause */}
-              <button
+          <div className='flex items-center justify-between'>
+            <div className='flex items-center gap-1'>
+              <Button
+                variant='ghost'
+                size='icon'
                 onClick={togglePlay}
-                className='w-9 h-9 rounded-full flex items-center justify-center
-                  text-white/80 hover:bg-white/10 transition-colors'
+                className='w-10 h-10 rounded-full bg-white/5 hover:bg-white/8 text-white/70 cursor-pointer'
               >
                 {isPlaying ? (
-                  <Pause className='w-5 h-5' fill='currentColor' />
+                  <Pause className='w-4 h-4' fill='currentColor' />
                 ) : (
-                  <Play className='w-5 h-5 ml-0.5' fill='currentColor' />
+                  <Play className='w-4 h-4 ml-0.5' fill='currentColor' />
                 )}
-              </button>
+              </Button>
+              <div className='flex'>
+                <Button
+                  variant='ghost'
+                  size='icon'
+                  onClick={() => skip(-10)}
+                  className='w-9 h-9 rounded-full opacity-40 hover:opacity-60 hover:bg-white/5'
+                >
+                  <Rewind className='w-4 h-4' />
+                </Button>
+                <Button
+                  variant='ghost'
+                  size='icon'
+                  onClick={() => skip(10)}
+                  className='w-9 h-9 rounded-full opacity-40 hover:opacity-60 hover:bg-white/5'
+                >
+                  <Rewind className='w-4 h-4 rotate-y-180' />
+                </Button>
+              </div>
 
-              {/* Skip back */}
-              <button
-                onClick={() => skip(-10)}
-                className='w-9 h-9 rounded-full flex items-center justify-center
-                  text-white/60 hover:text-white/80 hover:bg-white/10 transition-colors'
-              >
-                <SkipBack className='w-4 h-4' />
-              </button>
+              <span className='text-xs text-white/40 font-mono ml-3'>
+                {formatTime(currentTime)} / {formatTime(duration)}
+              </span>
+            </div>
 
-              {/* Skip forward */}
-              <button
-                onClick={() => skip(10)}
-                className='w-9 h-9 rounded-full flex items-center justify-center
-                  text-white/60 hover:text-white/80 hover:bg-white/10 transition-colors'
-              >
-                <SkipForward className='w-4 h-4' />
-              </button>
-
-              {/* Volume */}
-              <div className='hidden sm:flex items-center gap-1 group/volume'>
-                <button
+            <div className='flex items-center gap-1'>
+              <div className='flex items-center gap-1 group'>
+                <Button
+                  variant='ghost'
+                  size='icon'
                   onClick={() => setIsMuted(!isMuted)}
-                  className='w-9 h-9 rounded-full flex items-center justify-center
-                    text-white/60 hover:text-white/80 hover:bg-white/10 transition-colors'
+                  className='w-9 h-9 rounded-full text-white/40 hover:text-white/60 hover:bg-white/5'
                 >
                   {isMuted || volume === 0 ? (
                     <VolumeX className='w-4 h-4' />
                   ) : (
                     <Volume2 className='w-4 h-4' />
                   )}
-                </button>
-                <div className='w-0 group-hover/volume:w-20 overflow-hidden transition-all duration-200'>
+                </Button>
+                <div className='w-0 group-hover:w-20 overflow-hidden transition-all duration-300'>
                   <Slider
                     value={[isMuted ? 0 : volume]}
                     max={100}
                     step={1}
                     onValueChange={handleVolumeChange}
-                    className='cursor-pointer'
+                    className='cursor-pointer slider-no-thumb'
                   />
                 </div>
               </div>
 
-              {/* Time */}
-              <span className='text-xs sm:text-sm text-white/60 font-mono ml-2'>
-                {formatTime(currentTime)} / {formatTime(duration)}
-              </span>
-            </div>
-
-            {/* Right controls */}
-            <div className='flex items-center gap-1'>
               {/* Settings */}
               <div className='relative'>
-                <button
+                <Button
+                  variant='ghost'
+                  size='icon'
                   onClick={() => setShowSettings(!showSettings)}
-                  className='w-9 h-9 rounded-full flex items-center justify-center
-                    text-white/60 hover:text-white/80 hover:bg-white/10 transition-colors'
+                  className='w-9 h-9 rounded-full text-white/40 hover:text-white/60 hover:bg-white/5'
                 >
                   <Settings className='w-4 h-4' />
-                </button>
+                </Button>
 
                 {/* Settings menu */}
                 {showSettings && (
                   <div
-                    className='absolute bottom-full right-0 mb-2 p-2 rounded-lg
-                      bg-black/90 border border-white/10 backdrop-blur-sm min-w-35'
+                    className='absolute bottom-full right-0 mb-2 p-2 rounded-lg bg-black/90 border border-white/10 backdrop-blur-sm min-w-35'
                     onClick={(e) => e.stopPropagation()}
                   >
                     <p className='text-xs text-white/50 px-2 pb-1 mb-1 border-b border-white/10'>
@@ -474,18 +468,18 @@ export function UploadedVideoPlayer({
                 )}
               </div>
 
-              {/* Fullscreen */}
-              <button
+              <Button
+                variant='ghost'
+                size='icon'
                 onClick={toggleFullscreen}
-                className='w-9 h-9 rounded-full flex items-center justify-center
-                  text-white/60 hover:text-white/80 hover:bg-white/10 transition-colors'
+                className='w-9 h-9 rounded-full text-white/40 hover:text-white/60 hover:bg-white/5'
               >
                 {isFullscreen ? (
                   <Minimize className='w-4 h-4' />
                 ) : (
                   <Maximize className='w-4 h-4' />
                 )}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
