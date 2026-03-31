@@ -19,6 +19,7 @@ export function PeerConnection() {
   const deleteConnection = usePeerStore((state) => state.deleteConnection);
   const sendMessagueAll = usePeerStore((state) => state.sendMessagueAll);
   const closeAndDeleteCall = usePeerStore((state) => state.closeAndDeleteCall);
+  const getSessionMode = usePeerStore((state) => state.getSessionMode);
 
   const getLocalStream = useStreamStore((state) => state.getLocalStream);
   const setRemoteStream = useStreamStore((state) => state.setRemoteStream);
@@ -100,7 +101,7 @@ export function PeerConnection() {
 
   const processIncomingData = (cmd, data, conn) => {
     if (cmd == PAGE_MESSAGE_TYPES.ELEMENT_ACTION) {
-      if (getRemoteStream()) {
+      if (getRemoteStream() || getSessionMode() == 'uploadedVideo') {
         setElementAction({ ...data });
       } else {
         window.postMessage(
