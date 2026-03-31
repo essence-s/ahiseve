@@ -6,16 +6,16 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { modalStore } from '@/store/modalStore';
 import { usePeerStore } from '@/store/peerStore';
 import { usePlayerStore } from '@/store/playerStore';
 import { useStreamStore } from '@/store/streamStore';
 import { useUserStore } from '@/store/userStore';
-import { LogOut, Puzzle, RadioTower, SquarePen, Users } from 'lucide-react';
+import { LogOut, Puzzle, Radio, SquarePen, Users } from 'lucide-react';
 import { useState } from 'react';
 import { EditUsername } from '../EditUsername';
 import { StreamNotification } from '../StreamNotification';
 import { StreamSelector } from '../StreamSelector/StreamSelector';
-import { modalStore } from '@/store/modalStore';
 
 export function TopBar({ setShowVideoSelectorModal }) {
   const connections = usePeerStore((state) => state.connections);
@@ -46,19 +46,7 @@ export function TopBar({ setShowVideoSelectorModal }) {
       )}
       {/* Broadcast Selector Modal */}
       {showStreamSelector && (
-        <StreamSelector
-          onStreamSelect={(broadcast) => {
-            // setSelectedStreamVideo({
-            //   id: broadcast.id,
-            //   title: broadcast.title,
-            //   platform: broadcast.platform,
-            //   thumbnail: broadcast.thumbnail,
-            // });
-            // setIsPlaying(true);
-            setShowStreamSelector(false);
-          }}
-          onClose={() => setShowStreamSelector(false)}
-        />
+        <StreamSelector onClose={() => setShowStreamSelector(false)} />
       )}
 
       {streamNotificationState && (
@@ -148,7 +136,7 @@ export function TopBar({ setShowVideoSelectorModal }) {
                         : 'bg-white/3 text-white/40 hover:text-white/60 border-white/8'
                     }`}
                   >
-                    <RadioTower className='w-3.5 h-3.5 sm:w-4 sm:h-4' />
+                    <Radio className='w-3.5 h-3.5 sm:w-4 sm:h-4' />
                     {availableStreamPeersLength > 0 && (
                       <>
                         <div className='absolute inset-0 rounded-full bg-emerald-400/20 animate-pulse' />

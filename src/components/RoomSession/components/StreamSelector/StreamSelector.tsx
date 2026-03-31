@@ -19,12 +19,10 @@ interface Stream {
 }
 
 interface StreamSelectorProps {
-  onStreamSelect: (broadcast: Stream) => void;
   onClose: () => void;
 }
 
 export function StreamSelector({
-  onStreamSelect,
   onClose,
 }: StreamSelectorProps) {
   const [broadcasts, setBroadcasts] = useState<Stream[]>();
@@ -34,12 +32,23 @@ export function StreamSelector({
   );
   const sendMessageById = usePeerStore((state) => state.sendMessageById);
 
-  const { viewStream } = usePeer();
+  const { viewStream, startStream } = usePeer();
 
   const handleViewStream = (peerId: string) => {
     viewStream(peerId);
     sendMessageById([peerId], PAGE_MESSAGE_TYPES.GET_VIDEO_INFO, {});
     onClose();
+  };
+
+  const handleStartStream = async () => {
+    try {
+      const statusStartStream = await startStream();
+      if (statusStartStream?.message) {
+        onClose();
+      }
+    } catch (error) {
+      console.error('Error starting stream:', error);
+    }
   };
 
   return (
@@ -134,11 +143,18 @@ export function StreamSelector({
       </div>
 
       {/* Footer with info */}
-      <div className='border-t border-white/[0.08] p-3 sm:p-4 bg-white/[0.01]'>
+      <div className='border-t border-white/[0.08] p-3 sm:p-4 bg-white/[0.01] flex items-center justify-between'>
+        <Button
+          onClick={handleStartStream}
+          className='flex items-center gap-2 bg-white text-black hover:bg-white/90 px-4 py-2 rounded-full text-sm font-medium'
+        >
+          <Radio className='w-4 h-4' />
+          <span>Transmitir</span>
+        </Button>
         <p className='text-[10px] sm:text-xs text-white/40'>
           {selectedId
             ? `Seleccionaste: ${
-                broadcasts.find((b) => b.id === selectedId)?.userName
+                broadcasts?.find((b) => b.id === selectedId)?.userName
               }`
             : 'Selecciona una transmisión para ver'}
         </p>
