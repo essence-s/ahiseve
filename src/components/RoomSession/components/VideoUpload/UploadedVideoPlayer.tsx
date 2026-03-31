@@ -1,6 +1,8 @@
 'use client';
 
+import { PAGE_MESSAGE_TYPES } from '@/components/types.d';
 import { Slider } from '@/components/ui/slider';
+import { usePeerStore } from '@/store/peerStore';
 import {
   Maximize,
   Minimize,
@@ -44,6 +46,11 @@ export function UploadedVideoPlayer({
   // Estado para la URL del video (usar useState para trigger re-render)
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
 
+  // Peer store
+  const sendMessagueAll = usePeerStore((state) => state.sendMessagueAll);
+  const elementAction = usePeerStore((state) => state.elementAction);
+  const setSessionMode = usePeerStore((state) => state.setSessionMode);
+
   // Crear URL del video al montar
   useEffect(() => {
     const url = URL.createObjectURL(videoFile);
@@ -80,6 +87,8 @@ export function UploadedVideoPlayer({
 
   // Atajos de teclado
   useEffect(() => {
+    setSessionMode('uploadedVideo');
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.target instanceof HTMLInputElement) return;
 
@@ -117,7 +126,10 @@ export function UploadedVideoPlayer({
     };
 
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    return () => {
+      setSessionMode('idle');
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   // Formatear tiempo
@@ -136,22 +148,41 @@ export function UploadedVideoPlayer({
     if (!videoRef.current) return;
     if (isPlaying) {
       videoRef.current.pause();
+      sendMessagueAll(PAGE_MESSAGE_TYPES.ELEMENT_ACTION, {
+        action: 'pause',
+        status: 'sending',
+      });
     } else {
       videoRef.current.play();
+      sendMessagueAll(PAGE_MESSAGE_TYPES.ELEMENT_ACTION, {
+        action: 'play',
+        status: 'sending',
+      });
     }
     setIsPlaying(!isPlaying);
-  }, [isPlaying]);
+  }, [isPlaying, sendMessagueAll]);
 
-  const skip = useCallback((seconds: number) => {
-    if (!videoRef.current) return;
-    videoRef.current.currentTime = Math.max(
-      0,
-      Math.min(
-        videoRef.current.duration,
-        videoRef.current.currentTime + seconds
-      )
-    );
-  }, []);
+  const skip = useCallback(
+    (seconds: number) => {
+      if (!videoRef.current) return;
+      const newTime = Math.max(
+        0,
+        Math.min(
+          videoRef.current.duration,
+          videoRef.current.currentTime + seconds
+        )
+      );
+      videoRef.current.currentTime = newTime;
+      setCurrentTime(newTime);
+      sendMessagueAll(PAGE_MESSAGE_TYPES.ELEMENT_ACTION, {
+        action: 'seeked',
+        status: 'sending',
+        dataSeek: seconds,
+        mediaCurrentTime: newTime,
+      });
+    },
+    [sendMessagueAll]
+  );
 
   const adjustVolume = useCallback((delta: number) => {
     setVolume((prev) => Math.max(0, Math.min(100, prev + delta)));
@@ -167,11 +198,19 @@ export function UploadedVideoPlayer({
     }
   }, []);
 
-  const handleSeek = useCallback((value: number[]) => {
-    if (!videoRef.current) return;
-    videoRef.current.currentTime = value[0];
-    setCurrentTime(value[0]);
-  }, []);
+  const handleSeek = useCallback(
+    (value: number[]) => {
+      if (!videoRef.current) return;
+      videoRef.current.currentTime = value[0];
+      setCurrentTime(value[0]);
+      sendMessagueAll(PAGE_MESSAGE_TYPES.ELEMENT_ACTION, {
+        action: 'seeked',
+        status: 'sending',
+        mediaCurrentTime: value[0],
+      });
+    },
+    [sendMessagueAll]
+  );
 
   const handleVolumeChange = useCallback((value: number[]) => {
     setVolume(value[0]);
@@ -226,6 +265,25 @@ export function UploadedVideoPlayer({
     if (!videoRef.current) return;
     videoRef.current.playbackRate = playbackRate;
   }, [playbackRate]);
+
+  // Recibir señales de peer
+  useEffect(() => {
+    if (!elementAction || !videoRef.current) return;
+
+    if (elementAction.action === 'play') {
+      videoRef.current.play();
+      setIsPlaying(true);
+    } else if (elementAction.action === 'pause') {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    } else if (
+      elementAction.action === 'seeked' &&
+      elementAction.mediaCurrentTime !== undefined
+    ) {
+      videoRef.current.currentTime = elementAction.mediaCurrentTime;
+      setCurrentTime(elementAction.mediaCurrentTime);
+    }
+  }, [elementAction]);
 
   const playbackRates = [0.5, 0.75, 1, 1.25, 1.5, 2];
 

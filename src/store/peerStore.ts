@@ -14,6 +14,13 @@ export const usePeerStore = create<PeerStore>((set, get) => ({
   },
   setElementAction: (state) => set({ elementAction: state }),
 
+  sessionMode: 'idle',
+  getSessionMode: () => get().sessionMode,
+  setSessionMode: (mode: SessionMode) => {
+    console.log('mode', mode);
+    set({ sessionMode: mode });
+  },
+
   connect: null,
   setConnect: (fn) => set({ connect: fn }),
   call: null,
@@ -195,6 +202,8 @@ type ElementAction = {
   mediaCurrentTime: number;
 };
 
+type SessionMode = 'idle' | 'stream' | 'uploadedVideo' | 'extension';
+
 type PeerStore = {
   idPeer: string;
   setIdPeer: (idPeer: string) => void;
@@ -205,6 +214,10 @@ type PeerStore = {
 
   elementAction: ElementAction;
   setElementAction: (state: ElementAction) => void;
+
+  sessionMode: SessionMode;
+  getSessionMode: () => SessionMode;
+  setSessionMode: (mode: SessionMode) => void;
 
   connect: ((...args: any[]) => any) | null;
   setConnect: (fn: (...args: any[]) => any) => void;
