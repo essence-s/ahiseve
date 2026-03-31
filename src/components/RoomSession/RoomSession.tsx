@@ -179,64 +179,26 @@ export function RoomSession() {
           </div>
         </div>
 
-        {!localStream ? (
-          <button
-            // onClick={() => setShowTransmissionModal(true)}
-            onClick={() => handleSelectOption('stream')}
-            className='fixed bottom-6 right-6 z-0 group'
-            title='Iniciar transmisión'
-          >
-            <div
-              className='absolute inset-0 rounded-full blur-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-300'
-              style={{
-                background: 'radial-gradient(circle, #FFD4E1 0%, #D4F9E0 100%)',
-              }}
-            />
-            <div
-              className='relative flex items-center justify-center w-12 h-12 rounded-full overflow-hidden transition-all duration-300 hover:scale-105'
-              style={{
-                background:
-                  'linear-gradient(135deg, rgba(255, 212, 225, 0.15) 0%, rgba(212, 249, 224, 0.1) 100%)',
-                border: '1px solid rgba(255, 212, 225, 0.2)',
-                boxShadow: 'inset 0 0 12px rgba(212, 249, 224, 0.05)',
-              }}
-            >
-              <Radio className='w-5 h-5 text-white/70 drop-shadow-lg' />
-            </div>
-          </button>
-        ) : (
+        {localStream && (
           <div
-            className='fixed bottom-6 right-6 z-0 flex items-center gap-3 px-4 py-3 sm:py-3.5 rounded-full backdrop-blur-md transition-all duration-300'
+            className='fixed bottom-6 right-6 z-0 flex items-center gap-3 px-4 py-3 rounded-full backdrop-blur-md transition-all duration-300'
             style={{
-              background:
-                'radial-gradient(circle at 30% 40%, rgba(253, 70, 164, 0.23) 0%, rgba(242, 70, 135, 0.21) 25%, rgba(242, 77, 155, 0.2) 40%, rgba(247, 76, 149, 0.21) 60%, rgba(246, 118, 190, 0.21) 100%)',
-              border: '1px solid rgba(255, 150, 150, 0.3)',
+              background: 'rgba(255, 255, 255, 0.1)',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
             }}
           >
             <div className='flex items-center gap-2'>
               <div className='relative w-3 h-3'>
-                <div
-                  className='absolute inset-0 rounded-full animate-ping'
-                  style={{
-                    background:
-                      'linear-gradient(135deg, #FF6482 0%, #FFB3BA 100%)',
-                  }}
-                />
-                <div
-                  className='absolute inset-0 rounded-full'
-                  style={{
-                    background:
-                      'linear-gradient(135deg, #FF6482 0%, #FF9AA2 50%, #FFB3BA 100%)',
-                  }}
-                />
+                <div className='absolute inset-0 rounded-full animate-ping bg-white/30' />
+                <div className='absolute inset-0 rounded-full bg-white/60' />
               </div>
-              <span className='text-xs sm:text-sm font-bold text-[#d1b9c7]'>
+              <span className='text-xs sm:text-sm font-medium text-white/80'>
                 Transmitiendo
               </span>
             </div>
             <button
               onClick={() => stopStreaming()}
-              className='ml-2 p-1 rounded-full transition-all hover:scale-110 text-[#FF9AA2] bg-[#ff969626]'
+              className='ml-2 p-1 rounded-full transition-all hover:scale-110 text-white/40 hover:text-white/70 hover:bg-white/10'
               title='Detener transmisión'
             >
               <X className='w-4 h-4' />
