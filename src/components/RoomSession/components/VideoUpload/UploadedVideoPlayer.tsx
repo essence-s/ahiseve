@@ -15,14 +15,17 @@ import {
   VolumeX,
 } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { type VideoData } from './VideoUpload';
 
 interface UploadedVideoPlayerProps {
-  videoFile: File;
+  videoFile?: File;
+  videoData?: VideoData;
   onBack?: () => void;
 }
 
 export function UploadedVideoPlayer({
   videoFile,
+  videoData,
   onBack,
 }: UploadedVideoPlayerProps) {
   // Estados del reproductor
@@ -53,12 +56,16 @@ export function UploadedVideoPlayer({
 
   // Crear URL del video al montar
   useEffect(() => {
-    const url = URL.createObjectURL(videoFile);
-    setVideoUrl(url);
-    return () => {
-      URL.revokeObjectURL(url);
-    };
-  }, [videoFile]);
+    if (videoData?.url) {
+      setVideoUrl(videoData.url);
+    } else if (videoFile) {
+      const url = URL.createObjectURL(videoFile);
+      setVideoUrl(url);
+      return () => {
+        URL.revokeObjectURL(url);
+      };
+    }
+  }, [videoFile, videoData]);
 
   // Auto-hide controls
   useEffect(() => {

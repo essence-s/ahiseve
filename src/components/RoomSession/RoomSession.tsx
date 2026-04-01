@@ -5,13 +5,16 @@ import { usePeer } from '@/hook/usePeer';
 import { usePeerStore } from '@/store/peerStore';
 import { usePlayerStore } from '@/store/playerStore';
 import { useStreamStore } from '@/store/streamStore';
-import { Puzzle, Radio, Upload, X } from 'lucide-react';
+import { Puzzle, Upload, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { DetectedVideoSelector } from './components/DetectedVideoSelector/DetectedVideoSelector';
 import ModalVideoPlayer from './components/ModalVideoPlayer/ModalVideoPlayer';
 import { TopBar } from './components/TopBar/TopBar';
-import { VideoUploadModal } from './components/VideoUpload/VideoUpload';
 import { UploadedVideoPlayer } from './components/VideoUpload/UploadedVideoPlayer';
+import {
+  VideoUploadModal,
+  type VideoData,
+} from './components/VideoUpload/VideoUpload';
 
 export function RoomSession() {
   const { startStream, stopStreaming } = usePeer();
@@ -24,6 +27,9 @@ export function RoomSession() {
   const [showVideoSelectorModal, setShowVideoSelectorModal] = useState(false);
   const [showVideoUploadModal, setShowVideoUploadModal] = useState(false);
   const [uploadedVideoFile, setUploadedVideoFile] = useState<File | null>(null);
+  const [uploadedVideoData, setUploadedVideoData] = useState<VideoData | null>(
+    null
+  );
 
   const containerFullScreen = useRef();
 
@@ -58,8 +64,9 @@ export function RoomSession() {
     }
   };
 
-  const handleVideoReady = (file) => {
+  const handleVideoReady = (file, videoData) => {
     setUploadedVideoFile(file);
+    setUploadedVideoData(videoData);
   };
 
   useEffect(() => {
@@ -81,6 +88,7 @@ export function RoomSession() {
         {uploadedVideoFile && (
           <UploadedVideoPlayer
             videoFile={uploadedVideoFile}
+            videoData={uploadedVideoData}
             // onBack={handleBackToSelection}
           />
         )}
