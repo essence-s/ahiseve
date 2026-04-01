@@ -19,7 +19,7 @@ export default function VideoPlayer() {
   return (
     <div className='video-player'>
       <video ref={refVideoStreamu}></video>
-      <PlayerControls />
+      <PlayerControls videoRef={refVideoStreamu} />
     </div>
   );
 }

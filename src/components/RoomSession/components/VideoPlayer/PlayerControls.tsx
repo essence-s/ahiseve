@@ -18,7 +18,11 @@ import {
 } from 'lucide-react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-export function PlayerControls() {
+interface PlayerControlsProps {
+  videoRef?: React.RefObject<HTMLVideoElement>;
+}
+
+export function PlayerControls({ videoRef }: PlayerControlsProps) {
   // const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -168,6 +172,14 @@ export function PlayerControls() {
       }
     }
   }, [elementAction]);
+
+  // Aplicar volumen al video
+  useEffect(() => {
+    if (videoRef?.current) {
+      videoRef.current.volume = volume / 100;
+      videoRef.current.muted = isMuted;
+    }
+  }, [volume, isMuted, videoRef]);
 
   useEffect(() => {
     if (!isPlaying) {
