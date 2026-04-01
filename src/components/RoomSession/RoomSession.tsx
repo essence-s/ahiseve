@@ -69,6 +69,11 @@ export function RoomSession() {
     setUploadedVideoData(videoData);
   };
 
+  const handleBackToSelection = () => {
+    setUploadedVideoFile(null);
+    setUploadedVideoData(null);
+  };
+
   useEffect(() => {
     handleInvite();
   }, [idPeer]);
@@ -89,7 +94,7 @@ export function RoomSession() {
           <UploadedVideoPlayer
             videoFile={uploadedVideoFile}
             videoData={uploadedVideoData}
-            // onBack={handleBackToSelection}
+            onBack={handleBackToSelection}
           />
         )}
 
