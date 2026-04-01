@@ -13,16 +13,20 @@ import {
   Settings,
   Volume2,
   VolumeX,
+  X,
 } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { type VideoData } from './VideoUpload';
 
 interface UploadedVideoPlayerProps {
-  videoFile: File;
+  videoFile?: File;
+  videoData?: VideoData;
   onBack?: () => void;
 }
 
 export function UploadedVideoPlayer({
   videoFile,
+  videoData,
   onBack,
 }: UploadedVideoPlayerProps) {
   // Estados del reproductor
@@ -53,12 +57,16 @@ export function UploadedVideoPlayer({
 
   // Crear URL del video al montar
   useEffect(() => {
-    const url = URL.createObjectURL(videoFile);
-    setVideoUrl(url);
-    return () => {
-      URL.revokeObjectURL(url);
-    };
-  }, [videoFile]);
+    if (videoData?.url) {
+      setVideoUrl(videoData.url);
+    } else if (videoFile) {
+      const url = URL.createObjectURL(videoFile);
+      setVideoUrl(url);
+      return () => {
+        URL.revokeObjectURL(url);
+      };
+    }
+  }, [videoFile, videoData]);
 
   // Auto-hide controls
   useEffect(() => {
@@ -324,6 +332,20 @@ export function UploadedVideoPlayer({
           showControls ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
       >
+        {/* Botón de cerrar/volver */}
+        {onBack && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onBack();
+            }}
+            className='absolute top-4 right-4 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center text-white/70 hover:text-white hover:bg-black/70 transition-all z-20'
+            title='Cerrar'
+          >
+            <X className='w-5 h-5' />
+          </button>
+        )}
+
         {/* Botón central play/pause */}
         <div className='absolute inset-0 flex items-center justify-center'>
           <button
