@@ -7,10 +7,11 @@ import { ChevronLeft, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 type StreamModalProps = {
+  isOpen: boolean;
   onClose: () => void;
 };
 
-export function DetectedVideoSelector({ onClose }: StreamModalProps) {
+export function DetectedVideoSelector({ isOpen, onClose }: StreamModalProps) {
   const [isDetectorVideoEnabled, setIsDetectorVideoEnabled] = useState(false);
   const toggleVideoDetector = () => {
     if (isDetectorVideoEnabled) {
@@ -60,7 +61,7 @@ export function DetectedVideoSelector({ onClose }: StreamModalProps) {
     };
   }, []);
 
-  return (
+  return isOpen ? (
     <Modal className='max-w-xl max-h-[85vh] sm:max-h-[80vh]' onClose={onClose}>
       <div className='flex items-center justify-between p-4 sm:p-5 border-b border-white/6'>
         <div className='flex-1 min-w-0'>
@@ -131,5 +132,5 @@ export function DetectedVideoSelector({ onClose }: StreamModalProps) {
         </Button>
       </div>
     </Modal>
-  );
+  ) : null;
 }

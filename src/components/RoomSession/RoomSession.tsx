@@ -219,11 +219,10 @@ export function RoomSession() {
           </div>
         )}
 
-        {showVideoSelectorModal && (
-          <DetectedVideoSelector
-            onClose={() => setShowVideoSelectorModal(false)}
-          />
-        )}
+        <DetectedVideoSelector
+          isOpen={showVideoSelectorModal}
+          onClose={() => setShowVideoSelectorModal(false)}
+        />
 
         {/* <Chat showChat={showChat} setShowChat={setShowChat} /> */}
       </main>
