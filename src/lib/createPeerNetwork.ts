@@ -22,6 +22,8 @@ export function createPeerNetwork() {
   };
 
   const init = () => {
+    // console.log('peer create', peer);
+    if (peer) return console.log('network existente');
     const storedId = localStorage.getItem('myPeerId');
     let peerOptions: any = {};
 
@@ -52,7 +54,7 @@ export function createPeerNetwork() {
       console.log('Peer creado: ' + peerId);
       myPeerId = peerId;
       localStorage.setItem('myPeerId', peerId);
-      emit('open', peerId);
+      emit('open', peerId, peer);
     });
 
     peer.on('connection', (conn) => {
@@ -420,6 +422,7 @@ export function createPeerNetwork() {
   };
 
   return {
+    peer,
     init,
     on,
     connect,

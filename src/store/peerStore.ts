@@ -1,4 +1,11 @@
 import { create } from 'zustand';
+import { createPeerNetwork } from '@/lib/createPeerNetwork';
+import { PAGE_MESSAGE_TYPES } from '@/components/types.d';
+import { modalStore } from './modalStore';
+import { usePlayerStore } from './playerStore';
+import { useStreamStore } from './streamStore';
+import { useUserStore } from './userStore';
+import { generateName } from '@/utils/functsGene';
 
 export const usePeerStore = create<PeerStore>((set, get) => ({
   idPeer: '',
@@ -168,6 +175,124 @@ export const usePeerStore = create<PeerStore>((set, get) => ({
         }
       });
   },
+
+  destroyPeer: () => {
+    const peer = get().peer;
+    console.log('peer', peer);
+    if (peer) {
+      get().exitPeerNetwork();
+      peer.destroy();
+    }
+    set({
+      peer: null,
+      idPeer: '',
+      connections: [],
+    });
+  },
+
+  initPeerNetwork: () => {
+    const peerStore = get();
+    const streamStore = useStreamStore.getState();
+    const userStore = useUserStore.getState();
+    const playerStore = usePlayerStore.getState();
+    const modal = modalStore.getState();
+
+    const {
+      getLocalStream,
+      setRemoteStream,
+      getRemoteStream,
+      clearRemoteStream,
+      showNotification,
+      addAvailableStreamPeer,
+      removeAvailableStreamPeer,
+    } = streamStore;
+    const { getUser, setUser } = userStore;
+    const { setPlayerInfo } = playerStore;
+    const { setIsOpenModalVideoPlayer } = modal;
+
+    const username = localStorage.getItem('username') || generateName();
+    setUser({ username });
+
+    const peerNetwork = createPeerNetwork();
+
+    const processIncomingData = (cmd: string, data: any, conn: any) => {
+      if (cmd == PAGE_MESSAGE_TYPES.ELEMENT_ACTION) {
+        if (
+          getRemoteStream() ||
+          peerStore.getSessionMode() == 'uploadedVideo'
+        ) {
+          peerStore.setElementAction({ ...data });
+        } else {
+          window.postMessage(
+            { cmd: cmd, data: { ...data, status: 'received' } },
+            '*'
+          );
+        }
+      } else if (cmd == 'addAvailableStreamPeer') {
+        showNotification({ username: data.username });
+        addAvailableStreamPeer(conn.peer, data);
+      } else if (cmd == 'removeAvailableStreamPeer') {
+        removeAvailableStreamPeer(conn.peer);
+      } else if (cmd == PAGE_MESSAGE_TYPES.RESULT_VIDEO_INFO) {
+        setPlayerInfo(data);
+      } else if (cmd == PAGE_MESSAGE_TYPES.GET_VIDEO_INFO) {
+        window.postMessage({ cmd: PAGE_MESSAGE_TYPES.GET_VIDEO_INFO }, '*');
+      }
+    };
+
+    peerNetwork.on('open', (peerId: string, peer: any) => {
+      // console.log('peerNetwork.peer', peer);
+      peerStore.setPeer(peer);
+      peerStore.setIdPeer(peerId);
+    });
+    peerNetwork.on('openRecived', (conn: any, status: string) => {
+      peerStore.pushConnections(conn);
+      if (status == 'sent') {
+      } else {
+        if (getLocalStream()) {
+          peerStore.sendMessague([{ conn }], 'addAvailableStreamPeer', {
+            username: getUser().username,
+          });
+        }
+      }
+    });
+    peerNetwork.on('data', processIncomingData);
+    peerNetwork.on('close', (conn: any) => {
+      peerStore.deleteConnection(conn.peer);
+      removeAvailableStreamPeer(conn.peer);
+    });
+    peerNetwork.on('callSend', (call: any) => {
+      peerStore.addCall(call, false, 'out');
+    });
+    peerNetwork.on('callRecived', (call: any) => {
+      call.answer(getLocalStream());
+      peerStore.addCall(call, true, 'in');
+    });
+    peerNetwork.on('closeCall', () => {
+      setIsOpenModalVideoPlayer(false);
+      clearRemoteStream();
+    });
+    peerNetwork.on('streamCall', (stream: any, call: any) => {
+      const existing = getRemoteStream();
+      if (existing && existing.callId !== call.connectionId) {
+        peerStore.closeAndDeleteCall(existing.peerId, existing.callId);
+      }
+      if (!existing || existing.callId !== call.connectionId) {
+        setRemoteStream({
+          peerId: call.peer,
+          callId: call.connectionId,
+          stream: stream,
+        });
+        setIsOpenModalVideoPlayer(true);
+      }
+    });
+
+    peerNetwork.init();
+
+    peerStore.setPeer(peerNetwork.peer);
+    peerStore.setConnect(peerNetwork.connect);
+    peerStore.setCall(peerNetwork.callF);
+  },
 }));
 
 type PeerType = any;
@@ -249,4 +374,6 @@ type PeerStore = {
   closeAndDeleteCall: (idPeer: string, idCall: string) => void;
   closeCallsOutput: () => void;
   exitPeerNetwork: () => void;
+  destroyPeer: () => void;
+  initPeerNetwork: () => void;
 };
