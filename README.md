@@ -5,28 +5,27 @@ Es una **web donde tú y tus amigos pueden ver videos juntos en tiempo real** y 
 ## **Modos de Uso**
 Ahiseve ofrece varias formas de ver videos con amigos y puedes mezclar estas opciones según tu caso.
 
-### Video subido directamente
+### 🌐 Video desde otra web (YouTube, etc.)
 
-Cargar el video directo en la pagina, para eso todos deben tener el video descargado, después podrán pausar o reproducirlo de forma sincronizada. 
-
-[▶️ Ver video](https://youtu.be/ICNsReHQXYs)
-
-<a href="https://youtu.be/ICNsReHQXYs" target="_blank">
-  <img width="400" alt="imagen" src="https://github.com/user-attachments/assets/09bf0dc4-5eaf-4d7d-afd3-61bdd4b0c2f0" />
-</a>
-
-
-
-### Video desde otra web (YouTube, etc.)
-
-Sincroniza videos de otras plataformas instalando la extensión.
+Sincroniza videos de plataformas externas usando la extensión
 
 ⚠️ Requiere tener la extensión instalada. [vea mas abajo la seccion de instalacion de la extension](#instalar-la-extension-opcional)
 
-[▶️ Ver video](https://www.youtube.com/watch?v=0dwZc8lXNII)
+[▶️ Ver video Tutorial](https://www.youtube.com/watch?v=0dwZc8lXNII)
 
 <a href="https://www.youtube.com/watch?v=0dwZc8lXNII" target="_blank">
   <img width="400" alt="imagen" src="https://github.com/user-attachments/assets/5edd774c-4fbf-47bd-81c5-9f264c1e381b" />
+</a>
+
+
+### 🎞️ Subir video directamente o link mp4
+
+Puedes cargar un video para reproducirlo de forma sincronizada con tus amigos. Deben tener el video descargado para usar este modo. 
+
+[▶️ Ver video de demostración](https://youtu.be/ICNsReHQXYs)
+
+<a href="https://youtu.be/ICNsReHQXYs" target="_blank">
+  <img width="400" alt="imagen" src="https://github.com/user-attachments/assets/09bf0dc4-5eaf-4d7d-afd3-61bdd4b0c2f0" />
 </a>
 
 
@@ -41,7 +40,10 @@ Si el otro usuario no sube un video o no usa la extencion puede recibir una tran
 </a>
 
 
-## **Instalar la extension (opcional)**
+## **🧩Instalar la extension (opcional)**
+
+Link de Chrome web store, funciona aunque las actualizaciones mas recientes se demoraran
+https://chromewebstore.google.com/detail/agfmkpaigocffapfpngeppmlcfndpbjk?utm_source=item-share-cb
 
 Repositorio de la extension
 https://github.com/essence-s/ahiseve-extension/tree/dist
