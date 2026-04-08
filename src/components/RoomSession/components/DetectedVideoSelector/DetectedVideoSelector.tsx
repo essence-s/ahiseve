@@ -3,7 +3,7 @@
 import { Modal } from '@/components/Modal/Modal';
 import { PAGE_MESSAGE_TYPES } from '@/components/types.d';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, X } from 'lucide-react';
+import { Check, ChevronLeft, Film, VideoIcon, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 type StreamModalProps = {
@@ -13,6 +13,8 @@ type StreamModalProps = {
 
 export function DetectedVideoSelector({ isOpen, onClose }: StreamModalProps) {
   const [isDetectorVideoEnabled, setIsDetectorVideoEnabled] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState(false);
+
   const toggleVideoDetector = () => {
     if (isDetectorVideoEnabled) {
       window.postMessage(
@@ -39,7 +41,7 @@ export function DetectedVideoSelector({ isOpen, onClose }: StreamModalProps) {
       let { cmd, data } = event.data;
       if (cmd == PAGE_MESSAGE_TYPES.VIDEO_DETECTOR_STATUS) {
         setIsDetectorVideoEnabled(data);
-
+        setSelectedVideo(true);
         // aprovechamos que video detector status solo llega cuando se elijio el video y pedimos informacion del video
         // el resultado llega en el PeerConnection.tsx
         if (data == false) {
@@ -92,31 +94,79 @@ export function DetectedVideoSelector({ isOpen, onClose }: StreamModalProps) {
           <p>• Al seleccionarlo, la interfaz desaparecerá automáticamente.</p>
         </div>
 
-        <div
-          className={`mt-6 flex items-center gap-3 p-4 transition-all border border-white/6 rounded-lg ${isDetectorVideoEnabled && 'bg-[#49ffb30e]'}`}
-        >
-          <div className='flex items-center gap-2 flex-1'>
-            {isDetectorVideoEnabled ? (
-              <div className='relative w-2 h-2'>
-                <span className='absolute w-2 h-2 bg-emerald-400 rounded-full' />
-                <span className='absolute w-2 h-2 bg-emerald-400 rounded-full animate-ping opacity-50' />
+        {/* Status panel */}
+        <div className='mt-6 flex flex-wrap gap-4 bg-[#ffffff05] border border-neutral-800/50 rounded-xl p-5'>
+          {/* Left column: Extension + Video */}
+          <div className='flex-1 space-y-4'>
+            {/* Extension */}
+            <div>
+              <span className='text-[10px] uppercase tracking-widest text-neutral-500 block mb-1.5'>
+                Extensión
+              </span>
+              <div className='flex items-center gap-2'>
+                <div className='mt-px w-2 h-2 bg-emerald-500 rounded-full shadow-sm shadow-emerald-500/50' />
+                <span className='text-sm font-medium text-emerald-400'>
+                  Conectada
+                </span>
               </div>
-            ) : (
-              <div className='w-2 h-2 rounded-full transition-all bg-gray-600' />
-            )}
+            </div>
 
-            <span
-              className={`text-sm font-medium ${isDetectorVideoEnabled ? 'text-white' : 'text-gray-400'}`}
-            >
-              {isDetectorVideoEnabled ? 'Detector Activo' : 'Detector Inactivo'}
-            </span>
+            {/* Video */}
+            <div>
+              <span className='text-[10px] uppercase tracking-widest text-neutral-500 block mb-1.5'>
+                Vídeo
+              </span>
+              <div className='flex items-center gap-2'>
+                {selectedVideo ? (
+                  <>
+                    <Check className='mt-px w-3.5 h-3.5 text-white' />
+                    <span className='text-sm font-medium text-white'>
+                      Seleccionado
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <Film className='mt-px w-3.5 h-3.5 text-neutral-500' />
+                    <span className='text-sm text-neutral-500'>
+                      Sin seleccionar
+                    </span>
+                  </>
+                )}
+              </div>
+            </div>
           </div>
-          <Button
-            onClick={toggleVideoDetector}
-            className='font-semibold px-4 py-2 rounded-lg transition-all text-sm bg-white hover:bg-gray-100 text-black hover:shadow-lg'
-          >
-            {isDetectorVideoEnabled ? 'Desactivar' : 'Activar'}
-          </Button>
+
+          {/* Divider */}
+          <div className='hidden sm:block w-px bg-neutral-800/70' />
+
+          {/* Right column: Detector + Button */}
+          <div className='flex-1 flex flex-col'>
+            <div className='mb-3'>
+              <span className='text-[10px] uppercase tracking-widest text-neutral-500 block mb-1.5'>
+                Detector
+              </span>
+              <div className='flex items-center gap-2'>
+                <div
+                  className={`mt-px w-2 h-2 rounded-full transition-all ${isDetectorVideoEnabled ? 'bg-white shadow-sm shadow-white/50 animate-pulse' : 'bg-neutral-600'}`}
+                />
+                <span
+                  className={`text-sm font-medium ${isDetectorVideoEnabled ? 'text-white' : 'text-neutral-500'}`}
+                >
+                  {isDetectorVideoEnabled ? 'Activo' : 'Inactivo'}
+                </span>
+              </div>
+            </div>
+            <Button
+              onClick={toggleVideoDetector}
+              className={`text-xs font-semibold px-4 py-2 h-auto rounded-lg transition-all w-full mt-auto ${
+                isDetectorVideoEnabled
+                  ? 'bg-neutral-800 hover:bg-neutral-700 text-neutral-300'
+                  : 'bg-white hover:bg-neutral-100 text-neutral-900'
+              }`}
+            >
+              {isDetectorVideoEnabled ? 'Desactivar' : 'Activar detector'}
+            </Button>
+          </div>
         </div>
       </div>
 
