@@ -12,6 +12,8 @@ import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 import { PeerConnection } from '@/components/PeerConnection/PeerConnection';
 import TabLock from '@/components/TabLock';
+import HowUse from '@/components/HowUse';
+import BoxDownloadExtension from '@/components/BoxDownloadExtension';
 ---
 
 <html lang='en'>
@@ -42,6 +44,8 @@ import TabLock from '@/components/TabLock';
       }}
     >
     </div>
+    <HowUse client:load />
+    <BoxDownloadExtension client:load />
     <PeerConnection client:load transition:persist />
     <TabLock client:load transition:persist />
     <slot />
