@@ -8,11 +8,11 @@ export default function BoxDownloadExtension() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className='fixed right-2 top-37 bg-[#ffffff13] border border-white/5 rounded-lg w-10 h-10 flex justify-center items-center text-white/60 cursor-pointer'
+        className='fixed z-1 right-2 top-37 bg-[#ffffff13] border border-white/5 rounded-lg w-10 h-10 flex justify-center items-center text-white/60 cursor-pointer'
       >
         <svg
           xmlns='http://www.w3.org/2000/svg'
-          className='w-6 h-6'
+          className='w-5.5 h-5.5'
           fill='none'
           viewBox='0 0 24 24'
           stroke='currentColor'
@@ -37,6 +37,23 @@ export default function BoxDownloadExtension() {
             </div>
 
             <div className='p-4 sm:p-6'>
+              <div className=' space-y-3 text-sm'>
+                {/* Link de Chrome web store, funciona aunque las actualizaciones mas
+            recientes se demoraran
+            https://chromewebstore.google.com/detail/agfmkpaigocffapfpngeppmlcfndpbjk?utm_source=item-share-cb */}
+                <p>Instalación desde Chrome web store.</p>
+                <p>
+                  <a
+                    href='https://chromewebstore.google.com/detail/agfmkpaigocffapfpngeppmlcfndpbjk?utm_source=item-share-cb'
+                    className='text-blue-400 underline'
+                  >
+                    Link de la extension en Chrome web store
+                  </a>
+                </p>
+              </div>
+            </div>
+
+            <div className='p-4 pt-0 sm:pt-0 sm:p-6'>
               <div className=' space-y-3 text-sm'>
                 <p>Instalación manual.</p>
                 <p>
