@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Modal } from './Modal/Modal';
+import YoutubeVideo from './YoutubeVideo';
 
 export default function HowUse() {
   const [open, setOpen] = useState(false);
@@ -8,11 +9,11 @@ export default function HowUse() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className='fixed right-2 top-26 bg-[#ffffff13] border border-white/5 rounded-lg w-10 h-10 flex justify-center items-center text-white/60 cursor-pointer'
+        className='fixed z-1 right-2 top-26 bg-[#ffffff13] border border-white/5 rounded-lg w-10 h-10 flex justify-center items-center text-white/60 cursor-pointer'
       >
         <svg
           xmlns='http://www.w3.org/2000/svg'
-          className='w-6 h-6'
+          className='w-5.5 h-5.5'
           fill='none'
           stroke='currentColor'
           strokeWidth='2'
@@ -30,35 +31,85 @@ export default function HowUse() {
 
       {open && (
         <Modal onClose={() => setOpen(false)}>
-          <div className='flex flex-col max-w-2xl w-full max-h-[80dvh]  overflow-auto text-white'>
-            {/* Header */}
+          <div className='flex flex-col max-w-3xl w-full max-h-[80dvh] overflow-auto text-white'>
             <div className='flex flex-col p-4 sm:p-5 border-b border-white/6'>
               <h2 className='text-xs sm:text-sm font-medium text-white/90 truncate'>
-                Como utilizar
+                Modos de Uso
               </h2>
               <p className='text-xs text-white/40 mt-1'>
-                Sigue unas de las 3 formas
+                Ahiseve ofrece varias formas de ver videos con amigos
               </p>
             </div>
 
-            <div className='p-4 sm:p-6 flex flex-col gap-5'>
-              <p>Cree una sala y invite a sus amigos, hay 3 formas de uso:</p>
+            <div className='p-4 sm:p-6 flex flex-col gap-6'>
+              <div className='flex flex-col gap-3'>
+                <h3 className='text-sm font-medium text-white/80'>
+                  🌐 Video desde otra web (YouTube, etc.)
+                </h3>
+                <p className='text-xs text-white/50'>
+                  Sincroniza videos de plataformas externas usando la extensión.
+                  Requiere tener la extensión instalada.
+                </p>
+                <YoutubeVideo
+                  videoId='0dwZc8lXNII'
+                  title='Video desde otra web'
+                />
+              </div>
 
-              <div className='flex flex-col gap-4 sm:flex-row'>
-                <div className='flex-1 flex flex-col gap-2'>
-                  <p>1.</p>
+              <div className='flex flex-col gap-3'>
+                <h3 className='text-sm font-medium text-white/80'>
+                  🎞️ Subir video directamente o link mp4
+                </h3>
+                <p className='text-xs text-white/50'>
+                  Carga un video para reproducirlo de forma sincronizada con tus
+                  amigos. Deben tener el video descargado para usar este modo.
+                </p>
+                <YoutubeVideo
+                  videoId='ICNsReHQXYs'
+                  title='Subir video directamente'
+                />
+              </div>
 
-                  <div className='w-full h-36 bg-gray-600/20 rounded-lg'></div>
-                </div>
+              <div className='flex flex-col gap-3'>
+                <h3 className='text-sm font-medium text-white/80'>
+                  🖥️ Transmitir su pantalla
+                </h3>
+                <p className='text-xs text-white/50'>
+                  Si el otro usuario no sube un video o no usa la extensión,
+                  puede recibir una transmisión y controlar también el video,
+                  aunque no es muy estable pero funciona.
+                </p>
+                <YoutubeVideo
+                  videoId='djPcwMMnsYw'
+                  title='Transmitir pantalla'
+                />
+              </div>
 
-                <div className='flex-1 flex flex-col gap-2'>
-                  <p>2.</p>
-                  <div className='w-full h-36 bg-gray-600/20 rounded-lg'></div>
-                </div>
-
-                <div className='flex-1 flex flex-col gap-2'>
-                  <p>3.</p>
-                  <div className='w-full h-36 bg-gray-600/20 rounded-lg'></div>
+              <div className='mt-2 pt-4 border-t border-white/6 flex flex-col gap-3'>
+                <h3 className='text-sm font-medium text-white/80'>
+                  🧩 Instalar la extensión (opcional)
+                </h3>
+                <p className='text-xs text-white/50'>
+                  Funciona aunque las actualizaciones más recientes se
+                  demorarán.
+                </p>
+                <div className='flex flex-wrap gap-3'>
+                  <a
+                    href='https://chromewebstore.google.com/detail/agfmkpaigocffapfpngeppmlcfndpbjk?utm_source=item-share-cb'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className='text-xs text-blue-400 hover:underline'
+                  >
+                    Chrome Web Store
+                  </a>
+                  <a
+                    href='https://github.com/essence-s/ahiseve-extension/tree/dist'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className='text-xs text-blue-400 hover:underline'
+                  >
+                    Repositorio de la extensión
+                  </a>
                 </div>
               </div>
             </div>
